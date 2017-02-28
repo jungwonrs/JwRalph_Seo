@@ -1,2 +1,2 @@
-# JwRalph_Seo
+Jungwon Seo
 personal repository

@@ -1,3 +1,0 @@
-Jungwon Seo
-
-personal repository

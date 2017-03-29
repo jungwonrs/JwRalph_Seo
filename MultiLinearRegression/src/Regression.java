@@ -3,34 +3,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import flanagan.io.*;
 import flanagan.math.*;
+import weka.core.matrix.Matrix;
 
 public class Regression {
 	//fake data
 	
 	
-	/*
-	 * If initial W is smaller than 0, cost is increasing...
-	 * if initial W is bigger than 0, cost is decreasing...
-	 * I don't know why
-	 */
-	
-	static double w1=25;
-	static double w2=20;
-	static double w3=10;
+	static double w1=0.001;
+	static double w2=0.002;
+	static double w3=0.003;
 	static double initB = 1;
-	static double learningRate = 0.009;
-	
+	static double learningRate = 0.000001;
 	
 	
 	// input data
 	static int [] yData = {152,185,180,196,142};
-	static int [][]xData = new int [][] {{73,80,75},{93,88,93},{89,91,90},{96,98,100},{73,66,70}};
+	static double [][] xData = new double [][] {{73,80,75},{93,88,93},{89,91,90},{96,98,100},{73,66,70}};
 	static double [][]wData = new double [][] {{w1},{w2},{w3}};
 	
 	
 	static HashMap<String, Double> wValue = new HashMap<String,Double>();
 	static ArrayList<Double> costBucket = new ArrayList<Double>();
-	static int cost;
+	static double cost;
 	
 	/*
 	 * Goal - find out w1,w2,w3 when cost is zero(minimize).
@@ -43,7 +37,19 @@ public class Regression {
 		wValue.put("w2", w2);		
 		wValue.put("w3", w3);		
 	
-		//int stop=0;
+		int stop=0;
+		
+		double x1,x2,x3;
+		double sumx1=0, sumx2=0, sumx3=0;
+		for (int i =0; i<xData.length; i++){
+			x1 = xData[i][0];
+			sumx1 += x1;
+			x2 = xData[i][1];
+			sumx2 += x2;
+			x3 = xData[i][2];
+			sumx3 += x3;
+		}
+	
 	while(true){
 		
 		//calculate multiplication of matrix
@@ -57,92 +63,73 @@ public class Regression {
 
 		
 		//initial h1 = x1w1+x2w2+x3w3+b
-		double h0 = result[0][0]+initB;
-		double h1 = result[1][0]+initB;
-		double h2 = result[2][0]+initB;
-		double h3 = result[3][0]+initB;
-		double h4 = result[4][0]+initB;
-		
+		ArrayList<Double>hypothesis = new ArrayList<Double>();
+		for (int i =0; i<result.length; i++){
+			double hypo;
+			hypo = result[i][0]+initB;
+			hypothesis.add(hypo);
+		}
+
 
 		//Calculate cost
+		double temp, sumtemp=0;
+		for (int i =0; i<hypothesis.size(); i++){
+			temp = Math.pow(hypothesis.get(i)-yData[i], 2);
+			sumtemp += temp; 
+		}
 		
-		//molecule
-		double i = Math.pow((h0-yData[0]), 2)+Math.pow((h1-yData[1]), 2)+Math.pow((h2-yData[2]), 2)+Math.pow((h3-yData[3]), 2)+Math.pow((h4-yData[4]), 2);
-		
-		//cost 
-		// changed data type for easy to check.
-		cost = (int) (i/(result.length));
+		cost = sumtemp/hypothesis.size();
 
 		
 		//Calculate Gradient Descent  
-		// new w = old w - learning Rate * partial differential of W value from the cost.  
-		double newW1 = wValue.get("w1")-(learningRate*wValue.get("w1"));
-		double newW2 = wValue.get("w2")-(learningRate*wValue.get("w2"));
-		double newW3 = wValue.get("w3")-(learningRate*wValue.get("w3"));
+	
+		ArrayList<Double> gd1 = new ArrayList<Double>();
+		ArrayList<Double> gd2 = new ArrayList<Double>();
+		ArrayList<Double> gd3 = new ArrayList<Double>();
+		for (int i=0; i<hypothesis.size(); i++){
+			double gdtemp1 =((hypothesis.get(i)-yData[i])*sumx1)/hypothesis.size();
+			gd1.add(gdtemp1);
+			double gdtemp2 = ((hypothesis.get(i)-yData[i])*sumx2)/hypothesis.size();
+			gd2.add(gdtemp2);
+			double gdtemp3 = ((hypothesis.get(i)-yData[i])*sumx3)/hypothesis.size();
+			gd3.add(gdtemp3);
+			
+			double newW1, newW2, newW3;
+			newW1 = (wValue.get("w1")-(learningRate*gd1.get(i)));
+			newW2 = (wValue.get("w2")-(learningRate*gd2.get(i)));
+			newW3 = (wValue.get("w3")-(learningRate*gd3.get(i)));
+			
+			wValue.put("w1", newW1);
+			wValue.put("w2", newW2);
+			wValue.put("w3", newW3);
+			
+			
+		}
 		
-		/*
-		newW1 = (Math.round(newW1*100)/100);
-		newW2 = (Math.round(newW2*100)/100);
-		newW3 = (Math.round(newW3*100)/100);
-		 */
+		wData = new double [][] {{wValue.get("w1")},{wValue.get("w2")},{wValue.get("w3")}};
 		
+	
+		System.out.println("w1="+" "+wValue.get("w1"));
+		System.out.println("w2="+" "+wValue.get("w2"));
+		System.out.println("w3="+" "+wValue.get("w3"));
+		System.out.println("cost="+" "+cost);
+		System.out.println();
+		stop++;
 		
-		//add new w1, w2 and w3
-		wValue.put("w1", newW1);
-		wValue.put("w2", newW2);
-		wValue.put("w3", newW3);
-		w1 = wValue.get("w1");
-		w2 = wValue.get("w2");
-		w3 = wValue.get("w3");	
-		wData = new double [][] {{w1},{w2},{w3}};
+	
 		
-		
-		//System.out.println("w1="+""+wValue.get("w1"));
-		//System.out.println("w2="+""+wValue.get("w2"));
-		//System.out.println("w3="+""+wValue.get("w3"));
-		//System.out.println("cost="+""+cost);
-		//stop++;
-		
-		//minimum 
-
-		if (cost==1){
-			System.out.println("w1="+""+wValue.get("w1"));
-			System.out.println("w2="+""+wValue.get("w2"));
-			System.out.println("w3="+""+wValue.get("w3"));
-			System.out.println("cost="+""+cost);
-		break;
-		
-		
-		/*
 		if (stop==1000){
 			
-			System.out.println("w1="+""+wValue.get("w1"));
-			System.out.println("w2="+""+wValue.get("w2"));
-			System.out.println("w3="+""+wValue.get("w3"));
-			System.out.println("cost="+""+cost);
-
+			System.out.println("End");
+			
 		break;
-*/
-		
+	
 		}
 		
 
 	}
-	
+	      
 	}
-	
+
 }
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	

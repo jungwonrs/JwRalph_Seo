@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name ="InputStyle" parent="Widget.AppCompat.EditText">
+        <item name = "android:colorControlActivated" tools:targetApi="lollipop">@color/colorBlack</item>
+        <item name = "android:colorControlNormal" tools:targetApi="lollipop">@color/colorBlack</item>
+        <item name = "android:textColorHighlight">@color/colorPrimaryDark</item>
+        <item name = "android:textColor">@color/colorBlack</item>
+        <item name="android:textCursorDrawable">@color/colorBlack</item>
+    </style>
+</resources>

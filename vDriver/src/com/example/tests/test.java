@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 @RunWith(Parameterized.class)
-public class VDriver {
+public class test {
 
 	
 	  private WebDriver driver;
@@ -41,7 +41,7 @@ public class VDriver {
 		  });
 	  }
 	  
-	  public VDriver(String DLNum, String SNum){
+	  public test(String DLNum, String SNum){
 		  this.DLNum = DLNum;
 		  this.SNum = SNum;
 	  }
@@ -54,9 +54,11 @@ public class VDriver {
 		  
 		driver = new ChromeDriver();
 	    baseUrl = "http://gplx.gov.vn/default.aspx";
-	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	    driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	 
 	  }
+
+	  
 
 	  @Test
 	  public void testVDriver() throws Exception {

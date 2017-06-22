@@ -1,122 +1,4 @@
-<data>
-@public
-
-<fn get =''>
-| loglist_html "Loglist"
-| http.response
-  code: 200
-  header: {content-type: "text/html"}
-</fn>
-
-@cdata
-<fn loglist_html ='title'>
-
-
-<html>
-<head>
-<br>
-<center>
-<img src="http://finotek.co.kr/resources/new/images/eng/finotek-logo.svg" width="200" height="100" align="middle">
-</center>
-<style type="text/css">
-
-table, td{
-    border: 1px solid black
-}
-
-table{
-
-    height: 100px;
-    margin: auto;
-    text-align: center;
-}
-
-
-</style>
-    
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-</head> 
-<body class="container" style="background-color:F8FCFF">
-
-	
-    <div class="page-header" style="position: relative; left:40%; top:20px;">
-    <label>Start date(YYYYMMDD)</label><br> &nbsp;  <input type ="date" id = "from_date" placeholder="Start date"><br>
-    <label style="padding-top:10px">End date(YYYYMMDD)</label><br> &nbsp;  <input type ="date" id = "to_date" placeholder ="End date"><br>
-    <label style="padding-top:10px">Target Company</label><br> &nbsp; 
-	<select id="target_company_code">
-		<option value="">select</option>
-		<option value="trulioo">trulioo</option>
-		<option value ="vi_test">vietnam_test</option>
-	</select>
-        <br><br>
-        <div id="controls">
-
-            <div class="btn-group" data-toggle="buttons" id="filter">
-                <label class="btn btn-default active">
-                    <input type="radio" id="allFilter" value="All" checked>All
-                </label>
-                <label class="btn btn-default">
-                    <input type="radio" id="paiedFilter" value="Paied">Paied 
-                </label>
-                <label class="btn btn-default">
-                    <input type="radio" id="CancelFilter" value="Canceled">Canceled 
-                </label>
-
-            </div>
-			
-            <br><br>
-
-        <input type="checkbox" data-toggle="toggle" data-on="All Pay" data-off="All Cancel" id="btnAllToggle"> 
-
-        <br><br>
-        </div>
-		
-		<div id = "excel">
-			<button id = "btnExcel"> Excel </button>
-		</div>
-  
-        <br><br>
-</div>
-	<div>
-        <p class="text-center">
-            <button type="button" class="btn btn-primary btn-lg" style="width:60%;" id="btnPost">Search</button>	
-        </p>
-    </div>
-	
-
-	
-    <div>
-        <outputbox>
-			<form align="middle" onsubmit="return false">
-			<label for="search">Search Here:</label><input type="text" size="30" name="search" id="search"/>  &nbsp;
-			<button id = "btnCount"> Count </button>
-			<p id = "countData"></p>
-			</form>
-			
-             <table id="validationList" style="width:100%">
-              <tr>
-                <th>RequestId</th>
-                <th>Request time</th> 
-                <th>Response time</th>
-                <th>Description</th>
-                <th>IP</th>
-                <th>Is paid</th>
-              </tr>
-            </table>
-        </outputbox>
-    </div>
-
-
-
-</body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	
-    <script>
+ <script>
 				
         $(document).ready(function() {
 		
@@ -214,15 +96,14 @@ table{
 		}
 				
 		function sendSearchQuery() {
-		  	var reqUrl = "https://idverifier.finotek.co.kr/loglist/" + $("#target_company_code").val();
+		  	
 			var from_date = $("#from_date").val();
 			var to_date = $("#to_date").val();
 		
                 $.ajax({
                     url : reqUrl,
                     headers :  {
-                 		company_code : "finotek",
-	                    api_key : "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+                 		
     	            },
                     data :  {
 						from_date : from_date,
@@ -338,15 +219,14 @@ table{
 		}
 		
 		function getExcel() {
-			var reqUrl = "https://idverifier.finotek.co.kr/loglist/" + $("#target_company_code").val();
+			
 			var from_date = $("#from_date").val();
 			var to_date = $("#to_date").val();
 		
                 $.ajax({
                     url : reqUrl,
                     headers :  {
-                 		company_code : "finotek",
-	                    api_key : "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+                 		
     	            },
                     data :  {
 						from_date : from_date,
@@ -466,7 +346,7 @@ table{
 	
        function sendPayReq(selectedIds, isPaid) {
 		
-            var sedUrl = "https://idverifier.finotek.co.kr/payment";
+            var sedUrl = 
         	var ids = [];    
 		
 			if (Array.isArray(selectedIds)) {
@@ -479,8 +359,7 @@ table{
                     url: sedUrl, 
                     type: "POST", 
                     headers:  {
-                        company_code: "finotek",
-                        api_key: "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+                       
                     },
 
                     data: JSON.stringify({ 
@@ -497,8 +376,39 @@ table{
                 });
                 
         }
+		
 
-    </script>
-</html>
-</fn>
-</data>
+		function exportExcel(){
+		
+		var data_type = 'data:application/vnd.ms-excel';
+		var table_div = document.getElementById('validationList');
+		var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+		var a = document.createElement('a');
+		a.href = data_type + ', ' + table_html;
+		a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+		a.click();
+			}
+
+	function verified(){
+		var table = $('#validationList');
+		table.find('tr').each(function(index, row)
+		{
+			var allCells = $(row).find('td');
+			if(allCells.length > 0)
+		{
+			var found = false;
+			allCells.each(function(index, td)
+			{
+				var regExp = new RegExp('Verified');
+				if(regExp.test($(td).text()))
+				{
+					found = true;
+					return false;
+				}
+			});
+			if(found == true)$(row).show();else $(row).remove();
+		}
+	});	
+	}	
+

@@ -1,0 +1,504 @@
+<data>
+@public
+
+<fn get =''>
+| loglist_html "Loglist"
+| http.response
+  code: 200
+  header: {content-type: "text/html"}
+</fn>
+
+@cdata
+<fn loglist_html ='title'>
+
+
+<html>
+<head>
+<br>
+<center>
+<img src="http://finotek.co.kr/resources/new/images/eng/finotek-logo.svg" width="200" height="100" align="middle">
+</center>
+<style type="text/css">
+
+table, td{
+    border: 1px solid black
+}
+
+table{
+
+    height: 100px;
+    margin: auto;
+    text-align: center;
+}
+
+
+</style>
+    
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+</head> 
+<body class="container" style="background-color:F8FCFF">
+
+	
+    <div class="page-header" style="position: relative; left:40%; top:20px;">
+    <label>Start date(YYYYMMDD)</label><br> &nbsp;  <input type ="date" id = "from_date" placeholder="Start date"><br>
+    <label style="padding-top:10px">End date(YYYYMMDD)</label><br> &nbsp;  <input type ="date" id = "to_date" placeholder ="End date"><br>
+    <label style="padding-top:10px">Target Company</label><br> &nbsp; 
+	<select id="target_company_code">
+		<option value="">select</option>
+		<option value="trulioo">trulioo</option>
+		<option value ="vi_test">vietnam_test</option>
+	</select>
+        <br><br>
+        <div id="controls">
+
+            <div class="btn-group" data-toggle="buttons" id="filter">
+                <label class="btn btn-default active">
+                    <input type="radio" id="allFilter" value="All" checked>All
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" id="paiedFilter" value="Paied">Paied 
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" id="CancelFilter" value="Canceled">Canceled 
+                </label>
+
+            </div>
+			
+            <br><br>
+
+        <input type="checkbox" data-toggle="toggle" data-on="All Pay" data-off="All Cancel" id="btnAllToggle"> 
+
+        <br><br>
+        </div>
+		
+		<div id = "excel">
+			<button id = "btnExcel"> Excel </button>
+		</div>
+  
+        <br><br>
+</div>
+	<div>
+        <p class="text-center">
+            <button type="button" class="btn btn-primary btn-lg" style="width:60%;" id="btnPost">Search</button>	
+        </p>
+    </div>
+	
+
+	
+    <div>
+        <outputbox>
+			<form align="middle" onsubmit="return false">
+			<label for="search">Search Here:</label><input type="text" size="30" name="search" id="search"/>  &nbsp;
+			<button id = "btnCount"> Count </button>
+			<p id = "countData"></p>
+			</form>
+			
+             <table id="validationList" style="width:100%">
+              <tr>
+                <th>RequestId</th>
+                <th>Request time</th> 
+                <th>Response time</th>
+                <th>Description</th>
+                <th>IP</th>
+                <th>Is paid</th>
+              </tr>
+            </table>
+        </outputbox>
+    </div>
+
+
+
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	
+    <script>
+				
+        $(document).ready(function() {
+		
+		$("#countData").hide();
+		
+		$("#btnCount").click(function() {
+			count();
+			$("#countData").show();
+		});
+		
+		 $('#search').keyup(function()	{
+		searchTable($(this).val());
+	
+		});
+ 
+			$("#controls").hide();
+			$("#excel").hide();
+			
+            $("#btnPost").click(function() {
+				clearReqResult();
+				sendSearchQuery();
+            });
+		
+			$("#btnExcel").click(function() {
+				getExcel();
+			});
+			
+				
+			$("#btnAllToggle").change(function() {
+		
+      			if($(this).prop('checked')) {
+					$("label[name='Pay']").attr("class", "btn btn-success active");
+		
+		
+					var ids = $.map($(".dataId"), function(td, idx) {
+						return $(td).text();
+					});
+		
+					sendPayReq(ids, true);
+		
+				} else {
+					$( "label[name='Pay']" ).attr("class", "btn btn-secondary");
+		
+					var ids = $.map($(".dataId"), function(td, idx) {
+						return $(td).text();
+					});
+		
+					sendPayReq(ids, false);
+				}
+		    });
+		
+			$("#filter").click(function() {
+				clearReqResult();
+				sendSearchQuery();
+				$("#btnAllToggle").bootstrapToggle('off');
+	
+			});
+        });
+	
+	
+		function count (){
+			
+			var temp = $('#validationList tr:visible').length;
+			var getCount = temp-1;			
+			
+			document.getElementById("countData").innerHTML = getCount;
+			//alert(getCount);
+			
+			
+            }
+        
+				
+		function searchTable(inputVal){
+	
+		var table = $('#validationList');
+		table.find('tr').each(function(index, row)
+		{
+			var allCells = $(row).find('td');
+			if(allCells.length > 0)
+		{
+			var found = false;
+			allCells.each(function(index, td)
+			{
+				var regExp = new RegExp(inputVal, 'i');
+				if(regExp.test($(td).text()))
+				{
+					found = true;
+					return false;
+				}
+			});
+			if(found == true)$(row).show();else $(row).hide();
+		}
+	});
+		
+		}
+				
+		function sendSearchQuery() {
+		  	var reqUrl = "https://idverifier.finotek.co.kr/loglist/" + $("#target_company_code").val();
+			var from_date = $("#from_date").val();
+			var to_date = $("#to_date").val();
+		
+                $.ajax({
+                    url : reqUrl,
+                    headers :  {
+                 		company_code : "finotek",
+	                    api_key : "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+    	            },
+                    data :  {
+						from_date : from_date,
+						to_date : to_date,
+						target_company_code :$("#target_company_code").val()
+                	},
+                    success : onReqSuccess,
+					error : function() { alert("please enter valid data"); },
+					complete : function() { $("#controls").show(), $("#excel").show(); }
+				});
+		}
+		
+		
+
+		
+		
+		function isPaid(validation) { 
+			try {
+				return validation.is_paid == true;
+			} catch (err) {
+				return false;
+			}
+		}
+		
+		function isCancel(validation) {
+			try {
+				return validation.is_paid == false;
+			} catch (err) {
+				return false;
+			}
+		}
+		
+		function getFilter(filterOpt, validation) {
+			if (filterOpt == "Paied") {
+				return isPaid(validation);
+			} else if (filterOpt == "Canceled") {
+				return isCancel(validation);
+			} else {
+				return true;
+			}
+		}
+		
+		function getFilterOpt() {
+			return $("#filter label.active input").val();
+		}
+		
+        function onReqSuccess(res) {
+			var respObj = JSON.parse(res);
+			respObj.sort(function(a, b) { 
+				
+				try {
+		
+					var first = a.validationRequestId;
+					var second = b.validationRequestId;
+
+					if (first == second)
+						return 0;
+					if (first > second)
+						return -1;
+					else
+						return 1; 
+		
+				} catch(error) {
+					return 0;
+				}
+			});
+            
+			appendReqResult(respObj);
+        }
+		
+		function clearReqResult() {
+		 	$("#validationList tr:gt(0)").remove();
+		}
+		
+		
+		function appendReqResult(respObj) {
+		   	
+		
+			respObj
+				.filter(function(validation) {
+					return getFilter(getFilterOpt(), validation);
+				})
+				.forEach(function(validation) {
+		
+					if(validation != null) {
+
+						var lastTR = $("#validationList tr:last");
+
+						var rowHTML = $("<tr>")
+						$("<td>").attr("class", "dataId").text(validation.validationRequestId).appendTo(rowHTML);
+						$("<td>").text(parseTime(validation.resquest_time)).appendTo(rowHTML);
+						$("<td>").text(parseTime(validation.response_time)).appendTo(rowHTML);
+						$("<td>").text(validation.responseCodeDescription).appendTo(rowHTML);
+						$("<td>").text(parseIP(validation.request_ip)).appendTo(rowHTML);
+
+
+						var checkBox = $("<div>");
+
+						if(validation.is_paid) {
+							checkBox.html(getPaidHTML(validation.validationRequestId));
+
+						} else {
+							checkBox.html(getUnpaidHTML(validation.validationRequestId));
+						}
+
+						$("<td>").append(checkBox).appendTo(rowHTML);
+
+						lastTR.after(rowHTML);
+						
+					}
+		
+            });
+		}
+		
+		function getExcel() {
+			var reqUrl = "https://idverifier.finotek.co.kr/loglist/" + $("#target_company_code").val();
+			var from_date = $("#from_date").val();
+			var to_date = $("#to_date").val();
+		
+                $.ajax({
+                    url : reqUrl,
+                    headers :  {
+                 		company_code : "finotek",
+	                    api_key : "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+    	            },
+                    data :  {
+						from_date : from_date,
+						to_date : to_date,
+						target_company_code :$("#target_company_code").val()
+                	},
+                    success : convertting,
+					error : function() { alert("please enter valid data"); },
+					complete : function() { $("#controls").show(), $("#excel").show(); }
+				});
+		}
+		
+		
+		
+	function convertting(getdata) {
+			var convert = JSON.parse(getdata);
+		
+			excelConvert(convert);
+		
+		};
+		
+	function excelConvert(convert){
+		
+		var array = typeof convert != 'object' ? JSON.parse(convert) : convert;
+		
+		var str = '';
+		
+		for (var i = 0; i < array.length; i++) {
+			var line ='';
+		for (var index in array[i]) {
+			line += array[i] [index] + '\\t';
+		}
+		line.slice(0,line.length-1);
+		
+		title = 'requestID'+'\\t'+'RequestTime'+'\\t'+'ResponseTime'+'\\t'+'ResponseCode'+'\\t'+'CodeDescription'+'\\t'+'RequestIP'+'\\t'+'PaymentTime'+'\\t'+'IsPaid'+'\\t'+'DocumentType'+'\\t'+'CompanyCode'+'\\n';								 
+		str += line + '\\n';
+		}							 
+										 
+		window.open('data:application/vnd.ms-excel,'+ escape(title) + escape(str) );
+	
+	
+	}
+
+	
+	
+		function getUnpaidHTML(reqId) {
+			return '<div ' + 'id=' + reqId + ' class="btn-group" data-toggle="buttons">' +
+					'<label class="btn btn-secondary" onclick="onClickPay(this)" name="Pay">' +
+					'	<input type="radio" autocomplete="off" >Pay</label>' +
+					'<label  class="btn btn-secondary" onclick="onClickRefund(this)" name="Cancel"><input type="radio" autocomplete="off">Cancel' +
+					'    </label>' +
+					'</div>';
+		}
+		
+		function getPaidHTML(reqId) {
+			return '<div ' + 'id=' + reqId + ' class="btn-group" data-toggle="buttons">' +
+					'<label class="btn btn-success active" onclick="onClickPay(this)" name="Pay">' +
+					'	<input type="radio" autocomplete="off" >Pay</label>' +
+					'<label  class="btn btn-secondary" onclick="onClickRefund(this)" name="Cancel"><input type="radio" autocomplete="off">Cancel' +
+					'    </label>' +
+					'</div>';
+		}
+		
+		Array.prototype.contains = function(element) {
+			for (var i = 0; i < this.length; i++) {
+				if (this[i] == element) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function onClickPay(btn) {
+			
+			$(btn).attr("class", "btn btn-success active");
+			var btnGroup = $(btn).parent();
+			var id = $(btnGroup).attr("id");
+            
+            sendPayReq(id, true);
+											
+			$(btn).parent().children("label").eq(1).attr("class", "btn btn-secondary ");
+		}
+		
+		function onClickRefund(btn) {
+			$(btn).attr("class", "btn btn-secondary");
+			var btnGroup = $(btn).parent();
+			
+			var id = $(btnGroup).attr("id");
+            sendPayReq(id, false);
+										
+			$(btn).parent().children("label").eq(0).attr("class", "btn btn-secondary ");
+		}
+		
+		
+		function parseTime(time) {
+			return time;
+		}
+		
+		function parseIP(ipArr) {
+			
+			if(ipArr == null) {
+				return "";								
+			}
+											
+			var ipStr = "";
+			
+			for(var i = 0; i < ipArr.length; ++i) {
+				ipStr += ipArr[i].toString();
+				if(i != ipArr.length - 1) {
+					ipStr += "."; 
+				}				
+			}
+		
+			return ipStr;
+		}
+		
+	
+       function sendPayReq(selectedIds, isPaid) {
+		
+            var sedUrl = "https://idverifier.finotek.co.kr/payment";
+        	var ids = [];    
+		
+			if (Array.isArray(selectedIds)) {
+				ids = selectedIds;
+			} else {
+				ids.push(selectedIds);
+			}
+																				
+            $.ajax({
+                    url: sedUrl, 
+                    type: "POST", 
+                    headers:  {
+                        company_code: "finotek",
+                        api_key: "03196bf3-f9b4-4b1e-bcaa-3fa6f332412f"
+                    },
+
+                    data: JSON.stringify({ 
+                        isPaid: isPaid, 
+                        companyCode: $("#target_company_code").val(),
+                        validationRequestId: ids
+                    }),
+
+                    success: function(data) { console.log(data); },
+                    error: function(xhr, error){
+                            console.debug(xhr); console.debug(error);
+                     },
+                    complete: function(data) { }
+                });
+                
+        }
+
+    </script>
+</html>
+</fn>
+</data>

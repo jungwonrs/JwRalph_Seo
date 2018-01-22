@@ -1,5 +1,6 @@
 import socket
 
+
 def receive():
     port = 7777
 
@@ -10,5 +11,3 @@ def receive():
         content, addr = sc.accept()
 
         print((content.recv(1024).decode('utf-8')))
-
-

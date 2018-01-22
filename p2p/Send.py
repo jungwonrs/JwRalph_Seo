@@ -1,6 +1,9 @@
 import socket
+import threading
+
 
 class send:
+
     def __init__(self, ip, data):
         self.ip = ip
         self.data = data
@@ -14,5 +17,3 @@ class send:
             sc. send((self.data).encode())
         except:
             print("connection error!")
-
-

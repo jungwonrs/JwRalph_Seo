@@ -1,3 +1,4 @@
+import json
 import time
 from pathlib import Path
 
@@ -26,18 +27,65 @@ def body_encrypt():
 
     return data
 
+def brick_hash(data):
+    data_encoding = data.encode('utf-8')
+
+    hash, signature, public_key = keyGenerator.sign(data_encoding)
+
+    return str(hash), signature, public_key
+
+
 def brick():
     f = open('block.txt', 'a+t')
-    if os.stat('block.txt').st_size == 0:
+    fr = open('block.txt', 'r')
+    b = open('hash.txt', 'a+t')
+    br = open('hash.txt', 'r')
+
+    if os.stat('block.txt').st_size == 0 or os.stat('hash.txt').st_size == 0:
+
         dict = {
             "previous": "0",
             "time": time.time(),
             "body": body_encrypt()
         }
+
         f.writelines(str(dict))
-        
+        f.writelines('\n')
+
+        hash, signature, public_key = brick_hash(str(dict))
+        b.writelines(hash)
+        b.writelines('\n')
+
+#검증 검증
     else:
-        print("what")
+        last_dict = fr.readlines()[-1].rstrip()
+        hash, signature, public_key = brick_hash(last_dict)
+        last_hash = br.readlines()[-1].rstrip()
+
+        if hash == last_hash:
+            sign = keyGenerator.validation(last_dict.encode('utf-8'), signature, public_key)
+
+            if sign == True:
+
+                dict = {
+                    "previous": last_hash,
+                    "time": time.time(),
+                    "body": body_encrypt()
+                }
+
+                f.writelines(str(dict))
+                f.writelines('\n')
+
+                hash, signature, public_key = brick_hash(str(dict))
+                b.writelines(hash)
+                b.writelines('\n')
+
+            else:
+                print("sign error")
+        else:
+            print("hash error")
+
+
 brick()
 
 

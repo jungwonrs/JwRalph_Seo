@@ -32,6 +32,28 @@ def decrypt(data):
     decrypt = private_key.decrypt(data)
     return decrypt
 
+def sign(msg):
+    private_key = readKey()
+    public_key = private_key.publickey()
+
+    hash = SHA.new(msg).digest()
+    signature = private_key.sign(hash, '')
+
+    return hash, signature, public_key
+
+def validation(msg, signature, public_key):
+    hash = SHA.new(msg).digest()
+    validation = False
+
+    if public_key.verify(hash, signature):
+        validation = True
+        return validation
+
+    else:
+        validation = False
+        return validation
+
+
 
 '''
 temp = ["hello","this is  ", "OKAEY!~"]

@@ -6,7 +6,7 @@ import Send, Receive
 def ip_list():
     ip = []
     ip.append('192.168.0.16')
-    ip.append('192.168.0.20')
+    #ip.append('192.168.0.20')
     ip.append('192.168.0.31')
     #ip.append('1111111111111')
     return ip

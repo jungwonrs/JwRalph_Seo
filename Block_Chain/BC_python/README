@@ -1,0 +1,15 @@
+Demo Version
+
+Issue
+  1. P2P
+    - Need central Node for assigning IP automatically
+    - Tested in a single router environment
+    
+  2. Consensus
+    - don't know whether POW is right or not
+    
+  3. Verification
+    - Code is working even if chat log has been changed. 
+  
+  4. Etc.
+    - Code structure is mess

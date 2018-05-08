@@ -16,7 +16,7 @@ public class Receiver extends Thread
 			server = new ServerSocket(9099);
 			this.start();
 		}catch(Exception e) {
-			System.out.println("서버는 2개이상 켤 수 없습니다.");
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -35,8 +35,9 @@ public class Receiver extends Thread
 		{
 			try {
 				client = new Sender(server.accept());
+				System.out.println("게임을 시작합니다.");
 			} catch (Exception e) {
-				System.out.println("클라이언트와 연결접속에 실패하였습니다.");
+				System.out.println(e.getMessage());
 			}
 		}
 	}

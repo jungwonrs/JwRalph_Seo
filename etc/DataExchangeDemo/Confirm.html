@@ -1,0 +1,21 @@
+<html>
+<head>
+</head>
+<body>
+<form action ="/last" method = "POST">
+    <label id = "Price"><b>Price</b></label>
+    <input type = "text" name="Price" value="{{.Price}}" readonly>
+    <br>
+    <label id = "Balance"><b>After Trade</b></label>
+    <input type = "text" name="Balance" value="{{.Balance}}" readonly><br>
+
+    <input type = "hidden" name="Rtx" value="{{.Rtx}}" readonly><br>
+    <input type = "hidden" name="BKey" value="{{.BKey}}" readonly><br>
+    <input type = "hidden" name="PKey" value="{{.PKey}}" readonly><br>
+
+
+    <button type = "submit"> Confirm </button>
+</form>
+
+</body>
+</html>

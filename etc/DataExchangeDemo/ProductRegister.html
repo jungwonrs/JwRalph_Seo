@@ -1,0 +1,35 @@
+<html>
+
+<body>
+
+<h2>Product Registration</h2>
+<p>fill your form below:</p>
+<b> Balance: {{.Balance}}</b>
+<form action = "ProductRegister" method="POST" enctype="multipart/form-data" >
+    <p>
+        <label for="keyword">keyword:</label>
+        <select name="keyword">
+            <option value="CSE6513">CSE6513</option>
+            <option value="CSE6421">CSE6421</option>
+            <option value="CSE5311">CSE5311</option>
+            <option value="CSE6460">CSE6460</option>
+        </select>
+    </p>
+    <p>
+        <label id="file">file:</label>
+        <input type="file" name="file">
+    </p>
+    <p>
+        <label id="abstract">abstract:</label>
+        <input type="text" name="abstract">
+    </p>
+        <label id="price">price:</label>
+        <input type="text" name="price">
+    </p>
+        <br><br>
+        <input type="submit">
+        <input type="hidden" name="pubkey" value = "{{.PublicKey}}" >
+</form>
+
+</body>
+</html>

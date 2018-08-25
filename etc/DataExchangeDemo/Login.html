@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>Data Exchange</title>
+</head>
+<body>
+    <form action="/selab" method="POST">
+        <label id = "uname"><b>username</b></label>
+        <input type = "text" placeholder= "Enter email" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <select name="position">
+            <option value="Buyer">Buyer</option>
+            <option value="Producer">Producer</option>
+        </select>
+
+        <br>
+        <button type="submit" > Login</button>
+    </form>
+        <form action= "/signup" method = "POST">
+            <button type="submit" >Sign up </button>
+        </form>
+    </body>
+</html>

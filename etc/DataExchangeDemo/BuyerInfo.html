@@ -1,0 +1,19 @@
+<html>
+<head>
+</head>
+<body>
+    BuyerInformation
+    <form action = "/BuyerMain" method = "POST">
+    <p>
+        <label id="email">Email:</label>
+    </p>
+    <input type="text" name="email" value = "{{.Email}}" disabled>
+    <p>
+        <label id="balance">balance:</label>
+    </p>
+    <input type="text" name="balance" value = "{{.Balance}}" disabled>
+    <br>
+    <button class="button" type = "submit"> Next</button>
+</form>
+</body>
+</html>

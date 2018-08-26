@@ -1,37 +1,54 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Search Data by Keyword</title>
-    <style type="text/css">
-        .button{
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <body>
+<section class="hero is-info is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-white">Search by Keyword</h3>
+                <p class="subtitle has-text-white">Please search to proceed.</p>
+                <div class="box">
 
-<h1>Search by Keyword</h1>
-<br>
-<br>
-<br>
-<Form action="/BuyerDetail" method="POST">
-    <input type = "text"  name="balance" value ="{{.Balance}}" readonly>
-    <input type = "text"  name="publicKey" value ="{{.PublicKey}}" readonly>
-    <br>
-    <select name="keyword">
-        <option value="CSE6513">CSE6513</option>
-        <option value="CSE6421">CSE6421</option>
-        <option value="CSE5311">CSE5311</option>
-        <option value="CSE6460">CSE6460</option>
-    </select>
-    <button type="submit">Click</button>
-</Form>
+                    <form action="/BuyerDetail" method="POST">
+                        <div class="field">
+                            <div class="control">
+                                <div class="has-text-info has-text-weight-bold">Balance</div>
+                                <input class="input is-large" type = "text" placeholder= "balance" name="balance" value="{{.Balance}}" readonly>
+                            </div>
+                        </div>
 
+                        <div class="field">
+                            <div class="control">
+                                <div class="has-text-info has-text-weight-bold">Public Key</div>
+                                <input class="input is-large" type="text" placeholder="public key" name="publicKey" value ="{{.PublicKey}}" readonly>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-info">
+                                    <select name="keyword">
+                                        <option value="CSE6513">CSE6513</option>
+                                        <option value="CSE6421">CSE6421</option>
+                                        <option value="CSE5311">CSE5311</option>
+                                        <option value="CSE6460">CSE6460</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="button is-block is-info is-large is-fullwidth">Click</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

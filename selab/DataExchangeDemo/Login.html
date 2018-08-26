@@ -1,25 +1,52 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Data Exchange</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <body>
-    <form action="/selab" method="POST">
-        <label id = "uname"><b>username</b></label>
-        <input type = "text" placeholder= "Enter email" name="uname" required>
+<section class="hero is-info is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-white">Login</h3>
+                <p class="subtitle has-text-white">Please login to proceed.</p>
+                <div class="box">
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+                    <form action="/selab" method="POST">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type = "email" placeholder= "Enter email" name="uname" required>
+                            </div>
+                        </div>
 
-        <select name="position">
-            <option value="Buyer">Buyer</option>
-            <option value="Producer">Producer</option>
-        </select>
-
-        <br>
-        <button type="submit" > Login</button>
-    </form>
-        <form action= "/signup" method = "POST">
-            <button type="submit" >Sign up </button>
-        </form>
-    </body>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type="password" placeholder="Enter Password" name="psw" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-info">
+                                    <select name="position">
+                                    <option value="Buyer">Buyer</option>
+                                    <option value="Producer">Producer</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="button is-block is-info is-large is-fullwidth">Login</button>
+                    </form>
+                </div>
+                <p class="has-text-white">
+                    <a href="http://localhost:8000/signup" target= "_self">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
 </html>

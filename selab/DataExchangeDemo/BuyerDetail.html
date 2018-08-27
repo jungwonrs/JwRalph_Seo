@@ -1,80 +1,76 @@
 <html>
 <head>
     <title>Search Data by Keyword</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style type="text/css">
         body{
             background-color: #209cee;
+            color: white;
         }
-        .button{
+        h2{
             width: 50%;
-            display: inline-block;
-            border-radius: 6px;
-            background-color: #ffffff;
-            border: 2px solid #008CBA;
-            color: #000000;
+            padding: 10px;
             text-align: center;
-            font-size: 15px;
-            padding: 6px 20px;
-            transition: all 0.5s;
-            cursor: pointer;
-            margin: 5px;
-            margin-left: 25px;
-            margin-right: 25px;
-            word-spacing: 10px;
-            vertical-align:middle;
-            margin-bottom:10px
+            margin:auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
 
-        }
-        .button span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-        .button span:after {
-            content: '\00bb';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
-        .button:hover span {
-            padding-right: 25px;
-        }
-        .button:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
-        .btn-group .button1 {
             background-color: white;
-            border: 1px solid #008CBA;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            float: left;
+            color: #8C8C8C;
+            border-radius:6px;
+
+            margin:auto;
         }
-        .btn-group .button1:not(:last-child) {
-            border-right: none; /* Prevent double borders */
+        th, td{
+            padding: 8px;
+            text-align: center;
+        }
+        tr{
+            border-bottom: 1px solid #ddd;
+        }
+        tr:last-child{
+            border-bottom: none;
+        }
+        tr:hover {
+            background-color:#f5f5f5;
+            border-radius:6px;
+        }
+        button{
+            background-color:#209cee;
+            color: white;
+            font-size:20px;
+            align-item: center;
+            border-radius:6px;
         }
     </style>
 </head>
-<body>
-<div class="btn-group">
-    <button class="button1" style="width:8%; margin-left:25px">Keyword</button>
-    <button class="button1" style="width:8%;">Abstract</button>
-    <button class="button1" style="width:8%;">Price</button>
-    <button class="button1" style="width:13%;">Timestamp</button>
-    <button class="button1" style="width:13%;">Producer</button>
-</div>
+<br><br><br>
+<h2>Past Tests with the Keyword</h2>
+<br>
 <form action="/Confirm" method="POST">
-{{range .}}
-    <button name="buy" type="submit"  class="button" value="{{.TransactionId}}|{{.BuyerBalance}}|{{.BuyerKey}}|{{.ProducerPublicKey}}|{{.Price}}|{{.DataHash}}"><span>{{.Keyword}} | {{.Abstract}} | {{.Price}} Coin | {{.Timestamp}} | {{.ProducerName}}</span></button>
-    <br>
-{{end}}
+    <table>
+        <tr>
+            <th></th>
+            <th>Keyword</th>
+            <th>Abstract</th>
+            <th>Price</th>
+            <th>Timestamp</th>
+            <th>ProducerName</th>
+        </tr>
+    {{range .}}
+        <tr>
+            <td><button name="buy" type="submit" value="{{.TransactionId}}|{{.BuyerBalance}}|{{.BuyerKey}}|{{.ProducerPublicKey}}|{{.Price}}|{{.DataHash}}">
+                <i class="fa fa-shopping-cart"></i></button></td>
+            <td>{{.Keyword}}</td>
+            <td>{{.Abstract}}</td>
+            <td>{{.Price}} Coin</td>
+            <td>{{.Timestamp}}</td>
+            <td>{{.ProducerName}}</td>
+        </tr>
+    {{end}}
+    </table>
 </form>
 
 </body>

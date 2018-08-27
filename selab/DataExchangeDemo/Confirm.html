@@ -1,21 +1,49 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirmation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <body>
-<form action ="/last" method = "POST">
-    <label id = "Price"><b>Price</b></label>
-    <input type = "text" name="Price" value="{{.Price}}" readonly>
-    <br>
-    <label id = "Balance"><b>After Trade</b></label>
-    <input type = "text" name="Balance" value="{{.Balance}}" readonly><br>
+<section class="hero is-info is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-white">Confirmation</h3>
+                <p class="subtitle has-text-white">Please confirm Tx to proceed.</p>
+                <div class="box">
 
-    <input type = "hidden" name="Rtx" value="{{.Rtx}}" readonly><br>
-    <input type = "hidden" name="BKey" value="{{.BKey}}" readonly><br>
-    <input type = "hidden" name="PKey" value="{{.PKey}}" readonly><br>
-    <input type = "hidden" name="hash" value="{{.DataHash}}" readonly><br>
+                    <form action="/last" method="POST">
+                        <div class="field">
 
-    <button type = "submit"> Confirm </button>
-</form>
+                                <div class="control">
+                                    <div class="has-text-info has-text-weight-bold">Price</div>
+                                    <input class="input is-large" type = "text" placeholder= "price" name="Price" value="{{.Price}}" readonly>
+                                </div>
 
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <div class="has-text-info has-text-weight-bold">Balance</div>
+                                <input class="input is-large" type="text" placeholder="balance" name="Balance" value ="{{.Balance}}" readonly>
+                            </div>
+                        </div>
+                        <input type = "hidden" name="Rtx" value="{{.Rtx}}" readonly>
+                        <input type = "hidden" name="BKey" value="{{.BKey}}" readonly>
+                        <input type = "hidden" name="PKey" value="{{.PKey}}" readonly>
+                        <input type = "hidden" name="hash" value="{{.DataHash}}" readonly>
+
+                        <button type="submit" class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

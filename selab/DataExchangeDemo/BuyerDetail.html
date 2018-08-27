@@ -72,7 +72,7 @@
 </div>
 <form action="/Confirm" method="POST">
 {{range .}}
-    <button name="buy" type="submit"  class="button" value="{{.TransactionId}}|{{.BuyerBalance}}|{{.BuyerKey}}|{{.ProducerPublicKey}}|{{.Price}}"><span>{{.Keyword}} | {{.Abstract}} | {{.Price}} Coin | {{.Timestamp}} | {{.ProducerName}}</span></button>
+    <button name="buy" type="submit"  class="button" value="{{.TransactionId}}|{{.BuyerBalance}}|{{.BuyerKey}}|{{.ProducerPublicKey}}|{{.Price}}|{{.DataHash}}"><span>{{.Keyword}} | {{.Abstract}} | {{.Price}} Coin | {{.Timestamp}} | {{.ProducerName}}</span></button>
     <br>
 {{end}}
 </form>

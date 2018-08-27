@@ -15,6 +15,8 @@ import (
 	"strings"
 	"crypto/sha256"
 	"time"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 //default: buyer balance = 100
 func PostBuyer(Fname string, Lname string, Email string, Psw string) {
@@ -476,7 +478,6 @@ func makeDatahash(a string) [32]byte {
 }
 
 
-//Todo: should show producer balance on this function
 func ProductRegister(w http.ResponseWriter, r *http.Request) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
@@ -514,6 +515,24 @@ func ProductRegister(w http.ResponseWriter, r *http.Request) {
 	PostRtypeTx(stKeyword, stHash,stPrice, stPubkey)
 	//GetRtypeTx()
 	fmt.Fprint(w, "<html><body>Success </body></html>")
+
+	db, err := sql.Open("mysql", "root:root@/dataexchange")
+
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	fmt.Println(stHash)
+	fmt.Println(b)
+
+	result, err := db.Exec("INSERT INTO new_table VALUES(?,?)",stHash ,string(b))
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	result.RowsAffected()
+	defer db.Close()
+
 }
 
 //Todo: add buyer's balance
@@ -634,7 +653,7 @@ func Confirm(w http.ResponseWriter, r *http.Request) {
 
 	s := strings.Split(Data, "|")
 
-	Rtx, BBalance, BKey, ProducerKey, Price := s[0],s[1],s[2],s[3],s[4]
+	Rtx, BBalance, BKey, ProducerKey, Price, DataHash := s[0],s[1],s[2],s[3],s[4],s[5]
 
 	s2 := strings.Split(ProducerKey, "#")
 	_, PKey := s2[0], s2[1]
@@ -645,11 +664,12 @@ func Confirm(w http.ResponseWriter, r *http.Request) {
 	PostBtypeTx(Rtx, iPrice, BKey)
 
 	type show struct {
-		Rtx     string
-		BKey    string
-		PKey    string
-		Price   int
-		Balance int
+		DataHash string
+		Rtx      string
+		BKey     string
+		PKey     string
+		Price    int
+		Balance  int
 
 	}
 	var sd show
@@ -658,6 +678,8 @@ func Confirm(w http.ResponseWriter, r *http.Request) {
 	sd.PKey = PKey
 	sd.Price = iPrice
 	sd.Balance = iBBalance - iPrice
+	sd.DataHash = DataHash
+
 
 	t.ExecuteTemplate(w, "Confirm.html", sd)
 }
@@ -666,12 +688,19 @@ func last(w http.ResponseWriter, r *http.Request) {
 	//Price := r.FormValue("Price")
 	Balance := r.FormValue("Balance")
 	Rtx := r.FormValue("Rtx")
+	Datahash := r.FormValue("hash")
 	//BKey := r.FormValue("BKey")
 	//PKey := r.FormValue("PKey")
 
 	iBBalance, _ := strconv.Atoi(Balance)
 	//iPrice, _ := strconv.Atoi(Price)
-	if iBBalance > 0 {
+
+	s := strings.Split(Datahash, "#")
+	_, stDataHash := s[0], s[1]
+
+
+
+	if iBBalance >= 0 {
 
 		GetBx := GetAllBtx()
 
@@ -693,6 +722,25 @@ func last(w http.ResponseWriter, r *http.Request) {
 			if Rtx == n.Rtx {
 				//fmt.Println(n.TransactionId)
 				PostCtypeTx(n.TransactionId, n.Price)
+
+				db, err := sql.Open("mysql", "root:root@/dataexchange")
+
+				if err != nil{
+					fmt.Println(err)
+				}
+
+				fmt.Println(stDataHash)
+				var data string
+				err2 := db.QueryRow("SELECT file FROM dataexchange.new_table where Datahash = \""+stDataHash+"\"").Scan(&data)
+				if err2 != nil{
+					fmt.Println(err2)
+				}
+
+				defer db.Close()
+
+
+				fmt.Fprint(w, "<html><body>"+data+"<body></html>")
+				//fmt.Fprint(w, "<html><body>fuck u<body></html>")
 			}
 		}
 
@@ -702,7 +750,7 @@ func last(w http.ResponseWriter, r *http.Request) {
 
 
 		}
-	fmt.Fprint(w, "<html><body>done</body></html>")
+
 
 	}
 
@@ -712,6 +760,7 @@ func last(w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
+
 	http.HandleFunc("/last", last)
 	http.HandleFunc("/selab", selab)
 	http.HandleFunc("/Confirm", Confirm)
@@ -722,6 +771,22 @@ func main() {
 	http.HandleFunc("/", Login)
 	http.ListenAndServe(":8000",nil)
 
-}
+	/*db, err := sql.Open("mysql", "root:root@/dataexchange")
+
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	var data string
+	err2 := db.QueryRow("SELECT file FROM dataexchange.new_table where Datahash = \"76b0fe8faaa51746984adcb352dce6e80637c8290bb6701f5c9f526a5f268c73\"").Scan(&data)
+	if err2 != nil{
+		fmt.Println(err2)
+	}
+
+	defer db.Close()
+
+	fmt.Println(data)*/
+	//76b0fe8faaa51746984adcb352dce6e80637c8290bb6701f5c9f526a5f268c73
+	}
 
 

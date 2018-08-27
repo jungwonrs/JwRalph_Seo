@@ -134,14 +134,18 @@ func GetProducerEmail(Email string) [] byte {
 	}
 	return data
 }
-func PostProduct (Kw string,Hash string, Abs string){
+func PostProduct (Kw string,Hash string, Abs string, pk string){
+	fmt.Println("kw" + Kw)
+	fmt.Println("hash" +  Hash)
+	fmt.Println("abs"+ Abs)
+	fmt.Println("pk"+pk)
 
 	resp, err := http.PostForm("http://163.239.200.189:3000/api/org.example.empty.Product", url.Values{
 		"$class":     {"org.example.empty.Product"},
 		"key_word":    {Kw},
 		"data_hash":   {Hash},
 		"abstract":   {Abs},
-		"producer_public_key":   {"test"}})
+		"producer_public_key":   {pk}})
 
 	if err != nil {
 		panic(err)
@@ -502,6 +506,8 @@ func ProductRegister(w http.ResponseWriter, r *http.Request) {
 	data_hash:=makeDatahash(fmt.Sprintf(string(b), Utime, pubkey))
 	stHash := hex.EncodeToString(data_hash[:])
 
+	fmt.Println(abstract)
+	fmt.Println(stAbstract)
 	//fmt.Println(hex.EncodeToString(data_hash[:]))
 
 	/*fmt.Println(stKeyword)
@@ -510,7 +516,7 @@ func ProductRegister(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(stPubkey)
 	fmt.Println(stPrice)
 */
-	PostProduct(stKeyword, stHash, stAbstract)
+	PostProduct(stKeyword, stHash, stAbstract, stPubkey)
 	//GetProduct()
 	PostRtypeTx(stKeyword, stHash,stPrice, stPubkey)
 	//GetRtypeTx()
@@ -770,6 +776,28 @@ func main() {
 	http.HandleFunc("/BuyerDetail",BuyerDetail)
 	http.HandleFunc("/", Login)
 	http.ListenAndServe(":8000",nil)
+
+
+	/*resp, err := http.PostForm("http://163.239.200.189:3000/api/org.example.empty.Product", url.Values{
+		"$class":     {"org.example.empty.Product"},
+		"key_word":    {"adsfac"},
+		"data_hash":   {"daca"},
+		"abstract":   {"erdc"},
+		"producer_public_key":   {"ste"}})
+
+	if err != nil {
+		panic(err)
+
+		defer resp.Body.Close()
+
+		// Response 체크.
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			str := string(respBody)
+			println(str)
+		}
+	}*/
+
 
 	/*db, err := sql.Open("mysql", "root:root@/dataexchange")
 

@@ -441,6 +441,12 @@ func signup(w http.ResponseWriter, r *http.Request){
 	stPsw := strings.Join(psw, "")
 	stPosition := strings.Join(position, "")
 
+	fmt.Println(stFname)
+	fmt.Println(stLname)
+	fmt.Println(stEmail)
+	fmt.Println(stPsw)
+	fmt.Println(stPosition)
+
 	switch stPosition {
 
 	case "Buyer":
@@ -456,7 +462,6 @@ func signup(w http.ResponseWriter, r *http.Request){
 			fmt.Fprint(w, "<html><body>id already exist </body></html>")
 		}else{
 			PostBuyer(stFname, stLname, stEmail, stPsw)
-			fmt.Fprint(w, "<html><body>good </body></html>")
 		}
 	case "Producer":
 		GetProducerInfo := GetProducerEmail(stEmail)
@@ -471,7 +476,6 @@ func signup(w http.ResponseWriter, r *http.Request){
 			fmt.Fprint(w, "<html><body>id already exist </body></html>")
 		}else{
 			PostProducer(stFname, stLname, stEmail, stPsw)
-			fmt.Fprint(w, "<html><body>good </body></html>")
 		}
 	}
 
@@ -691,6 +695,8 @@ func Confirm(w http.ResponseWriter, r *http.Request) {
 }
 
 func last(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/last", last)
+
 	//Price := r.FormValue("Price")
 	Balance := r.FormValue("Balance")
 	Rtx := r.FormValue("Rtx")
@@ -746,7 +752,7 @@ func last(w http.ResponseWriter, r *http.Request) {
 
 
 				fmt.Fprint(w, "<html><body>"+data+"<body></html>")
-				//fmt.Fprint(w, "<html><body>fuck u<body></html>")
+
 			}
 		}
 
@@ -772,49 +778,11 @@ func main() {
 	http.HandleFunc("/Confirm", Confirm)
 	http.HandleFunc("/ProductRegister", ProductRegister)
 	http.HandleFunc("/BuyerMain", BuyerMain)
-	http.HandleFunc("/signup", signup)
+	http.HandleFunc("/SignUp", signup)
 	http.HandleFunc("/BuyerDetail",BuyerDetail)
 	http.HandleFunc("/", Login)
 	http.ListenAndServe(":8000",nil)
 
-
-	/*resp, err := http.PostForm("http://163.239.200.189:3000/api/org.example.empty.Product", url.Values{
-		"$class":     {"org.example.empty.Product"},
-		"key_word":    {"adsfac"},
-		"data_hash":   {"daca"},
-		"abstract":   {"erdc"},
-		"producer_public_key":   {"ste"}})
-
-	if err != nil {
-		panic(err)
-
-		defer resp.Body.Close()
-
-		// Response 체크.
-		respBody, err := ioutil.ReadAll(resp.Body)
-		if err == nil {
-			str := string(respBody)
-			println(str)
-		}
-	}*/
-
-
-	/*db, err := sql.Open("mysql", "root:root@/dataexchange")
-
-	if err != nil{
-		fmt.Println(err)
-	}
-
-	var data string
-	err2 := db.QueryRow("SELECT file FROM dataexchange.new_table where Datahash = \"76b0fe8faaa51746984adcb352dce6e80637c8290bb6701f5c9f526a5f268c73\"").Scan(&data)
-	if err2 != nil{
-		fmt.Println(err2)
-	}
-
-	defer db.Close()
-
-	fmt.Println(data)*/
-	//76b0fe8faaa51746984adcb352dce6e80637c8290bb6701f5c9f526a5f268c73
 	}
 
 

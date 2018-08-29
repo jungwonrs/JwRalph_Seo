@@ -695,7 +695,7 @@ func Confirm(w http.ResponseWriter, r *http.Request) {
 }
 
 func last(w http.ResponseWriter, r *http.Request) {
-	http.HandleFunc("/last", last)
+	//http.HandleFunc("/last", last)
 
 	//Price := r.FormValue("Price")
 	Balance := r.FormValue("Balance")
@@ -709,7 +709,6 @@ func last(w http.ResponseWriter, r *http.Request) {
 
 	s := strings.Split(Datahash, "#")
 	_, stDataHash := s[0], s[1]
-
 
 
 	if iBBalance >= 0 {
@@ -750,17 +749,14 @@ func last(w http.ResponseWriter, r *http.Request) {
 
 				defer db.Close()
 
-
 				fmt.Fprint(w, "<html><body>"+data+"<body></html>")
 
 			}
+
 		}
 
 		}else{
 		fmt.Fprint(w, "<html><body>Not Enough Money</body></html>")
-
-
-
 		}
 
 

@@ -1,0 +1,24 @@
+/**
+ * New query file
+ */
+
+query selectBuyerByemail {
+	description: "Select buyer by email"
+  	statement:
+  		SELECT org.example.empty.Buyer
+  			WHERE (email == _$eamil)
+}
+
+query selectProducerByemail {
+	description: "Select Producer by email"
+  	statement:
+  		SELECT org.example.empty.Producer
+  			WHERE (email == _$eamil)
+}
+
+query selectProductByKeyword {
+	description: "Select product by keyword"
+  	statement:
+  		SELECT org.example.empty.Product
+  			WHERE (key_word == _$key_word)
+}

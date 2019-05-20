@@ -2,11 +2,66 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="006cdb26-04f2-49bc-a7ab-12d9b6bfc05b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../-.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../-.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/p2p.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/p2p.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/GamePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/GamePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/Packet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/Receive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/Receive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/Send.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/Send.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p/src/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../p2p_first/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.project" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/1week_exam.eml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/1week_exam.eml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/1week_exam.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/1week_exam.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/1week_exam.userlibraries" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/1week_exam.userlibraries" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/bin/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/packet/ExamplePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/packet/ExamplePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/packet/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/packet/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/packet/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/packet/Packet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/server/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/server/Receiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/server/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/server/Sender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../p2p_first/src/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../p2p_first/src/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/untitled.iml" beforeDir="false" afterPath="$PROJECT_DIR$/untitled.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/DataExchangeDemo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/DataExchangeDemo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerInfo.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerInfo.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerMain.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/BuyerMain.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Confirm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/Login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/ProductRegister.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/ProductRegister.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/SignUp.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/SignUp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/lib/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/lib/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/models/model.cto" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/models/model.cto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/permissions.acl" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/permissions.acl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/queries.qry" beforeDir="false" afterPath="$PROJECT_DIR$/../../selab/DataExchangeDemo/composer/queries.qry" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,11 +69,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="138">
+              <caret line="6" selection-start-line="6" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -35,18 +90,9 @@
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
-  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-126" />
-    <option name="y" value="223" />
+    <option name="x" value="2623" />
+    <option name="y" value="207" />
     <option name="width" value="1936" />
     <option name="height" value="1066" />
   </component>
@@ -56,15 +102,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544161638008" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -85,21 +135,9 @@
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <recent_temporary>
       <list>
@@ -108,7 +146,7 @@
     </recent_temporary>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\system888\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -118,50 +156,52 @@
       <option name="presentableId" value="Default" />
       <updated>1529742743601</updated>
       <workItem from="1529742748526" duration="7601000" />
+      <workItem from="1544160268854" duration="325000" />
+      <workItem from="1544160613354" duration="22000" />
+      <workItem from="1544160788374" duration="967000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7601000" />
+    <option name="totallyTimeSpent" value="8915000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
+    <frame x="2552" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info id="Image Layers" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32977098" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info id="Capture Tool" />
-      <window_info id="Designer" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
-      <window_info anchor="right" id="Database" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34541577" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32977098" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.45878524" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
+      <window_info anchor="right" id="Maven" order="9" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -184,16 +224,90 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="138">
+          <caret line="6" selection-start-line="6" selection-end-line="7" />
         </state>
       </provider>
     </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>11</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>untitled</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

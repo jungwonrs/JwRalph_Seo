@@ -1,5 +1,4 @@
 import socket
-import threading
 
 
 class send:

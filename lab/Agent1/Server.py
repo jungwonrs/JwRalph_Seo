@@ -1,9 +1,11 @@
 import socketserver
 import threading
 
+
 HOST = ''
 PORT = 9009
 lock = threading.Lock()
+
 
 class NodeManager:
 
@@ -15,7 +17,7 @@ class NodeManager:
         self.nodes[node_number] = (conn, addr)
         lock.release()
 
-        self.sendTxToAll('new node [%s]' % node_number)
+        self.sendTxToAll('new node [%s]'  % node_number)
 
         return node_number
 
@@ -28,6 +30,8 @@ class NodeManager:
         lock.release()
 
         self.sendTxToAll('node Number is [%s]' % node_number)
+
+        return node_number
 
 
     def txHandler(self, node_number, msg):
@@ -43,6 +47,11 @@ class NodeManager:
         for conn, addr in self.nodes.values():
             conn.send(msg.encode())
 
+    def sendTxTo(self, conn):
+        print("heelo")
+        print(conn)
+        conn.send("hello leader".encode())
+
 
 class TcpHandler(socketserver.BaseRequestHandler):
     node = NodeManager()
@@ -52,8 +61,9 @@ class TcpHandler(socketserver.BaseRequestHandler):
         try:
             node_number = self.registerNode()
             msg = self.request.recv(4096)
+
             while msg:
-                #print(msg.decode())
+
                 if self.node.txHandler(node_number, msg.decode()) == -1:
                     self.request.close()
                     break

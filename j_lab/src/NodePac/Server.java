@@ -1,17 +1,11 @@
 package NodePac;
 
-import AgentPac.Agent;
-import AgentPac.InitAgent;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Server extends JFrame implements ActionListener{
@@ -21,7 +15,7 @@ public class Server extends JFrame implements ActionListener{
     private JTextField jtf = new JTextField(25);
     private ServerBack server = new ServerBack();
 
-    public Server() throws IOException{
+    public Server() {
 
         add(jta, BorderLayout.CENTER);
         add(jtf, BorderLayout.SOUTH);
@@ -48,6 +42,12 @@ public class Server extends JFrame implements ActionListener{
                 server.sendTX("s");
                 appendMsg("s");
                 break;
+
+            case "a":
+                server.sendTX("a");
+                appendMsg("a");
+                break;
+
 
         }
 

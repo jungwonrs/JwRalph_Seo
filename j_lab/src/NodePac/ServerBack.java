@@ -1,6 +1,6 @@
 package NodePac;
 
-import AgentPac.InitAgent;
+import AgentPac.Agent;
 import AgentPac.NodeTxPool;
 import KeyPac.KeyGenerator;
 import KeyPac.SigGenerator;
@@ -10,7 +10,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,12 +55,22 @@ public class ServerBack  {
     }
 
     public void sendTX(String msg){
+        System.out.println(msg);
+        if (msg.equals("a")){
+            try {
+                nodeMap.get("1").writeUTF("key");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         Iterator<String> iterator = nodeMap.keySet().iterator();
         String key = "";
 
         while(iterator.hasNext()){
             key = iterator.next();
             try{
+                System.out.println(msg);
+                System.out.println(nodeMap.get(key));
                 nodeMap.get(key).writeUTF(msg);
             }catch (IOException e){
                 e.printStackTrace();
@@ -96,6 +105,13 @@ public class ServerBack  {
                 NodeTxPool txPool = new NodeTxPool();
                 while (in != null){
                     tx = in.readUTF();
+
+                    if (tx.contains("nodeNumber")){
+                        agentOn(tx);
+                        sendTX(tx);
+                        continue;
+                    }
+
                     String vmMsg = vMessage(tx);
                     String pool = txPool.hashPool(vmMsg, index, nodeNumber);
                     sendTX(pool);
@@ -149,6 +165,38 @@ public class ServerBack  {
 
         return notVerified;
     }
+
+    public String agentOn(String tx) throws  Exception{
+        String nodeNumber;
+        String sPubKey;
+        String sig;
+        PublicKey pubKey;
+        boolean agentOn;
+        SigGenerator verify = new SigGenerator();
+        KeyGenerator key = new KeyGenerator();
+        Agent agent = new Agent();
+
+        HashMap<String, String> dataMap;
+        dataMap = hashMapChange(tx);
+
+        nodeNumber = dataMap.get("nodeNumber");
+        sPubKey = dataMap.get("pubKey");
+        sig = dataMap.get("sig");
+        pubKey = key.stringToPublicKey(sPubKey);
+
+        agentOn = verify.verify(nodeNumber, sig, pubKey);
+
+        if (agentOn){
+            agent.agentOn(nodeNumber);
+            return tx;
+        }
+        String agentOff = "not Verified";
+        return agentOff;
+    }
+
+
+
+
 
     public static void main(String[]args){
         ServerBack serverBack = new ServerBack();

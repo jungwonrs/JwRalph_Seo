@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import AgentPac.*;
 import KeyPac.*;
 
 public class NodeBack {
@@ -25,9 +24,8 @@ public class NodeBack {
 
 
     public void connection() {
-        Timer timer = new Timer();
+        //Timer timer = new Timer();
         String nodeNumber;
-        Agent agent = new Agent();
 
         try{
             s = new Socket("127.0.0.1", 7777);
@@ -41,27 +39,48 @@ public class NodeBack {
                 String command = in.readUTF();
                 gui.appendMsg(command);
 
-                switch (command) {
+                switch (command){
                     case "s":
-                        TimerTask tt = new TimerTask() {
-                            @Override
-                            public void run() {
-                                try {
-                                    sendTx();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
-                        timer.scheduleAtFixedRate(tt, 0, 2000);
+                        txGenerator();
                         break;
-
+                    case "key":
+                        agentStart(nodeNumber);
+                        break;
                 }
-            }
+
+//                if (command.equals("s")) {
+//                    txGenerator();
+//                    Timer timer = new Timer();
+//                    TimerTask tt = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            agentStart(nodeNumber);
+//                            System.out.println("hello agnet---nod" +nodeNumber);
+//                        }
+//                    };
+//                    timer.scheduleAtFixedRate(tt, 0, 3000);
+//                    }
+                }
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+    public void txGenerator(){
+        Timer timer = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    sendTx();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(tt, 0, 2000);
+    }
+
+
 
     public void sendTx () throws Exception{
         Random random = new Random();
@@ -90,10 +109,32 @@ public class NodeBack {
         }
     }
 
+    public void agentStart(String nodeNumber)  {
+        KeyGenerator key = new KeyGenerator();
+        String tx;
+        try {
+
+            KeyPair getKey = key.genKey();
+            PublicKey pkey = getKey.getPublic();
+            SigGenerator sg = new SigGenerator();
+            String msg = nodeNumber;
+            String pubKey =key.pubKeyToString(pkey);
+            String sig = sg.genSig(getKey.getPrivate(), msg);
+
+            tx = "{nodeNumber==/"+nodeNumber+",/pubKey==/"+pubKey+",/sig==/"+sig+"}";
+            out.writeUTF(tx);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
+
 
     public static void main(String[]args){
         NodeBack back = new NodeBack();
         back.connection();
     }
+
 
 }

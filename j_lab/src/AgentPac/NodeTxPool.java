@@ -2,7 +2,6 @@ package AgentPac;
 
 import NodePac.ServerBack;
 
-import java.time.Instant;
 import java.util.*;
 
 public class NodeTxPool {
@@ -33,7 +32,6 @@ private static HashMap<String, String> newHashMap (String data){
     HashMap<String, String> dataMap;
     dataMap = getHashMap.hashMapChange(data);
 
-
     msg = dataMap.get("msg");
     sPubKey = dataMap.get("pubKey");
     sig = dataMap.get("sig");
@@ -47,10 +45,5 @@ private static HashMap<String, String> newHashMap (String data){
     return map;
 }
 
-//public static void main(String[] args){
-//  System.out.println(index);
-//  index += 0.1;
-//
-//}
 
 }

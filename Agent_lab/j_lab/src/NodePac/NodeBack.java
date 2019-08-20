@@ -48,18 +48,6 @@ public class NodeBack {
                         break;
                 }
 
-//                if (command.equals("s")) {
-//                    txGenerator();
-//                    Timer timer = new Timer();
-//                    TimerTask tt = new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                            agentStart(nodeNumber);
-//                            System.out.println("hello agnet---nod" +nodeNumber);
-//                        }
-//                    };
-//                    timer.scheduleAtFixedRate(tt, 0, 3000);
-//                    }
                 }
         }catch (IOException e){
             e.printStackTrace();

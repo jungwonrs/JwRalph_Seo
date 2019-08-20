@@ -2,6 +2,7 @@ package NodePac;
 
 import AgentPac.Agent;
 import AgentPac.NodeTxPool;
+import AgentPac.RandomSeed;
 import KeyPac.KeyGenerator;
 import KeyPac.SigGenerator;
 
@@ -17,12 +18,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class ServerBack  {
+
     private ServerSocket ss;
     private Socket s;
     private Server gui;
     private String tx;
     private int nodeNumber = 0;
     private Map<String, DataOutputStream> nodeMap = new HashMap<>();
+    private RandomSeed rs;
 
     public void setGui(Server gui){
         this.gui = gui;
@@ -54,30 +57,29 @@ public class ServerBack  {
         nodeMap.remove(nodeNumber);
     }
 
+
     public void sendTX(String msg){
-        System.out.println(msg);
+
         if (msg.equals("a")){
             try {
-                nodeMap.get("1").writeUTF("key");
+                //Todo random;
+                String nodeNumber = rs.randValue("a");
+                nodeMap.get(nodeNumber).writeUTF("key");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         Iterator<String> iterator = nodeMap.keySet().iterator();
         String key = "";
-
         while(iterator.hasNext()){
             key = iterator.next();
             try{
-                System.out.println(msg);
-                System.out.println(nodeMap.get(key));
                 nodeMap.get(key).writeUTF(msg);
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
     }
-
 
     class Receiver extends Thread{
         private DataInputStream in;
@@ -109,6 +111,13 @@ public class ServerBack  {
                     if (tx.contains("nodeNumber")){
                         agentOn(tx);
                         sendTX(tx);
+                        continue;
+                    }
+
+                    if (tx.contains("Agent start")){
+                        //Todo
+                        String nodeNumber = tx.split(" ")[3];
+                        agentCheck(nodeNumber, "a");
                         continue;
                     }
 
@@ -194,15 +203,20 @@ public class ServerBack  {
         return agentOff;
     }
 
-
-
+    public void agentCheck(String nodeNumber, String seed){
+        String rValue = rs.randValue(seed);
+        if (nodeNumber.equals(rValue)) {
+            System.out.println("hello agent!");
+        }
+        else{
+            gui.appendMsg("error!");
+        }
+    }
 
 
     public static void main(String[]args){
         ServerBack serverBack = new ServerBack();
         serverBack.setting();
     }
-
-
 
 }

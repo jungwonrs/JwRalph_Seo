@@ -40,12 +40,12 @@ public class Server extends JFrame implements ActionListener{
         switch (command){
             case "s":
                 server.sendTX("s");
-                appendMsg("s");
+                //appendMsg("s");
                 break;
 
             case "a":
                 server.sendTX("a");
-                appendMsg("a");
+                //appendMsg("a");
                 break;
 
 

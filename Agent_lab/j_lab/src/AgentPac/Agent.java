@@ -16,7 +16,7 @@ public class Agent extends JFrame {
         setTitle("Agent");
 
         agent.setGui(this);
-        agent.temp(nodeNumber);
+        agent.connection(nodeNumber);
     }
 
     public void appendMsg(String tx){

@@ -10,14 +10,23 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.48424843">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/NodePac/Node.java">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/NodePac/ServerBack.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="529">
-                  <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+                <state relative-caret-position="632">
+                  <caret line="125" column="33" lean-forward="true" selection-start-line="125" selection-start-column="33" selection-end-line="125" selection-end-column="33" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/AgentPac/RandomSeed.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="570">
+                  <caret line="15" selection-start-line="15" selection-end-line="15" />
                 </state>
               </provider>
             </entry>
@@ -25,8 +34,29 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/NodePac/Server.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="966">
-                  <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
+                <state relative-caret-position="830">
+                  <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/NodePac/Node.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="460">
+                  <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/AgentPac/Agent.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="540">
+                  <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -34,31 +64,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/NodePac/NodeBack.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="744">
-                  <caret line="59" column="24" lean-forward="true" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
+                <state relative-caret-position="-1781">
+                  <caret line="43" column="35" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="35" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1633#1907#0" expanded="true" />
-                    <element signature="e#1906#1907#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/AgentPac/NodeTxPool.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="69">
-                  <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/NodePac/ServerBack.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="600">
-                  <caret line="64" column="9" lean-forward="true" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
@@ -68,19 +78,34 @@
       <split-second>
         <leaf>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/AgentPac/AgentBack.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="894">
+                  <caret line="32" selection-start-line="32" selection-end-line="32" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/NodePac/ServerBack.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="345">
-                  <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
+                <state relative-caret-position="575">
+                  <caret line="124" column="41" selection-start-line="124" selection-start-column="41" selection-end-line="124" selection-end-column="41" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/AgentPac/AgentBack.java">
+            <entry file="file://$PROJECT_DIR$/src/AgentPac/NodeTxPool.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="391">
-                  <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+                <state relative-caret-position="460">
+                  <caret line="20" column="1" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="20" selection-end-column="1" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -103,6 +128,8 @@
       <find>nodeNumber</find>
       <find>system</find>
       <find>agent</find>
+      <find>set</find>
+      <find>setGui</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -127,17 +154,24 @@
         <option value="$PROJECT_DIR$/src/NodePac/enServerBack.java" />
         <option value="$PROJECT_DIR$/src/AgentPac/InitAgent.java" />
         <option value="$PROJECT_DIR$/src/AgentPac/Agent.java" />
-        <option value="$PROJECT_DIR$/src/AgentPac/NodeTxPool.java" />
         <option value="$PROJECT_DIR$/src/NodePac/Server.java" />
-        <option value="$PROJECT_DIR$/src/NodePac/ServerBack.java" />
         <option value="$PROJECT_DIR$/src/NodePac/NodeBack.java" />
+        <option value="$PROJECT_DIR$/src/AgentPac/RandomSeed.java" />
+        <option value="$PROJECT_DIR$/src/NodePac/ServerBack.java" />
         <option value="$PROJECT_DIR$/src/AgentPac/AgentBack.java" />
+        <option value="$PROJECT_DIR$/src/AgentPac/NodeTxPool.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
-    <option name="y" value="207" />
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="248" />
+    <option name="y" value="961" />
     <option name="width" value="1638" />
     <option name="height" value="1407" />
   </component>
@@ -176,18 +210,27 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="NodePac" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="j_lab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="j_lab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565096168831" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1566292751057" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -202,8 +245,8 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.Node">
-    <configuration name="Agent" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="AgentPac.Agent" />
+    <configuration name="AgentBack" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="AgentPac.AgentBack" />
       <module name="j_lab" />
       <extension name="coverage">
         <pattern>
@@ -241,8 +284,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NodeTxPool" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="AgentPac.NodeTxPool" />
+    <configuration name="RandomSeed" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="AgentPac.RandomSeed" />
       <module name="j_lab" />
       <extension name="coverage">
         <pattern>
@@ -271,16 +314,16 @@
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.Node" />
       <item itemvalue="Application.NodeBack" />
-      <item itemvalue="Application.NodeTxPool" />
-      <item itemvalue="Application.Agent" />
+      <item itemvalue="Application.AgentBack" />
+      <item itemvalue="Application.RandomSeed" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Node" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.RandomSeed" />
+        <item itemvalue="Application.AgentBack" />
         <item itemvalue="Application.NodeBack" />
-        <item itemvalue="Application.Agent" />
-        <item itemvalue="Application.NodeTxPool" />
       </list>
     </recent_temporary>
   </component>
@@ -298,17 +341,21 @@
       <workItem from="1564976766326" duration="19058000" />
       <workItem from="1564997270648" duration="33310000" />
       <workItem from="1565066300966" duration="14900000" />
+      <workItem from="1565144369368" duration="23000" />
+      <workItem from="1565239439316" duration="1163000" />
+      <workItem from="1566181170751" duration="1310000" />
+      <workItem from="1566265272015" duration="19330000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67332000" />
+    <option name="totallyTimeSpent" value="89158000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2514" height="1456" extended-state="6" />
+    <frame x="248" y="961" width="1638" height="1407" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49726278" visible="true" weight="0.16503668" />
-      <window_info id="Structure" order="1" sideWeight="0.5027372" side_tool="true" weight="0.16503668" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49652174" visible="true" weight="0.14702155" />
+      <window_info id="Structure" order="1" sideWeight="0.5034783" side_tool="true" weight="0.09453953" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -316,7 +363,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32955405" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.17157975" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.13265306" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -326,13 +373,13 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32955405" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32955405" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.12471655" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.32966584" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Database" order="8" />
@@ -385,19 +432,13 @@
     <entry file="file://$PROJECT_DIR$/src/node/NodeBack.java" />
     <entry file="file://$PROJECT_DIR$/src/node/Server.java" />
     <entry file="file://$PROJECT_DIR$/src/node/ServerBack.java" />
-    <entry file="file://$PROJECT_DIR$/src/KeyPac/SigGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NodePac/SBGetSet.java" />
+    <entry file="file://$PROJECT_DIR$/src/AgentPac/SGetSet.java" />
+    <entry file="file://$PROJECT_DIR$/src/NodePac/enServerBack.java" />
+    <entry file="file://$PROJECT_DIR$/src/AgentPac/InitAgent.java" />
     <entry file="file://$PROJECT_DIR$/src/KeyPac/KeyGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
+        <state relative-caret-position="1794">
           <caret line="46" selection-start-line="46" selection-end-line="46" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -405,13 +446,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/NodePac/SBGetSet.java" />
-    <entry file="file://$PROJECT_DIR$/src/AgentPac/SGetSet.java" />
-    <entry file="file://$PROJECT_DIR$/src/NodePac/enServerBack.java" />
-    <entry file="file://$PROJECT_DIR$/src/AgentPac/InitAgent.java">
+    <entry file="file://$PROJECT_DIR$/src/KeyPac/SigGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="672">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -420,60 +458,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AgentPac/Agent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="17" selection-start-column="17" selection-end-column="17" />
+        <state relative-caret-position="540">
+          <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#876#877#0" expanded="true" />
-            <element signature="e#911#912#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NodePac/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
+        <state relative-caret-position="830">
+          <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AgentPac/NodeTxPool.java">
+    <entry file="file://$PROJECT_DIR$/src/AgentPac/RandomSeed.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="570">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NodePac/NodeBack.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="744">
-          <caret line="59" column="24" lean-forward="true" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
+        <state relative-caret-position="-1781">
+          <caret line="43" column="35" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1633#1907#0" expanded="true" />
-            <element signature="e#1906#1907#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AgentPac/AgentBack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="894">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NodePac/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="460">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NodePac/ServerBack.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
+        <state relative-caret-position="575">
+          <caret line="124" column="41" selection-start-line="124" selection-start-column="41" selection-end-line="124" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AgentPac/AgentBack.java">
+    <entry file="file://$PROJECT_DIR$/src/AgentPac/NodeTxPool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="460">
+          <caret line="20" column="1" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="20" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

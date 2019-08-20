@@ -1,19 +1,38 @@
 package AgentPac;
 
 
-import NodePac.ServerBack;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
-public class AgentBack extends ServerBack {
+public class AgentBack {
     private Agent gui;
+    private Socket s;
+    private DataInputStream in;
+    private DataOutputStream out;
 
     public void setGui(Agent gui) {
         this.gui = gui;
     }
 
-    //agent algortihm 짜야됨...
-    public void temp (String nb){
-        gui.appendMsg(nb);
-        System.out.println(nb);
-        sendTX("nb");
+    //Todo
+    public void connection (String nb) {
+        try {
+            s = new Socket("127.0.0.1", 7777);
+            out = new DataOutputStream(s.getOutputStream());
+            in = new DataInputStream(s.getInputStream());
+
+            out.writeUTF("Agent start by " + nb);
+            gui.appendMsg("start by " + nb);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
+
+
+
+
+
 }

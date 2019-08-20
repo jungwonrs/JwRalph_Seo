@@ -15,10 +15,11 @@ public String hashPool(String tx, double index, String nodeNumber){
 
 
     txPool.put(key, map);
-
     String sTxPool = txPool.toString();
-return sTxPool;
+
+    return sTxPool;
 }
+
 
 private static HashMap<String, String> newHashMap (String data){
     String msg;

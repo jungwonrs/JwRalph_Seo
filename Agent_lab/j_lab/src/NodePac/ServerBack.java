@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.PublicKey;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ServerBack  {
 
@@ -117,17 +114,19 @@ public class ServerBack  {
                     if (tx.contains("Agent start")){
                         //Todo
                         String nodeNumber = tx.split(" ")[3];
-                        agentCheck(nodeNumber, "a");
+                        if (agentCheck(nodeNumber, "a")){
+                            sendTX("Agent valid");
+                        }
+
                         continue;
                     }
-
                     String vmMsg = vMessage(tx);
-                    String pool = txPool.hashPool(vmMsg, index, nodeNumber);
-                    sendTX(pool);
-                    gui.appendMsg(pool);
+                    String tx = txPool.transaction(vmMsg, index, nodeNumber);
+                    sendTX(tx);
+                    gui.appendMsg(tx);
                     index += 0.1d;
-
                 }
+
             } catch (Exception e){
                 removeNode(nodeNumber);
             }
@@ -148,7 +147,7 @@ public class ServerBack  {
         return map;
     }
 
-    public String vMessage (String tx) throws Exception{
+    private String vMessage (String tx) throws Exception{
         String msg;
         String sPubKey;
         String sig;
@@ -175,7 +174,7 @@ public class ServerBack  {
         return notVerified;
     }
 
-    public String agentOn(String tx) throws  Exception{
+    private String agentOn(String tx) throws  Exception{
         String nodeNumber;
         String sPubKey;
         String sig;
@@ -203,13 +202,13 @@ public class ServerBack  {
         return agentOff;
     }
 
-    public void agentCheck(String nodeNumber, String seed){
+    private boolean agentCheck(String nodeNumber, String seed){
         String rValue = rs.randValue(seed);
         if (nodeNumber.equals(rValue)) {
-            System.out.println("hello agent!");
+            return true;
         }
         else{
-            gui.appendMsg("error!");
+            return false;
         }
     }
 

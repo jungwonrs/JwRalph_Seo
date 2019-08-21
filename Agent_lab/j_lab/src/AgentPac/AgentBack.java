@@ -30,6 +30,12 @@ public class AgentBack {
             e.printStackTrace();
         }
     }
+    public void temp (String txPool){
+
+        gui.appendMsg(txPool);
+
+
+    }
 
 
 

@@ -10,6 +10,9 @@ import java.time.Instant;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import AgentPac.AgentBack;
+import AgentPac.NodeTxPool;
 import KeyPac.*;
 
 public class NodeBack {
@@ -17,7 +20,9 @@ public class NodeBack {
     private DataInputStream in;
     private DataOutputStream out;
     private Node gui;
-
+    private String nodeNumber;
+    private NodeTxPool tx = new NodeTxPool();
+    private String txPool = "";
     public void setGui(Node gui) {
         this.gui = gui;
     }
@@ -25,19 +30,29 @@ public class NodeBack {
 
     public void connection() {
         //Timer timer = new Timer();
-        String nodeNumber;
-
+//        String nodeNumber;
+//        NodeTxPool tx = new NodeTxPool();
+//        String txPool = "";
         try{
             s = new Socket("127.0.0.1", 7777);
             out = new DataOutputStream(s.getOutputStream());
             in = new DataInputStream(s.getInputStream());
 
             nodeNumber = in.readUTF();
+            System.out.println(nodeNumber);
             gui.appendMsg(nodeNumber);
 
             while (in != null) {
                 String command = in.readUTF();
-                gui.appendMsg(command);
+
+                if (command.contains("msg")){
+                    AgentBack ab = new AgentBack();
+                    gui.appendMsg(command);
+                    txPool = String.valueOf(tx.txPool(command));
+                    ab.temp(txPool);
+                    //System.out.println(txPoll);
+                    continue;
+                }
 
                 switch (command){
                     case "s":
@@ -46,6 +61,13 @@ public class NodeBack {
                     case "key":
                         agentStart(nodeNumber);
                         break;
+                    case "Agent valid":
+                        AgentBack ab = new AgentBack();
+                        //ab.temp(nodeNumber);
+
+                        //System.out.println(nodeNumber);
+                        //gui.appendMsg("hello!~!@~!@ agent!!!!!");
+
                 }
 
                 }

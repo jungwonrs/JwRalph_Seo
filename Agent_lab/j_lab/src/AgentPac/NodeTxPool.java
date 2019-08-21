@@ -6,45 +6,52 @@ import java.util.*;
 
 public class NodeTxPool {
 
-public String hashPool(String tx, double index, String nodeNumber){
+    private ArrayList <String> hashPool = new ArrayList<String>();
+
+    public String transaction(String tx, double index, String nodeNumber){
     String StrIndex = String.valueOf(index);
     String key = nodeNumber+"_"+StrIndex;
 
-    HashMap<String, HashMap<String, String>> txPool = new HashMap<>();
+    HashMap<String, HashMap<String, String>> txForm = new HashMap<>();
     HashMap<String, String> map = newHashMap(tx);
 
+    txForm.put(key, map);
 
-    txPool.put(key, map);
-    String sTxPool = txPool.toString();
+    String sTxForm = txForm.toString();
+    return sTxForm;
+    }
 
-    return sTxPool;
-}
+    public List txPool(String data){
+        hashPool.add(data);
+        //System.out.println(hashPool);
 
+        return hashPool;
 
-private static HashMap<String, String> newHashMap (String data){
-    String msg;
-    String sPubKey;
-    String sig;
-    String time;
+    }
 
-    HashMap<String, String> map = new HashMap<>();
+    private static HashMap<String, String> newHashMap (String data){
+        String msg;
+        String sPubKey;
+        String sig;
+        String time;
 
-    ServerBack getHashMap = new ServerBack();
-    HashMap<String, String> dataMap;
-    dataMap = getHashMap.hashMapChange(data);
+        HashMap<String, String> map = new HashMap<>();
 
-    msg = dataMap.get("msg");
-    sPubKey = dataMap.get("pubKey");
-    sig = dataMap.get("sig");
-    time = dataMap.get("time");
+        ServerBack getHashMap = new ServerBack();
+        HashMap<String, String> dataMap;
+        dataMap = getHashMap.hashMapChange(data);
 
-    map.put("msg", msg);
-    map.put("pubKey", sPubKey);
-    map.put("sig", sig);
-    map.put("time", time);
+        msg = dataMap.get("msg");
+        sPubKey = dataMap.get("pubKey");
+        sig = dataMap.get("sig");
+        time = dataMap.get("time");
 
-    return map;
-}
+        map.put("msg", msg);
+        map.put("pubKey", sPubKey);
+        map.put("sig", sig);
+        map.put("time", time);
 
+        return map;
+    }
 
 }

@@ -23,6 +23,7 @@ public class NodeBack {
     private String nodeNumber;
     private NodeTxPool tx = new NodeTxPool();
     private String txPool = "";
+    AgentBack ab = new AgentBack();
     public void setGui(Node gui) {
         this.gui = gui;
     }
@@ -46,11 +47,8 @@ public class NodeBack {
                 String command = in.readUTF();
 
                 if (command.contains("msg")){
-                    AgentBack ab = new AgentBack();
                     gui.appendMsg(command);
                     txPool = String.valueOf(tx.txPool(command));
-                    ab.temp(txPool);
-                    //System.out.println(txPoll);
                     continue;
                 }
 
@@ -62,11 +60,8 @@ public class NodeBack {
                         agentStart(nodeNumber);
                         break;
                     case "Agent valid":
-                        AgentBack ab = new AgentBack();
-                        //ab.temp(nodeNumber);
-
-                        //System.out.println(nodeNumber);
-                        //gui.appendMsg("hello!~!@~!@ agent!!!!!");
+                        String tx = "{NtxPool==/"+nodeNumber+txPool+"}";
+                        out.writeUTF(tx);
 
                 }
 

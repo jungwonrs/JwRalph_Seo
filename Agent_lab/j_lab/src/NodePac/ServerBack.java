@@ -117,9 +117,17 @@ public class ServerBack  {
                         if (agentCheck(nodeNumber, "a")){
                             sendTX("Agent valid");
                         }
-
                         continue;
                     }
+
+                    //agent socket을 지정해줘야될듯....뭔가가 안되는디..
+                    //보낸다음에 so what?
+                    if (tx.contains("NtxPool")){
+                        System.out.println(tx);
+                        nodeMap.get("2").writeUTF(tx);
+                    }
+
+
                     String vmMsg = vMessage(tx);
                     String tx = txPool.transaction(vmMsg, index, nodeNumber);
                     sendTX(tx);

@@ -25,15 +25,19 @@ public class AgentBack {
 
             out.writeUTF("Agent start by " + nb);
             gui.appendMsg("start by " + nb);
+            gui.appendMsg(in.readUTF());
 
         }catch (IOException e){
             e.printStackTrace();
         }
     }
     public void temp (String txPool){
-
-        gui.appendMsg(txPool);
-
+        //System.out.println("agent says---"+txPool);
+        while (true) {
+            String temp = txPool;
+            gui.appendMsg(temp);
+            //gui.appendMsg("");
+        }
 
     }
 

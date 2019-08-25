@@ -21,12 +21,9 @@ public class NodeTxPool {
     return sTxForm;
     }
 
-    public List txPool(String data){
+    public List txPool(String data) {
         hashPool.add(data);
-        //System.out.println(hashPool);
-
         return hashPool;
-
     }
 
     private static HashMap<String, String> newHashMap (String data){

@@ -121,11 +121,11 @@ public class ServerBack  {
                     }
 
                     //agent socket을 지정해줘야될듯....뭔가가 안되는디..
-                    //보낸다음에 so what?
-                    if (tx.contains("NtxPool")){
-                        System.out.println(tx);
-                        nodeMap.get("2").writeUTF(tx);
-                    }
+//                    //보낸다음에 so what?
+//                    if (tx.contains("NtxPool")){
+//                        System.out.println(tx);
+//                        nodeMap.get("2").writeUTF(tx);
+//                    }
 
 
                     String vmMsg = vMessage(tx);

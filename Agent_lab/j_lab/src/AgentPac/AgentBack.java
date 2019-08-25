@@ -25,7 +25,10 @@ public class AgentBack {
 
             out.writeUTF("Agent start by " + nb);
             gui.appendMsg("start by " + nb);
-            gui.appendMsg(in.readUTF());
+
+            while (true) {
+                gui.appendMsg(in.readUTF());
+            }
 
         }catch (IOException e){
             e.printStackTrace();

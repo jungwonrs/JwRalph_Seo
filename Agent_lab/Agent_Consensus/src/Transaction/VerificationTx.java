@@ -2,12 +2,12 @@ package Transaction;
 
 import Key.KeyGenerator;
 import Key.SigGenerator;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.security.PublicKey;
-import java.util.HashMap;
 
 public class VerificationTx {
-    Converter ct = new Converter();
 
     public String vMessage (String tx) throws Exception{
         String msg;
@@ -18,12 +18,13 @@ public class VerificationTx {
         SigGenerator verify = new SigGenerator();
         KeyGenerator key = new KeyGenerator();
 
-        HashMap<String, String> dataMap;
-        dataMap = ct.ChangeToMap(tx);
 
-        msg = dataMap.get("msg");
-        sPubKey = dataMap.get("pubKey");
-        sig = dataMap.get("sig");
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(tx);
+
+        msg = element.getAsJsonObject().get("msg").getAsString();
+        sPubKey = element.getAsJsonObject().get("pubKey").getAsString();
+        sig = element.getAsJsonObject().get("sig").getAsString();
         pubKey = key.stringToPublicKey(sPubKey);
 
         mVerify = verify.verify(msg, sig, pubKey);

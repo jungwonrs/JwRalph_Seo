@@ -4,13 +4,18 @@ import Transaction.TxPool;
 
 import java.io.DataOutputStream;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class NListener {
     private String nodeNumber;
     private SendToController stc = new SendToController();
-    private TxPool txpool = new TxPool();
+    private TxPool txPool = new TxPool();
+
+
+    private List<String> txList = new ArrayList<>();
 
     public void getMessage(String data, DataOutputStream out){
        if (data.contains("node_number_setting")){
@@ -36,13 +41,14 @@ public class NListener {
                timer.scheduleAtFixedRate(tt, 0, 2000);
        }
 
-       //verified message
+       //save verified message
         if(data.contains("msg")){
-            //System.out.println(data);
-            //txpool.timeControl(data, getNodeNumber());
-
+            setTxList(txPool.saveTxPool(data));
         }
 
+        //show all message
+        //System.out.println(data);
+        System.out.println(getNodeNumber());
 
     }
 
@@ -51,6 +57,14 @@ public class NListener {
     }
     public String getNodeNumber() {
         return nodeNumber;
+    }
+
+    public List<String> getTxList() {
+        return txList;
+    }
+
+    public void setTxList(List<String> txList) {
+        this.txList = txList;
     }
 
 

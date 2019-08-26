@@ -2,6 +2,8 @@ package Node;
 
 import Key.KeyGenerator;
 import Key.SigGenerator;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -14,7 +16,6 @@ public class SendToController {
 
     public String txGenerator() throws Exception{
         Random random = new Random();
-        String tx;
         String msg;
         String time;
         String pubKey;
@@ -32,8 +33,15 @@ public class SendToController {
             pubKey =key.pubKeyToString(pkey);
             sig = sg.genSig(getKey.getPrivate(), msg);
 
-            tx = "{msg==/"+msg+",/time==/"+time+",/pubKey==/"+pubKey+",/sig==/"+sig+"}";
-            return tx;
+            Gson gson = new Gson();
+            JsonObject object = new JsonObject();
+            object.addProperty("msg", msg);
+            object.addProperty("time", time);
+            object.addProperty("pubKey", pubKey);
+            object.addProperty("sig", sig);
+            String json = gson.toJson(object);
+
+            return json;
 
         } catch (IOException e) {
             e.printStackTrace();

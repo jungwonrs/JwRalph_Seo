@@ -10,6 +10,7 @@ public class AConnection {
     private DataInputStream in;
     private DataOutputStream out;
     private AGui AGui;
+    private AListener al = new AListener();
 
     public void setAGui(AGui AGui){
         this.AGui = AGui;
@@ -20,7 +21,9 @@ public class AConnection {
             s = new Socket("163.239.200.192", 7777);
             out = new DataOutputStream(s.getOutputStream());
             in = new DataInputStream(s.getInputStream());
-
+            while (true){
+                al.messageHandler(in.readUTF(), out);
+            }
 
         } catch (IOException e){
             e.printStackTrace();

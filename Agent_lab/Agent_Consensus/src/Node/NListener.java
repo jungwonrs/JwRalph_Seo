@@ -57,8 +57,12 @@ public class NListener {
                TimerTask t2 = new TimerTask() {
                    @Override
                    public void run() {
-                       if (rs.randValue(seed).equals(getNodeNumber())){
-                           agentKey(getNodeNumber());
+                       try {
+                           if (rs.randValue(seed).equals(getNodeNumber())) {
+                               out.writeUTF(stc.agentStart(getNodeNumber()));
+                           }
+                       }catch (Exception e){
+                           e.printStackTrace();
                        }
                    }
                };
@@ -72,6 +76,7 @@ public class NListener {
        //save verified message
         if(data.contains("msg")){
             setTxList(txPool.saveTxPool(data));
+            //System.out.println(getTxList());
         }
 
         //show all message
@@ -79,9 +84,7 @@ public class NListener {
 
     }
 
-    public void agentKey(String nodeNumber) {
-        System.out.println("hello! agent key!");
-    }
+
 
 
 }

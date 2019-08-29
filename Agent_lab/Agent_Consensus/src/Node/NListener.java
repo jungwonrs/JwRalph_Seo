@@ -5,6 +5,7 @@ import Transaction.TxPool;
 
 import java.io.DataOutputStream;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -38,7 +39,6 @@ public class NListener {
            String dataSplit[] = data.split(" = ");
            String nNumber = dataSplit[1];
            setNodeNumber(nNumber);
-
         }
 
        //start message
@@ -69,15 +69,23 @@ public class NListener {
                //transaction 생성 시간
                timer.schedule(t, 0, 2000);
 
-               //agent 동작 시간간
+               //agent 동작 시간
               timer.schedule(t2, 10000, 10000);
        }
 
        //save verified message
         if(data.contains("msg")){
             setTxList(txPool.saveTxPool(data));
-            //System.out.println(getTxList());
         }
+
+        if (data.contains("Agent on")){
+            try {
+                out.writeUTF("txPool"+"/=/="+getNodeNumber()+"/=/="+getTxList().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         //show all message
         System.out.println(data);

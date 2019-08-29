@@ -5,6 +5,15 @@ public class temp{
 
 
     public static void main(String[] args) {
+
+        String s = "123";
+
+        if (!s.equals("gent")){
+            System.out.println("hello");
+        }
+
+
+
     }
 
 }

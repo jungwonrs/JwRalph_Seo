@@ -73,6 +73,15 @@ public class CListener {
                         socketMap.get("Agent").writeUTF(tx);
                     }
 
+                    if (tx.contains("Agent on")){
+                        System.out.println("hello world!!");
+                        broadCasting("Agent on");
+                    }
+
+                    if (tx.contains("txPool")){
+                        socketMap.get("Agent").writeUTF(tx);
+                    }
+
                     index += 0.01d;
                 }
             } catch (IOException e) {
@@ -87,17 +96,18 @@ public class CListener {
    }
 
 
-    //TODO Agent는 빼야됨...Agent한테 까지 message가 전달됨.
     public void broadCasting(String msg){
         Iterator<String> iterator = socketMap.keySet().iterator();
         String key;
 
         while(iterator.hasNext()){
             key = iterator.next();
-            try{
-                socketMap.get(key).writeUTF(msg);
-            }catch (IOException e){
-                e.printStackTrace();
+            if (!key.equals("Agent")) {
+                try {
+                    socketMap.get(key).writeUTF(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

@@ -21,8 +21,9 @@ public class AConnection {
             s = new Socket("163.239.200.192", 7777);
             out = new DataOutputStream(s.getOutputStream());
             in = new DataInputStream(s.getInputStream());
+            //TODO out으로 서버에 데이터가 안넘어 가는데...뭐가 문제일까 이것저것 temp로 테스트 해봐야될듯..
             while (true){
-                al.messageHandler(in.readUTF(), out);
+               al.messageHandler(in.readUTF(), out);
             }
 
         } catch (IOException e){

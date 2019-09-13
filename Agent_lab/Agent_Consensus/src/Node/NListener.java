@@ -69,7 +69,8 @@ public class NListener {
                //transaction 생성 시간
                timer.schedule(t, 0, 2000);
 
-               //agent 동작 시간
+               //Todo 처음에만 동작하고 이후에는 데이터값을 기다리게 만들어야됨.. 지금은 일정간격으로 계속 동작해버림림
+              //agent 동작 시간
               timer.schedule(t2, 10000, 10000);
        }
 
@@ -80,7 +81,7 @@ public class NListener {
 
         if (data.contains("Agent on")){
             try {
-                out.writeUTF("txPool"+"/=/="+getNodeNumber()+"/=/="+getTxList().toString());
+                out.writeUTF("txPool"+"**"+getNodeNumber()+"**"+getTxList().toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -14,7 +14,6 @@ public class SendToNode {
     public String messageClassification(String data, double index) {
         String tx;
         String pool;
-        System.out.println(data);
 
         if (data.contains("nodeNumber") && data.contains("pubKey"))
         {

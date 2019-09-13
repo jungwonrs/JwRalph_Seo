@@ -13,6 +13,9 @@ public class AListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        if (data.contains("txpool")){
+            System.out.println(data);
+        }
         }
     }
 }

@@ -1,5 +1,9 @@
 package Controller;
 
+import Transaction.TxPool;
+import Transaction.VerificationAgentkey;
+import Transaction.VerificationTx;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,7 +37,7 @@ public class CListener {
                 String agentIp = String.valueOf(s.getInetAddress());
                 if (agentIp.equals("/163.239.200.189")){
                     new Receiver("Agent",s);
-                    continue;
+                    //continue;
                 }
                 nodeNubmer += 1;
                 Receiver receiver = new Receiver(Integer.toString(nodeNubmer), s);
@@ -48,6 +52,9 @@ public class CListener {
    class Receiver extends Thread {
         private DataInputStream in;
         private DataOutputStream out;
+        private VerificationTx vtx = new VerificationTx();
+        private TxPool txpool = new TxPool();
+        private VerificationAgentkey vak = new VerificationAgentkey();
 
         public Receiver(String nodeNubmer, Socket s){
             try{
@@ -65,22 +72,47 @@ public class CListener {
             double index = 0.0d;
             try {
                 while(in != null) {
-                    in.readUTF();
-                    String tx = stn.messageClassification(in.readUTF(), index);
-                    broadCasting(tx);
+                    String tx = in.readUTF();
+                    System.out.println(tx);
+                    String data;
+                    String pool;
 
-                    if (tx.contains("Agent start by")){
+                    if (tx.contains("/=/=")) {
+                        String[] dataSplit = tx.split("/=/=");
+                        try {
+                            data = vtx.vMessage(dataSplit[1]);
+                            pool = txpool.transaction(data, index, dataSplit[0]);
+                            broadCasting(pool);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                    if (tx.contains("nodeNumber") && tx.contains("pubKey")) {
+                        try {
+                            System.out.println("okay!");
+                            data = vak.vNodeNumber(tx);
+                            System.out.println(data);
+                            broadCasting(data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (tx.contains("Agent start by")) {
                         socketMap.get("Agent").writeUTF(tx);
                     }
 
-                    if (tx.contains("Agent on")){
-                        System.out.println("hello world!!");
-                        broadCasting("Agent on");
+                    if (tx.contains("Agent on")) {
+                        broadCasting(tx);
                     }
 
-                    if (tx.contains("txPool")){
+                    if (tx.contains("txPool")) {
                         socketMap.get("Agent").writeUTF(tx);
                     }
+
 
                     index += 0.01d;
                 }

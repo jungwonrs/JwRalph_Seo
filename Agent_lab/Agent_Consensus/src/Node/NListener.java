@@ -44,6 +44,7 @@ public class NListener {
        //start message
        if (data.equals("s")){
                Timer timer = new Timer();
+               //Todo Transaction 누락이 너무심함.. 이 방식 말고 다른 방법을 찾아야됨.1. Random으로 몇명만 작동하게 하던가..아니면 Server가 혼자 다 뿌리는걸로?...
                TimerTask t = new TimerTask() {
                    @Override
                    public void run() {
@@ -67,11 +68,10 @@ public class NListener {
                    }
                };
                //transaction 생성 시간
-               timer.schedule(t, 0, 2000);
+               timer.schedule(t, 0, 5000);
 
-               //Todo 처음에만 동작하고 이후에는 데이터값을 기다리게 만들어야됨.. 지금은 일정간격으로 계속 동작해버림림
               //agent 동작 시간
-              timer.schedule(t2, 10000, 10000);
+              timer.schedule(t2, 10000, 50000);
        }
 
        //save verified message
@@ -81,7 +81,10 @@ public class NListener {
 
         if (data.contains("Agent on")){
             try {
-                out.writeUTF("txPool"+"**"+getNodeNumber()+"**"+getTxList().toString());
+                out.writeUTF("txPool"+"&&"+getNodeNumber()+"&&"+getTxList().toString());
+
+                //Todo 누락 확인할때 이걸로 확인
+                System.out.println("txPool"+"&&"+getNodeNumber()+"&&"+getTxList().toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -89,7 +92,7 @@ public class NListener {
 
 
         //show all message
-        System.out.println(data);
+        //System.out.println(data);
 
     }
 

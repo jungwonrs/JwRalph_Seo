@@ -20,7 +20,6 @@ public class CListener {
     private ServerSocket ss;
     private Socket s;
     private int nodeNubmer = 0;
-    private SendToNode stn = new SendToNode();
 
 
     public void setCGui(CGui CGui){

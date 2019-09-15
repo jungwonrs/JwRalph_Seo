@@ -13,20 +13,7 @@
     <favorites_list name="Agent_Consensus" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Node/NListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="77" column="33" lean-forward="true" selection-start-line="77" selection-start-column="33" selection-end-line="77" selection-end-column="33" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -68,23 +55,23 @@
         <option value="$PROJECT_DIR$/src/Transaction/TxPool.java" />
         <option value="$PROJECT_DIR$/src/Node/SendToController.java" />
         <option value="$PROJECT_DIR$/src/Transaction/VerificationAgentkey.java" />
-        <option value="$PROJECT_DIR$/src/temp.java" />
         <option value="$PROJECT_DIR$/src/Agent/AConnection.java" />
         <option value="$PROJECT_DIR$/src/Node/NConnection.java" />
         <option value="$PROJECT_DIR$/src/Controller/SendToNode.java" />
         <option value="$PROJECT_DIR$/src/Stemp.java" />
-        <option value="$PROJECT_DIR$/src/Controller/CListener.java" />
         <option value="$PROJECT_DIR$/src/Agent/RandomSeed.java" />
         <option value="$PROJECT_DIR$/src/N1temp.java" />
         <option value="$PROJECT_DIR$/src/N2temp.java" />
         <option value="$PROJECT_DIR$/src/Agent/AListener.java" />
+        <option value="$PROJECT_DIR$/src/temp.java" />
         <option value="$PROJECT_DIR$/src/Node/NListener.java" />
+        <option value="$PROJECT_DIR$/src/Controller/CListener.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="421" />
-    <option name="y" value="175" />
+    <option name="x" value="386" />
+    <option name="y" value="415" />
     <option name="width" value="1874" />
     <option name="height" value="1096" />
   </component>
@@ -94,6 +81,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -134,13 +122,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568457303858" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568539508823" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../blockchain-application-using-fabric-java-sdk" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -202,8 +189,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Stemp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Stemp" />
+    <configuration name="temp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="temp" />
       <module name="Agent_Consensus" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -212,17 +199,17 @@
     <list>
       <item itemvalue="Application.CMain" />
       <item itemvalue="Application.NMain" />
-      <item itemvalue="Application.Stemp" />
       <item itemvalue="Application.N1temp" />
       <item itemvalue="Application.N2temp" />
+      <item itemvalue="Application.temp" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.NMain" />
         <item itemvalue="Application.CMain" />
+        <item itemvalue="Application.temp" />
         <item itemvalue="Application.N2temp" />
         <item itemvalue="Application.N1temp" />
-        <item itemvalue="Application.Stemp" />
       </list>
     </recent_temporary>
   </component>
@@ -248,16 +235,17 @@
       <workItem from="1567992706206" duration="619000" />
       <workItem from="1568334570925" duration="21999000" />
       <workItem from="1568430706141" duration="17076000" />
+      <workItem from="1568528676834" duration="4757000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135588000" />
+    <option name="totallyTimeSpent" value="140345000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="421" y="175" width="1874" height="1096" extended-state="0" />
+    <frame x="-8" y="-8" width="2514" height="1456" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4986226" visible="true" weight="0.19790518" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4986226" visible="true" weight="0.14792176" />
       <window_info id="Structure" order="1" sideWeight="0.5013774" side_tool="true" weight="0.12265689" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -266,7 +254,7 @@
       <window_info id="Favorites" order="6" sideWeight="0.50044054" side_tool="true" weight="0.12184189" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32955405" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3229491" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32199547" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -412,16 +400,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/SendToNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="31" column="32" lean-forward="true" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/SendToNode.java" />
     <entry file="file://$PROJECT_DIR$/src/Controller/CMain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
@@ -446,23 +425,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/N1temp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-32">
-          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/N2temp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/N1temp.java" />
+    <entry file="file://$PROJECT_DIR$/src/N2temp.java" />
     <entry file="file://$PROJECT_DIR$/src/Controller/SendToAgent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
@@ -470,33 +434,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Stemp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Agent/RandomSeed.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="21" column="5" lean-forward="true" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/CListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="82" column="81" lean-forward="true" selection-start-line="82" selection-start-column="81" selection-end-line="82" selection-end-column="81" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stemp.java" />
     <entry file="file://$PROJECT_DIR$/src/Node/SendToController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -520,10 +458,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/temp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Agent/RandomSeed.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/CListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Node/NListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="77" column="33" lean-forward="true" selection-start-line="77" selection-start-column="33" selection-end-line="77" selection-end-column="33" />
+        <state relative-caret-position="1629">
+          <caret line="88" column="16" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

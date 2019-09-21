@@ -50,7 +50,7 @@ public class AListener {
         if (hashStorage.size() == nodeAmount) {
             String stringTxData = txData.replaceAll("[\\[\\]]", "");
             String[] splitTxData = stringTxData.split(", ");
-
+            System.out.println(stringTxData);
             for (int i = 0; i < splitTxData.length; i++) {
                 JsonParser parser = new JsonParser();
                 JsonElement element = parser.parse(splitTxData[i]);
@@ -63,7 +63,8 @@ public class AListener {
                 counts.put(c, value + 1);
             }
 
-            int max = Collections.max(counts.values());
+            //int max = Collections.max(counts.values());
+            int max = 100000;
             int bft = nodeAmount - ((nodeAmount - 1) / 3);
 
             if (max >= bft) {
@@ -84,14 +85,19 @@ public class AListener {
 
                 }
 
+            } else{
+                secondCheck(data);
             }
         }
     }
 
 
 
-    private void secondCheck(HashMap<String, Integer> data){
-        System.out.println("second");
+    private void secondCheck(String data){
+        String[] dataSplit = data.split("&&");
+        String nodeNumber = dataSplit[1];
+        String txData = dataSplit[2];
+
     }
 
 }

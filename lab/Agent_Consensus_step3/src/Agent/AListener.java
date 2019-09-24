@@ -11,7 +11,7 @@ import java.util.*;
 public class AListener {
     private HashMap<String, Integer> hashStorage = new HashMap<String, Integer>();
     //network node 수
-    private Integer nodeAmount = 52;
+    private Integer nodeAmount = 2;
     private Long endTime;
     private Long startTime;
     private Long executeTime;
@@ -19,6 +19,8 @@ public class AListener {
     private List<String> indexList = new ArrayList<>();
     private List<String> dataList = new ArrayList<>();
     private List<String> sendList = new ArrayList<>();
+    private List <String> dataList2 = new ArrayList<>();
+
 
     private HashMap<String, Integer> indexMap = new HashMap<>();
     private HashMap<String, List<String>> dataMap = new HashMap<>();
@@ -43,6 +45,15 @@ public class AListener {
                 e.printStackTrace();
             }
         }
+
+        if (data.contains("vote_result")){
+            try{
+                votingCheck(data, out);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private void firstCheck(String data, DataOutputStream out) throws IOException {
@@ -141,7 +152,8 @@ public class AListener {
                     counts.put(c, value+1);
                 }
 
-                int hashMax = Collections.max(counts.values());
+                //int hashMax = Collections.max(counts.values());
+                int hashMax = 0;
                 int bft = nodeAmount - ((nodeAmount - 1) / 3);
 
                 if(hashMax >= bft){
@@ -176,8 +188,9 @@ public class AListener {
             int bft = dataMap.size() - ((dataMap.size() -1) /3);
             Set<Map.Entry<String, Integer>> entries2 = dataAmount.entrySet();
             for(Map.Entry<String, Integer> entry2: entries2){
-
-                if(entry2.getValue() >= bft){
+                int temp= 0;
+                if (temp >= bft){
+                //if(entry2.getValue() >= bft){
                     sendList.add(entry2.getKey());
                     out.writeUTF("block" + "$$" + sendList.hashCode());
                     sendList.clear();
@@ -198,9 +211,21 @@ public class AListener {
 
     }
 
+    private void thirdCheck(String data, DataOutputStream out) throws IOException {
+        String[] dataSplit = data.split("&&");
+        String txData = dataSplit[2];
+        if (!dataList2.contains(txData)){
+            dataList2.add(txData);
+        }
+        int hash = dataList2.hashCode();
+        out.writeUTF("vote"+hash);
 
-    private void thirdCheck(String data, DataOutputStream out){
-        System.out.println("third");
     }
+
+    private void votingCheck(String data, DataOutputStream out) throws IOException {
+
+    }
+
+
 
 }

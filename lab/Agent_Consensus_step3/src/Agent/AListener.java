@@ -11,7 +11,7 @@ import java.util.*;
 public class AListener {
     private HashMap<String, Integer> hashStorage = new HashMap<String, Integer>();
     //network node 수
-    private Integer nodeAmount = 2;
+    private Integer nodeAmount = 24;
     private Long endTime;
     private Long startTime;
     private Long executeTime;
@@ -19,8 +19,8 @@ public class AListener {
     private List<String> indexList = new ArrayList<>();
     private List<String> dataList = new ArrayList<>();
     private List<String> sendList = new ArrayList<>();
-    private List <String> dataList2 = new ArrayList<>();
-
+    private List<String> dataList2 = new ArrayList<>();
+    private List<String> voteList = new ArrayList<>();
 
     private HashMap<String, Integer> indexMap = new HashMap<>();
     private HashMap<String, List<String>> dataMap = new HashMap<>();
@@ -30,6 +30,7 @@ public class AListener {
 
     public void messageHandler(String data, DataOutputStream out) {
         startTime = System.nanoTime();
+        System.out.println("start time1=" +startTime);
         if (data.contains("Agent start by")) {
             try {
                 out.writeUTF("Agent on");
@@ -46,7 +47,7 @@ public class AListener {
             }
         }
 
-        if (data.contains("vote_result")){
+        if (data.contains("voting_result")){
             try{
                 votingCheck(data, out);
             }catch (IOException e){
@@ -190,7 +191,7 @@ public class AListener {
             for(Map.Entry<String, Integer> entry2: entries2){
                 int temp= 0;
                 if (temp >= bft){
-                //if(entry2.getValue() >= bft){
+                    //if(entry2.getValue() >= bft){
                     sendList.add(entry2.getKey());
                     out.writeUTF("block" + "$$" + sendList.hashCode());
                     sendList.clear();
@@ -219,13 +220,37 @@ public class AListener {
         }
         int hash = dataList2.hashCode();
         out.writeUTF("vote"+hash);
-
     }
 
     private void votingCheck(String data, DataOutputStream out) throws IOException {
+        int countTrue = 0;
+        int countData = 0;
 
+        String[] voteResult = data.split("=");
+        voteList.add(voteResult[1]);
+
+        if (voteList.size() == nodeAmount) {
+            countTrue = Collections.frequency(voteList, "true");
+            countData = voteList.size();
+            int bft = countData - ((countData - 1) / 3);
+
+            if (countTrue >= bft) {
+                out.writeUTF("block" + "$$" + voteList.hashCode());
+                voteList.clear();
+
+                endTime = System.nanoTime();
+                executeTime = endTime-startTime;
+                Runtime.getRuntime().gc();
+                long used = Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+                System.out.println("end time=" +endTime);
+                System.out.println("m=" +used);
+                System.out.println("executeTime="+executeTime);
+            } else {
+                System.out.println("next Round");
+            }
+
+        }
     }
-
 
 
 }

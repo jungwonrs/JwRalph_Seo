@@ -90,7 +90,7 @@ public class CListener {
 
                     if (tx.contains("nodeNumber") && tx.contains("pubKey")) {
                         try {
-                            System.out.println("okay!");
+                            //System.out.println("okay!");
                             data = vak.vNodeNumber(tx);
                             System.out.println(data);
                             broadCasting(data);
@@ -119,7 +119,7 @@ public class CListener {
                         broadCasting(tx);
                     }
 
-                    if (tx.contains("vote_result")){
+                    if (tx.contains("voting_result")){
                         socketMap.get("Agent").writeUTF(tx);
                     }
 

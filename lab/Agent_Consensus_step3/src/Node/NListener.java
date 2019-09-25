@@ -99,8 +99,9 @@ public class NListener {
         }
 
         if (data.contains("vote")){
+            //System.out.println("vote");
             try {
-                out.writeUTF("vote_result="+"true");
+                out.writeUTF("voting_result="+"true");
             } catch (IOException e) {
                 e.printStackTrace();
             }

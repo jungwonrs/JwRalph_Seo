@@ -9,12 +9,7 @@ public class AConnection {
     private Socket s;
     private DataInputStream in;
     private DataOutputStream out;
-    private AGui AGui;
     private AListener al = new AListener();
-
-    public void setAGui(AGui AGui){
-        this.AGui = AGui;
-    }
 
     public void connect(){
         try{

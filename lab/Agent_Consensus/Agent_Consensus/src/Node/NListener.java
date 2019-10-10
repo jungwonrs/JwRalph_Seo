@@ -74,7 +74,7 @@ public class NListener {
                };
 
                 //agent 동작 시간 10초
-                timer.schedule(t2, 0, 10000);
+                timer.schedule(t2, 0, 3000);
                 //agent 동작 시간 5분
                 //timer.schedule(t2, 10000, 300000);
        }

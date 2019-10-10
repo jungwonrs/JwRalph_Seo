@@ -99,11 +99,9 @@ public class AListener {
                         out.writeUTF("block" + "$$" + indexList + "$$" + key);
                         hashStorage.clear();
                         endTime = System.nanoTime();
-                        //System.out.println("endTime= "+endTime);
                         Runtime.getRuntime().gc();
                         long used = Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
                         executeTime = endTime-startTime;
-                        //System.out.println(executeTime+", "+used);
                         fileOutput(executeTime, used);
                         experimentCount += 1;
                         System.out.println(experimentCount);

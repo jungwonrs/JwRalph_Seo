@@ -5,12 +5,15 @@ import Key.SigGenerator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.awt.*;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,10 +23,13 @@ public class ClListener {
     private Long startTime;
     private Long endTime;
     private int count = 0;
+    private int nodeAmount = 0;
+    private List<String> dataList = new ArrayList<>();
 
 
     public void messageHandler(String data, DataOutputStream out){
         if (data.equals("s")){
+
             Timer timer = new Timer();
             TimerTask t = new TimerTask() {
                 @Override
@@ -40,13 +46,18 @@ public class ClListener {
             timer.schedule(t, 0, 10000);
         }
 
-        if (data.equals("block")){
-            endTime = System.nanoTime();
-            count += 1;
-            Long executeTime = (endTime-startTime);
-            fileOutput(executeTime);
+        if (data.contains("block")){
+            dataList.add(data);
+            if(dataList.size()==nodeAmount) {
 
-            System.out.println(count);
+                endTime = System.nanoTime();
+                count += 1;
+                Long executeTime = (endTime - startTime);
+                fileOutput(executeTime);
+                System.out.println(count);
+                dataList.clear();
+            }
+
         }
 
     }
@@ -70,7 +81,7 @@ public class ClListener {
 
             Gson gson = new Gson();
             JsonObject object = new JsonObject();
-            object.addProperty("mgs", msg);
+            object.addProperty("msg", msg);
             object.addProperty("pubKey", pubKey);
             object.addProperty("sig", sig);
             String json = gson.toJson(object);

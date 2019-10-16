@@ -13,7 +13,7 @@ public class NConnection {
 
     public void connect(){
         try{
-            s = new Socket("163.239.200.192", 7777);
+            s = new Socket("163.239.200.192", 8888);
             out = new DataOutputStream(s.getOutputStream());
             in = new DataInputStream(s.getInputStream());
             while(true){

@@ -1,6 +1,5 @@
 package Controller;
 
-import javax.sound.midi.Receiver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,25 +20,29 @@ public class CListener {
     private int nodeAmount = 0;
 
 
-
-
     public void setCGui(CGui CGui){this.CGui = CGui;}
 
     public void setting(){
         try{
             Collections.synchronizedMap(socketMap);
-            ss = new ServerSocket(7777);
+            ss = new ServerSocket(8888);
 
             while (true){
                 s = ss.accept();
                 String clientIP = String.valueOf(s.getInetAddress());
+
                 if(clientIP.equals("/163.239.200.189")){
-                    new Receiver("Client", s);
+                    Receiver receiver = new Receiver("Client", s);
+                    receiver.start();
+                    continue;
                 }
 
-                nodeNumber +=1;
+                nodeNumber += 1;
                 Receiver receiver = new Receiver(Integer.toString(nodeNumber), s);
                 receiver.start();
+
+
+
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -65,7 +68,7 @@ public class CListener {
             try{
                 while(in != null){
                     String tx = in.readUTF();
-
+                    System.out.println(tx);
                     if(tx.contains("send_to_primary")){
                         socketMap.get("1").writeUTF(tx);
                     }

@@ -4,9 +4,7 @@ import Transaction.VerificationTx;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
 
 public class NListener {
     private String nodeNumber;

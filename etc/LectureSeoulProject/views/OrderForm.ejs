@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meeta charset = "UTF-8">
+  <title> Test web Stire </title>
+</head>
+<body>
+    <h>주문서 등록</h>
+    <br>
+    <form method = "POST">
+      <div>
+        <label for = "orderDate"> 주문일자 </label>
+        <input type = "date" name ="date" placeholder ="Date">
+        <br><br>
+        <label for = "delieveryLocation"> 배송지 </label>
+        <input type = "text" name="location" placeholder="배송지">
+        <br><br>
+        <label for = "driver"> 운전자 </label>
+        <select name = "driver">
+
+          <option value = '' selected> --선택 </option>
+          <% driverlist.forEach(function(row){ %>
+            <option value ="<%= row%>"> <%=row %> </option>
+        <%  }) %>
+      
+        </select>
+
+        <br><br>
+        <label for = "fork"> 돼지고기 </label>
+        <select name = "fork">
+          <option value= '' selected> --선택-- </option>
+          <option value = '삼겹살'> 삼겹살 </option>
+          <option value = '항정살'> 항정살 </option>
+          <option value = '목살'> 목살 </option>
+          </select>
+        <label for = "kg"></label>
+        <input type = "text" name = "kg" placeholder="KG">
+
+      </div>
+
+      <button type = "submit" name="button" value="confirm">등록</button>
+      <button type = "submit" name="button" value="cancle">취소</button>
+    </form>
+</body>
+</html>

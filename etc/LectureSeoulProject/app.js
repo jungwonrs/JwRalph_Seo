@@ -13,6 +13,7 @@ app.use(express.static(__dirname+"/"));
 mongoose.connect('mongodb://localhost:27017/testDB');
 const db = mongoose.connection;
 
+//MogoDB Schema to connect collections
 const loginSchema = new mongoose.Schema({
   id: String,
   pwd: String,
@@ -38,20 +39,27 @@ const driverLocation = new mongoose.Schema({
 });
 
 
-
+//connect to "login" collections
 const model = mongoose.model("Login",loginSchema,'login');
-const model2 = mongoose.model("orderForm", regSchema);
-const model3 = mongoose.model("driverStartTime", driverLocation);
-const model4 = mongoose.model("deliveryDone", driverLocation);
-const model5 = mongoose.model("arrived", driverLocation);
+//connect to "orderInfo" collections
+const model2 = mongoose.model("OrderInfo", regSchema);
+//connect to "DeliveryStartTime" collections
+const model3 = mongoose.model("DeliveryStartTime", driverLocation);
+//connect to "DeliveryDoneTime" collections
+const model4 = mongoose.model("DeliveryDoneTime", driverLocation);
+//connect to "RetrunTime"
+const model5 = mongoose.model("RetrunTime", driverLocation);
 
+//set server port
 var port = process.env.Port || 8888;
 
+// connect to first page
 app.get('/', function(req, res){
   res.render("Login");
 });
 
 app.post('/', function(req, res){
+  //login
   model.find({id:req.body.id, pwd:req.body.pwd}, 'position', function(err, doc){
 
     var data = JSON.stringify(doc);
@@ -59,10 +67,12 @@ app.post('/', function(req, res){
       res.send("check id or password");
       }
 
+    //manager check
     if (data.includes('manager')){
       res.redirect('/manager');
     }
 
+    //driver check
     if (data.includes('driver')){
       var driverName = req.body.id;
       //console.log(driverName);
@@ -74,22 +84,20 @@ app.post('/', function(req, res){
         app.post('/driver', function(req, res){
           var inputValue = req.body.button;
 
-            if (inputValue == "alarm"){
-              res.redirect('/driver/confirm');
+            if (inputValue == "assgined"){
+              res.redirect('/driver/assginedView');
             }
-            if (inputValue == "DelieveryStart"){
+            if (inputValue == "DeliveryStart"){
               res.redirect('/driver/deliveryStart');
             }
             if (inputValue == "DeliveryDone"){
-              //todo
             res.redirect('/driver/deliveryDone');
           }
-          if (inputValue == "arrived"){
-            //todo
-            res.redirect('/driver/arrived');
+          if (inputValue == "Return"){
+            res.redirect('/driver/return');
           }
 
-          app.get('/driver/confirm', function(req, res){
+          app.get('/driver/assginedView', function(req, res){
             model2.find({driver:driverName}, function(err, doc){
             var date = doc.map(function(obj) {
               return obj.date;
@@ -107,9 +115,9 @@ app.post('/', function(req, res){
                 return obj.forkKg;
               });
 
-              res.render('confirmOrder', {date:date, location:location, driver:driver, fork:fork, forkKg:forkKg});
-
-              app.post('/driver/confirm', function(req, res){
+              res.render('AssignedView', {date:date, location:location, driver:driver, fork:fork, forkKg:forkKg});
+              //order confirm
+              app.post('/driver/assginedView', function(req, res){
                 model.findOne({id:driver}, function(err, doc){
                   doc.status = "orderForm-Confirm";
                   doc.save();
@@ -139,7 +147,7 @@ app.post('/', function(req, res){
               });
             var ts = Date.now();
 
-              res.render('StartDriving', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
+              res.render('DeliveryStart', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
 
               app.post('/driver/deliveryStart', function(req, res){
                 model.findOne({id:driver}, function(err, doc){
@@ -185,7 +193,7 @@ app.post('/', function(req, res){
               });
             var ts = Date.now();
 
-              res.render('deliveryDone', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
+              res.render('DeliveryDone', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
 
               app.post('/driver/deliveryDone', function(req, res){
                 model.findOne({id:driver}, function(err, doc){
@@ -213,7 +221,7 @@ app.post('/', function(req, res){
           });
 
           //arrived
-          app.get('/driver/arrived', function(req, res){
+          app.get('/driver/return', function(req, res){
             model2.find({driver:driverName}, function(err, doc){
             var date = doc.map(function(obj) {
               return obj.date;
@@ -232,9 +240,9 @@ app.post('/', function(req, res){
               });
             var ts = Date.now();
 
-              res.render('arrived', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
+              res.render('Return', {date:date, location:location, time:ts, driver:driver, fork:fork, forkKg:forkKg});
 
-              app.post('/driver/arrived', function(req, res){
+              app.post('/driver/return', function(req, res){
                 model.findOne({id:driver}, function(err, doc){
                   doc.status = "on";
                   doc.save();
@@ -271,24 +279,24 @@ app.get('/manager', function(req, res){
 
 
 app.post('/manager',function(req,res){
-  res.redirect('/orderForm');
+  res.redirect('/orderFormView');
 });
 
-app.get('/orderForm', function(req,res){
+app.get('/orderFormView', function(req,res){
   model.find({position:"driver", status:"on"}, 'id', function(err, doc){
 
     var getId = doc.map(function(obj) {
       return obj.id;
     });
 
-    res.render('orderForm', {driverlist: getId});
+    res.render('orderFormView', {driverlist: getId});
 
 });
 });
 
 
 
-app.post('/orderForm', function(req,res){
+app.post('/orderFormView', function(req,res){
   var inputValue = req.body.button;
   if (inputValue == "confirm"){
     var registerForm = new model2();

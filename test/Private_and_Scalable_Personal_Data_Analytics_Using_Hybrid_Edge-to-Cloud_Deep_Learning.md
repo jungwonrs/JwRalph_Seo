@@ -1,9 +1,9 @@
 # Private and Scalable Personal Data Analytics Using Hybrid Edge-to-Cloud Deep Learning
 
-### [Private and Scalable Personal Data Analytics Using Hybrid Edge-to-Cloud Deep Learning](jungwonrs/papers/private and scalable personal data analytics using hybrid edge to cloud deep learning.pdf)
+### [google](https://google.com)
+### [Private and Scalable Personal Data Analytics Using Hybrid Edge-to-Cloud Deep Learning](https://github.com/jungwonrs/JwRalph_Seo/papers/private and scalable personal data analytics using hybrid edge to cloud deep learning.pdf)
+private and scalable personal data analytics using hybrid edge to cloud deep learning.pdf
 
-
-## 2020년 5월 20일 발표, 320200038 서중원
 
 --
 

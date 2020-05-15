@@ -23,11 +23,10 @@ Cyber-Physical System과 IoT의 발전은 인터넷과 실제 세상과 상호�
 3. 개인정보 문제
 
 위의 문제들을 해결하기 위한 방안으로서, 그림1과 같이 에지 컴퓨팅(Edge Computing)를 사용하는 방법들이 제안되고 있습니다.
-![image1.PNG](images/image1.PNG)
 <p align="center">
 <img src ="images/image1.PNG">
-</p>
 그림1. 사용자의 데이터가 에지 노드(Edge Node)에서 로컬로 수집 및 처리되고, 처리된 데이터를 클라우드 데이터 센터로 전송되는 형태  
+</p>
 ㅇㅇㅇㅇ
 
 

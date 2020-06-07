@@ -1,0 +1,21 @@
+{
+  "name": "besu_smart_contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "besu": "besu --data-path=data --genesis-file=privateNetworkGenesis.json --miner-enabled --miner-coinbase=dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --host-whitelist=\"*\" --rpc-http-cors-origins=\"all\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.0.35",
+    "ethereumjs-tx": "^2.1.2",
+    "web3": "^1.2.8",
+    "web3-eea": "^0.9.0"
+  }
+}

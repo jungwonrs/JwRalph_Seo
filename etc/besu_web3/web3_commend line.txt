@@ -1,0 +1,19 @@
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf869808203e88252089443d1f9096674b5722d359b6402381816d5b22f28881bc16d674ec800008025a076b932f20c28d7b3389fbfd2e823c19074aa77abf374d878be64a1ca40241b45a034ea0ae99a0e9b5bc5425694cfebbed8390b44e423c2b1eab2bb7dfe1fe3b780"],"id":1}' http://localhost:8545
+
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf869018203e882520894f17f52151ebef6c7334fad080c5704d77216b732881bc16d674ec80000801ba02da1c48b670996dcb1f447ef9ef00b33033c48a4fe938f420bec3e56bfd24071a062e0aa78a81bf0290afbc3a9d8e9a068e6d74caa66c5e0fa8a46deaae96b0833"],"id":1}' http://127.0.0.1:8545
+
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x69498dd54bd25aa0c886cf1f8b8ae0856d55ff13","value":"0x1"}, "latest"],"id":53}' http://127.0.0.1:8545
+
+besu --data-path=data --genesis-file=privateNetworkGenesis.json --bootnodes --miner-enabled --miner-coinbase dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --host-whitelist="*" --rpc-http-cors-origins="all"     
+
+besu --data-path=data --genesis-file=privateNetworkGenesis.json --miner-enabled --miner-coinbase=dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --host-whitelist="*" --rpc-http-cors-origins="all"     
+
+"besu --network=dev --miner-enabled --miner-coinbase=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73 --rpc-http-cors-origins=\"all\" --host-whitelist=\"*\" --rpc-ws-enabled --rpc-http-enabled --data-path=/tmp/tmpDatdir2"
+
+
+besu --data-path=data --genesis-file=privateNetworkGenesis.json --miner-enabled --miner-coinbase=dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --host-whitelist="*" --rpc-http-cors-origins="all"    
+
+
+0x0f8b2316A67A94DCE794FcE51ba2cBA7788deecE

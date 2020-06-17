@@ -1,0 +1,235 @@
+var express = require('express');
+var router = express.Router();
+
+//var smart_contract = require('../smartContract/firstSmartContract');
+//var call_contract = smart_contract.Contract;
+
+
+var Web3 = require('web3');
+var Tx = require("ethereumjs-tx");
+
+var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
+//sale
+router.get('/sale', function(req,res){
+  var id = req.body.id;
+  if (req.body.id == null) {
+    res.status(400).send("Check Value");
+  }
+
+  call_contract.methods.getSale(id).call().then(data => {
+    res.status(200).json(
+    {
+      "sucess": data
+    }
+    );
+  })
+});
+
+
+router.post('/sale', function(req,rest){
+  var id = req.body.id;
+  var raw_data = req.body.data;
+  var user_address = "temp_value";
+  var private_key="temp_key";
+  var set_string = call_contract.methods.postSale(id, raw_data);
+  var set_string_byte_code = set_string.encodeABI();
+
+  if (req.body.id == null){
+    res.status(400).send("Check Id");
+  }
+
+  web3.eth.getTransactionCount (user_address, "pending", (err, txCount) =>{
+    var raw_tx = {
+      nonce: web3.utils.toHex(txcount),
+      gasPrice: web3.utils.toHex(100),
+      gasLimit: web3.utils.toHex(126165),
+      data: set_string_byte_code,
+      to: smart_contract.CA
+    };
+
+    var signature = new Buffer.from(private_key, "hex");
+    var make_tx = new Tx(raw_tx);
+    make_tx.sign(signature);
+    var serialized_tx = make_tx.serialize();
+    var raw_tx_hex = '0x'+serialized_tx.toString('hex');
+
+    web3.eth.sendSignedTransaction(raw_tx_hex, (err, txHash) =>{
+      res.status(200).json({
+        "status": "okay!",
+        "transaction_Hash": txHash
+      });
+    });
+  })
+});
+
+//sale-cancel
+router.get('/sale-cancel', function(req,res){
+  var id = req.body.id;
+  if (req.body.id == null) {
+    res.status(400).send("Check Value");
+  }
+
+  call_contract.methods.getSaleCancel(id).call().then(data => {
+    res.status(200).json(
+    {
+      "sucess": data
+    }
+    );
+  })
+});
+
+
+router.post('/sale-cancel', function(req,rest){
+  var id = req.body.id;
+  var raw_data = req.body.data;
+  var user_address = "temp_value";
+  var private_key="temp_key";
+  var set_string = call_contract.methods.postSaleCancel(id, raw_data);
+  var set_string_byte_code = set_string.encodeABI();
+
+  if (req.body.id == null){
+    res.status(400).send("Check Id");
+  }
+
+  web3.eth.getTransactionCount (user_address, "pending", (err, txCount) =>{
+    var raw_tx = {
+      nonce: web3.utils.toHex(txcount),
+      gasPrice: web3.utils.toHex(100),
+      gasLimit: web3.utils.toHex(126165),
+      data: set_string_byte_code,
+      to: smart_contract.CA
+    };
+
+    var signature = new Buffer.from(private_key, "hex");
+    var make_tx = new Tx(raw_tx);
+    make_tx.sign(signature);
+    var serialized_tx = make_tx.serialize();
+    var raw_tx_hex = '0x'+serialized_tx.toString('hex');
+
+    web3.eth.sendSignedTransaction(raw_tx_hex, (err, txHash) =>{
+      res.status(200).json({
+        "status": "okay!",
+        "transaction_Hash": txHash
+      });
+    });
+  })
+});
+
+
+//use
+router.get('/use', function(req,res){
+  var id = req.body.id;
+  if (req.body.id == null) {
+    res.status(400).send("Check Value");
+  }
+
+  call_contract.methods.getUse(id).call().then(data => {
+    res.status(200).json(
+    {
+      "sucess": data
+    }
+    );
+  })
+});
+
+
+router.post('/use', function(req,rest){
+  var id = req.body.id;
+  var raw_data = req.body.data;
+  var user_address = "temp_value";
+  var private_key="temp_key";
+  var set_string = call_contract.methods.postUse(id, raw_data);
+  var set_string_byte_code = set_string.encodeABI();
+
+  if (req.body.id == null){
+    res.status(400).send("Check Id");
+  }
+
+  web3.eth.getTransactionCount (user_address, "pending", (err, txCount) =>{
+    var raw_tx = {
+      nonce: web3.utils.toHex(txcount),
+      gasPrice: web3.utils.toHex(100),
+      gasLimit: web3.utils.toHex(126165),
+      data: set_string_byte_code,
+      to: smart_contract.CA
+    };
+
+    var signature = new Buffer.from(private_key, "hex");
+    var make_tx = new Tx(raw_tx);
+    make_tx.sign(signature);
+    var serialized_tx = make_tx.serialize();
+    var raw_tx_hex = '0x'+serialized_tx.toString('hex');
+
+    web3.eth.sendSignedTransaction(raw_tx_hex, (err, txHash) =>{
+      res.status(200).json({
+        "status": "okay!",
+        "transaction_Hash": txHash
+      });
+    });
+  })
+});
+
+
+//use-cancel
+router.get('/use-cancel', function(req,res){
+  var id = req.body.id;
+  if (req.body.id == null) {
+    res.status(400).send("Check Value");
+  }
+
+  call_contract.methods.getUseCancel(id).call().then(data => {
+    res.status(200).json(
+    {
+      "sucess": data
+    }
+    );
+  })
+});
+
+
+router.post('/use-cancel', function(req,rest){
+  var id = req.body.id;
+  var raw_data = req.body.data;
+  var user_address = "temp_value";
+  var private_key="temp_key";
+  var set_string = call_contract.methods.postUseCancel(id, raw_data);
+  var set_string_byte_code = set_string.encodeABI();
+
+  if (req.body.id == null){
+    res.status(400).send("Check Id");
+  }
+
+  web3.eth.getTransactionCount (user_address, "pending", (err, txCount) =>{
+    var raw_tx = {
+      nonce: web3.utils.toHex(txcount),
+      gasPrice: web3.utils.toHex(100),
+      gasLimit: web3.utils.toHex(126165),
+      data: set_string_byte_code,
+      to: smart_contract.CA
+    };
+
+    var signature = new Buffer.from(private_key, "hex");
+    var make_tx = new Tx(raw_tx);
+    make_tx.sign(signature);
+    var serialized_tx = make_tx.serialize();
+    var raw_tx_hex = '0x'+serialized_tx.toString('hex');
+
+    web3.eth.sendSignedTransaction(raw_tx_hex, (err, txHash) =>{
+      res.status(200).json({
+        "status": "okay!",
+        "transaction_Hash": txHash
+      });
+    });
+  })
+});
+
+
+
+
+  router.get('*', function(req,res){
+    res.status(404).send("check URL");
+  });
+
+
+module.exports = router;

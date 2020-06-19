@@ -23,8 +23,8 @@ router.get('/firstSM',function(req,res){
 });
 
 router.post('/firstSM',function(req,res){
-  var user_address = "dc45BbA03A4CE2c9b27294B5F74B88420269C415";
-  var private_key = "27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA";
+  var user_address = "useradress";
+  var private_key = "privatekey";
   var message = req.body.message;
   var set_string = call_first_contract.methods.setString(req.body.message);
   var set_string_byte_code = set_string.encodeABI();

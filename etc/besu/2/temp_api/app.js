@@ -3,6 +3,9 @@ var body_parser = require('body-parser');
 var ejs = require('ejs');
 var app = express();
 var path = require('path');
+var swaggerUi = require('swagger-ui-express');
+var yaml = require('yamljs');
+var swaggerDocument = yaml.load('API.yaml');
 
 app.set("view engine", "ejs");
 app.use(body_parser.urlencoded({extended:true}));
@@ -10,6 +13,12 @@ app.use(body_parser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 var smart_contract_api = require('./routes/api');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/', function(req, res){
+  res.status(404).send("check URL");
+})
 
 
 app.use(function(req, res, next){
@@ -32,9 +41,6 @@ app.use(function(req, res, next){
 
 app.use('/blockchain', smart_contract_api);
 
-app.use('/', function(req, res){
-  res.status(404).send("check URL");
-})
 
 var port = process.env.Port || 8888;
 

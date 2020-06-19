@@ -1,6 +1,6 @@
 var Web3 = require('web3');
 var Tx = require("ethereumjs-tx");
-var web3 = new Web3(new Web3.providers.HttpProvider('http://3.34.169.244:8545'));
+var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
 var ABI = [
   {
@@ -153,7 +153,7 @@ var ABI = [
     }
   ]
 
-var CA = "0x0f8b2316A67A94DCE794FcE51ba2cBA7788deecE";
+var CA = "SmartContract Address";
 
 var Contract = new web3.eth.Contract(ABI, CA);
 

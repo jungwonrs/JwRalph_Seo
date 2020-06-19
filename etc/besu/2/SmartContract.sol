@@ -1,6 +1,6 @@
 pragma solidity ^0.4.22;
 
-contract oneTwoCM {
+contract testing {
 
     struct saleRawData {
         string data;

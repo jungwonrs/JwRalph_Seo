@@ -37,7 +37,7 @@ var ABI = [
   ]
 
 
-var CA = "0x0f8b2316A67A94DCE794FcE51ba2cBA7788deecE";
+var CA = "smartContractAddress";
 
 var Contract = new web3.eth.Contract(ABI, CA);
 

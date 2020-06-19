@@ -10,8 +10,8 @@
   "gasLimit": "0x1000000",
   "difficulty": "0x10000",
   "alloc": {
-    "dc45BbA03A4CE2c9b27294B5F74B88420269C415": {
-      "privateKey": "27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA",
+    "useraddress": {
+      "privateKey": "userprivatekey1",
       "balance": "0x90000000000000000000000"
     }
   }

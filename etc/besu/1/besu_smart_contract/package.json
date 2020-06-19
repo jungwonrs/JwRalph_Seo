@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "besu": "besu --data-path=data --genesis-file=privateNetworkGenesis.json --miner-enabled --miner-coinbase=dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --host-whitelist=\"*\" --rpc-http-cors-origins=\"all\"",
+    "besu":  "besu --data-path=data --genesis-file=privateNetworkGenesis.json --miner-enabled --miner-coinbase=dc45BbA03A4CE2c9b27294B5F74B88420269C415 --rpc-http-enabled --rpc-ws-enabled --host-whitelist=\"*\" --rpc-http-cors-origins=\"all\" --rpc-http-host=\"0.0.0.0\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

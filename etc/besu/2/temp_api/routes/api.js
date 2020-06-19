@@ -8,7 +8,7 @@ var call_contract = smart_contract.Contract;
 var Web3 = require('web3');
 var Tx = require("ethereumjs-tx");
 
-var web3 = new Web3(new Web3.providers.HttpProvider('http://3.34.169.244:8545'));
+var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
 //sale
 router.get('/sale', function(req, res){
@@ -30,8 +30,8 @@ router.get('/sale', function(req, res){
 router.post('/sale', function(req, res){
   var id = req.body.id;
   var raw_data = req.body.data;
-  var user_address = "dc45BbA03A4CE2c9b27294B5F74B88420269C415";
-  var private_key="27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA";
+  var user_address = "userAddress";
+  var private_key="userPrivateKey";
   var set_string = call_contract.methods.postSale(id, raw_data);
   var set_string_byte_code = set_string.encodeABI();
 
@@ -96,8 +96,8 @@ router.get('/sale-cancel', function(req, res){
 router.post('/sale-cancel', function(req, res){
   var id = req.body.id;
   var raw_data = req.body.data;
-  var user_address = "dc45BbA03A4CE2c9b27294B5F74B88420269C415";
-  var private_key="27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA";
+  var user_address = "userAddress";
+  var private_key="privateKey";
   var set_string = call_contract.methods.postSaleCancel(id, raw_data);
   var set_string_byte_code = set_string.encodeABI();
 
@@ -159,8 +159,8 @@ router.get('/use', function(req,res){
 router.post('/use', function(req, res){
   var id = req.body.id;
   var raw_data = req.body.data;
-  var user_address = "dc45BbA03A4CE2c9b27294B5F74B88420269C415";
-  var private_key="27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA";
+  var user_address = "userAddress";
+  var private_key="privateKey";
   var set_string = call_contract.methods.postUse(id, raw_data);
   var set_string_byte_code = set_string.encodeABI();
 
@@ -223,8 +223,8 @@ router.get('/use-cancel', function(req, res){
 router.post('/use-cancel', function(req, res){
   var id = req.body.id;
   var raw_data = req.body.data;
-  var user_address = "dc45BbA03A4CE2c9b27294B5F74B88420269C415";
-  var private_key="27A9605556205AEA8BA7D3394E5E805F6D3E18B27725E764038B7C33A8EE29DA";
+  var user_address = "userAddress";
+  var private_key="privateKey";
   var set_string = call_contract.methods.postUseCancel(id, raw_data);
   var set_string_byte_code = set_string.encodeABI();
 

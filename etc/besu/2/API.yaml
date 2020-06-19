@@ -1,0 +1,309 @@
+swagger: "2.0"
+info:
+  description: "Hyperledger Besu Smart Contract API"
+  version: "0.1"
+  title: "Hyperledger Besu Smart Contract API"
+  contact:
+    name: "Nonce Lab. Dev Team"
+    email: "info@noncelab.com"
+host: "52.79.34.160:8888"
+basePath: "/blockchain"
+tags:
+  - name: "API"
+paths:
+  /sale:
+    post:
+      tags:
+        - "API"
+      summary: "add sale data"
+      operationId: "postSale"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+    get:
+      tags:
+        - "API"
+      summary: "get sale data"
+      operationId: "getSale"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/GetBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+  /sale-cancel:
+    post:
+      tags:
+        - "API"
+      summary: "add sale cancel data"
+      operationId: "postSaleCancel"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+    get:
+      tags:
+        - "API"
+      summary: "get sale cancel data"
+      operationId: "getSaleCancel"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/GetBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+  /use:
+    post:
+      tags:
+        - "API"
+      summary: "add use data"
+      operationId: "postUse"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+    get:
+      tags:
+        - "API"
+      summary: "get use data"
+      operationId: "getUse"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/GetBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+
+  /use-cancel:
+    post:
+      tags:
+        - "API"
+      summary: "add use cancel data"
+      operationId: "postUseCancel"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+    get:
+      tags:
+        - "API"
+      summary: "get use cancel data"
+      operationId: "getUseCancel"
+      produces:
+        - "application/json"
+        - "*/*"
+      parameters:
+        - name: "Headers"
+          in: "header"
+          required: true
+          type: "string"
+          description: "key: api-key \n value: one-two-cm"
+
+        - name: "Body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/GetBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+
+definitions:
+  PostBody:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+      data:
+        type: "string"
+
+  GetBody:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+  

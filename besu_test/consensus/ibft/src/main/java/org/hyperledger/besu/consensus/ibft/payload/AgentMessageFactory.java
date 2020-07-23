@@ -1,9 +1,12 @@
 package org.hyperledger.besu.consensus.ibft.payload;
 
 import org.hyperledger.besu.consensus.ibft.ConsensusRoundIdentifier;
-import org.hyperledger.besu.consensus.ibft.messagewrappers.*;
+import org.hyperledger.besu.consensus.ibft.messagewrappers.AgentOn;
+import org.hyperledger.besu.consensus.ibft.messagewrappers.AgentCommit;
+import org.hyperledger.besu.consensus.ibft.messagewrappers.AgentPrepare;
+import org.hyperledger.besu.consensus.ibft.messagewrappers.AgentRoundChange;
+import org.hyperledger.besu.consensus.ibft.messagewrappers.AgentProposal;
 import org.hyperledger.besu.consensus.ibft.statemachine.AgentPreparedRoundArtifacts;
-import org.hyperledger.besu.consensus.ibft.statemachine.PreparedRoundArtifacts;
 import org.hyperledger.besu.crypto.NodeKey;
 import org.hyperledger.besu.crypto.SECP256K1.Signature;
 import org.hyperledger.besu.ethereum.core.Block;

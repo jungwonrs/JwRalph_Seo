@@ -26,21 +26,21 @@ public class AgentEventMultiplexer {
                     break;
                 case ROUND_EXPIRY:
                     final AgentRoundExpiry roundExpiry = (AgentRoundExpiry) agentEvent;
-                    agentController.handleMessageEvent(roundExpiry);
+                    agentController.handleRoundExpiry(roundExpiry);
                     break;
                 case NEW_CHAIN_HEAD:
                     final AgentNewChainHead newChainHead = (AgentNewChainHead) agentEvent;
-                    agentController.handleMessageEvent(newChainHead);
+                    agentController.handleNewBlockEvent(newChainHead);
                     break;
                 case BLOCK_TIMER_EXPIRY:
                     final AgentBlockTimerExpiry blockTimerExpiry = (AgentBlockTimerExpiry) agentEvent;
-                    agentController.handleMessageEvent(blockTimerExpiry);
+                    agentController.handleBlockTimerExpiry(blockTimerExpiry);
                     break;
                 default:
                     throw new  RuntimeException("Illegal event in queue.");
             }
         } catch (final Exception e){
-            LOG.error("State machine threw exception while processing event {" + agentEvent + "}", E);
+            LOG.error("State machine threw exception while processing event {" + agentEvent + "}", e);
         }
     }
 }

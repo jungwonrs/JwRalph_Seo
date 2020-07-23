@@ -3,43 +3,43 @@ package org.hyperledger.besu.controller;
 
 import com.google.common.base.Splitter;
 import org.apache.tuweni.bytes.Bytes;
-import org.hyperledger.besu.config.AgentConfigOptions;
 import org.hyperledger.besu.config.GenesisConfigOptions;
-import org.hyperledger.besu.config.IbftFork;
+import org.hyperledger.besu.config.AgentConfigOptions;
+import org.hyperledger.besu.config.AgentFork;
 import org.hyperledger.besu.consensus.common.BlockInterface;
 import org.hyperledger.besu.consensus.common.EpochManager;
-import org.hyperledger.besu.consensus.common.ForkingVoteTallyCache;
-import org.hyperledger.besu.consensus.common.IbftValidatorOverrides;
+import org.hyperledger.besu.consensus.common.AgentForkingVoteTallyCache;
+import org.hyperledger.besu.consensus.common.AgentValidatorOverrides;
 import org.hyperledger.besu.consensus.common.VoteProposer;
 import org.hyperledger.besu.consensus.common.VoteTallyCache;
 import org.hyperledger.besu.consensus.common.VoteTallyUpdater;
-import org.hyperledger.besu.consensus.ibft.BlockTimer;
+import org.hyperledger.besu.consensus.ibft.AgentBlockTimer;
 import org.hyperledger.besu.consensus.ibft.EthSynchronizerUpdater;
-import org.hyperledger.besu.consensus.ibft.EventMultiplexer;
-import org.hyperledger.besu.consensus.ibft.IbftBlockInterface;
-import org.hyperledger.besu.consensus.ibft.IbftContext;
+import org.hyperledger.besu.consensus.ibft.AgentEventMultiplexer;
+import org.hyperledger.besu.consensus.ibft.AgentBlockInterface;
+import org.hyperledger.besu.consensus.ibft.AgentContext;
 import org.hyperledger.besu.consensus.ibft.AgentEventQueue;
-import org.hyperledger.besu.consensus.ibft.IbftExecutors;
-import org.hyperledger.besu.consensus.ibft.IbftGossip;
-import org.hyperledger.besu.consensus.ibft.IbftProcessor;
-import org.hyperledger.besu.consensus.ibft.IbftProtocolSchedule;
+import org.hyperledger.besu.consensus.ibft.AgentExecutors;
+import org.hyperledger.besu.consensus.ibft.AgentGossip;
+import org.hyperledger.besu.consensus.ibft.AgentProcessor;
+import org.hyperledger.besu.consensus.ibft.AgentProtocolSchedule;
 import org.hyperledger.besu.consensus.ibft.MessageTracker;
-import org.hyperledger.besu.consensus.ibft.RoundTimer;
+import org.hyperledger.besu.consensus.ibft.AgentRoundTimer;
 import org.hyperledger.besu.consensus.ibft.UniqueMessageMulticaster;
-import org.hyperledger.besu.consensus.ibft.blockcreation.IbftBlockCreatorFactory;
-import org.hyperledger.besu.consensus.ibft.blockcreation.IbftMiningCoordinator;
+import org.hyperledger.besu.consensus.ibft.blockcreation.AgentBlockCreatorFactory;
+import org.hyperledger.besu.consensus.ibft.blockcreation.AgentMiningCoordinator;
 import org.hyperledger.besu.consensus.ibft.blockcreation.ProposerSelector;
 import org.hyperledger.besu.consensus.ibft.jsonrpc.IbftJsonRpcMethods;
 import org.hyperledger.besu.consensus.ibft.network.ValidatorPeers;
-import org.hyperledger.besu.consensus.ibft.payload.MessageFactory;
+import org.hyperledger.besu.consensus.ibft.payload.AgentMessageFactory;
 import org.hyperledger.besu.consensus.ibft.protocol.AgentProtocolManager;
-import org.hyperledger.besu.consensus.ibft.protocol.IbftSubProtocol;
+import org.hyperledger.besu.consensus.ibft.protocol.AgentSubProtocol;
 import org.hyperledger.besu.consensus.ibft.statemachine.FutureMessageBuffer;
-import org.hyperledger.besu.consensus.ibft.statemachine.IbftController;
-import org.hyperledger.besu.consensus.ibft.statemachine.IbftBlockHeightManagerFactory;
-import org.hyperledger.besu.consensus.ibft.statemachine.IbftFinalState;
-import org.hyperledger.besu.consensus.ibft.statemachine.IbftRoundFactory;
-import org.hyperledger.besu.consensus.ibft.validation.MessageValidatorFactory;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentBlockHeightManagerFactory;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentController;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentFinalState;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentRoundFactory;
+import org.hyperledger.besu.consensus.ibft.validation.AgentMessageValidatorFactory;
 import org.hyperledger.besu.crypto.AgentKeyGenerator;
 import org.hyperledger.besu.crypto.AgentSignature;
 import org.hyperledger.besu.ethereum.ProtocolContext;
@@ -48,7 +48,6 @@ import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
 import org.hyperledger.besu.ethereum.chain.Blockchain;
 import org.hyperledger.besu.ethereum.chain.MinedBlockObserver;
 import org.hyperledger.besu.ethereum.chain.MutableBlockchain;
-
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.MiningParameters;
@@ -59,7 +58,6 @@ import org.hyperledger.besu.ethereum.eth.sync.state.SyncState;
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
 import org.hyperledger.besu.ethereum.mainnet.ProtocolSchedule;
 import org.hyperledger.besu.ethereum.p2p.config.SubProtocolConfiguration;
-
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.MessageData;
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.RawMessage;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
@@ -92,7 +90,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
     private AgentEventQueue agentEventQueue;
     private AgentConfigOptions agentConfig;
     private ValidatorPeers peers;
-    private final BlockInterface blockInterface = new IbftBlockInterface();
+    private final BlockInterface blockInterface = new AgentBlockInterface();
 
     //1
     @Override
@@ -115,7 +113,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
 
         return new SubProtocolConfiguration()
                 .withSubProtocol(EthProtocol.get(), ethProtocolManager)
-                .withSubProtocol(IbftSubProtocol.get(), new AgentProtocolManager(agentEventQueue, peers));
+                .withSubProtocol(AgentSubProtocol.get(), new AgentProtocolManager(agentEventQueue, peers));
 
     }
 
@@ -132,7 +130,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
 
         //key Node Election
         //Todo: start to time check from here
-        final VoteTallyCache voteTallyCache = protocolContext.getConsensusState(IbftContext.class).getVoteTallyCache();
+        final VoteTallyCache voteTallyCache = protocolContext.getConsensusState(AgentContext.class).getVoteTallyCache();
         peers = new ValidatorPeers(voteTallyCache);
         List<String> addressList = peers.getListValidators();
 
@@ -157,7 +155,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
         final UniqueMessageMulticaster uniqueMessageMulticaster =
                 new UniqueMessageMulticaster(peers, agentConfig.getGossipedHistoryLimit());
 
-        final IbftGossip gossiper = new IbftGossip(uniqueMessageMulticaster);
+        final AgentGossip gossiper = new AgentGossip(uniqueMessageMulticaster);
 
         final MessageTracker duplicateMessageTracker =
                 new MessageTracker(agentConfig.getDuplicateMessageLimit());
@@ -174,9 +172,9 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
         System.out.println("======================================================="+keyNodeStart);
 
 
-        final IbftExecutors ibftExecutors = IbftExecutors.create(metricsSystem);
-        final IbftBlockCreatorFactory blockCreatorFactory =
-                new IbftBlockCreatorFactory(
+        final AgentExecutors agentExecutors = AgentExecutors.create(metricsSystem);
+        final AgentBlockCreatorFactory blockCreatorFactory =
+                new AgentBlockCreatorFactory(
                         gasLimitCalculator,
                         transactionPool.getAgentPendingTransactions(),
                         protocolContext,
@@ -189,21 +187,21 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
         // "only send once" filter applied by the UniqueMessageMulticaster.
 
 
-        final IbftFinalState finalState =
-                new IbftFinalState(
+        final AgentFinalState finalState =
+                new AgentFinalState(
                         voteTallyCache,
                         nodeKey,
                         Util.publicKeyToAddress(nodeKey.getPublicKey()),
                         proposerSelector,
                         uniqueMessageMulticaster,
-                        new RoundTimer(agentEventQueue, agentConfig.getRequestTimeoutSeconds(), ibftExecutors),
-                        new BlockTimer(
-                                agentEventQueue, agentConfig.getBlockPeriodSeconds(), ibftExecutors, clock),
+                        new AgentRoundTimer(agentEventQueue, agentConfig.getRequestTimeoutSeconds(), agentExecutors),
+                        new AgentBlockTimer(
+                                agentEventQueue, agentConfig.getBlockPeriodSeconds(), agentExecutors, clock),
                         blockCreatorFactory,
-                        new MessageFactory(nodeKey),
+                        new AgentMessageFactory(nodeKey),
                         clock);
-        final MessageValidatorFactory messageValidatorFactory =
-                new MessageValidatorFactory(proposerSelector, protocolSchedule, protocolContext);
+        final AgentMessageValidatorFactory messageValidatorFactory =
+                new AgentMessageValidatorFactory(proposerSelector, protocolSchedule, protocolContext);
         final Subscribers<MinedBlockObserver> minedBlockObservers = Subscribers.create();
         minedBlockObservers.subscribe(ethProtocolManager);
         final FutureMessageBuffer futureMessageBuffer =
@@ -212,13 +210,13 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         agentConfig.getFutureMessagesLimit(),
                         blockchain.getChainHeadBlockNumber());
 
-        final IbftController ibftController =
-                new IbftController(
+        final AgentController agentController =
+                new AgentController(
                         blockchain,
                         finalState,
-                        new IbftBlockHeightManagerFactory(
+                        new AgentBlockHeightManagerFactory(
                                 finalState,
-                                new IbftRoundFactory(
+                                new AgentRoundFactory(
                                         finalState,
                                         protocolContext,
                                         protocolSchedule,
@@ -231,33 +229,33 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
 
 
-        final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
-        final IbftProcessor ibftProcessor = new IbftProcessor(agentEventQueue, eventMultiplexer);
-        final MiningCoordinator ibftMiningCoordinator =
-                new IbftMiningCoordinator(
-                        ibftExecutors,
-                        ibftController,
-                        ibftProcessor,
+        final AgentEventMultiplexer eventMultiplexer = new AgentEventMultiplexer(agentController);
+        final AgentProcessor agentProcessor = new AgentProcessor(agentEventQueue, eventMultiplexer);
+        final MiningCoordinator agentMiningCoordinator =
+                new AgentMiningCoordinator(
+                        agentExecutors,
+                        agentController,
+                        agentProcessor,
                         blockCreatorFactory,
                         blockchain,
                         agentEventQueue);
-        ibftMiningCoordinator.enable();
+        agentMiningCoordinator.enable();
 
-        return ibftMiningCoordinator;
+        return agentMiningCoordinator;
     }
 
     //7
     @Override
     protected PluginServiceFactory createAdditionalPluginServices(final Blockchain blockchain) {
 
-        return new IbftQueryPluginServiceFactory(blockchain, nodeKey);
+        return new AgentQueryPluginServiceFactory(blockchain, nodeKey);
     }
 
     //2
     @Override
     protected ProtocolSchedule createProtocolSchedule() {
 
-        return IbftProtocolSchedule.create(
+        return AgentProtocolSchedule.create(
                 genesisConfig.getConfigOptions(genesisConfigOverrides),
                 privacyParameters,
                 isRevertReasonEnabled);
@@ -275,32 +273,32 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
 
     //4
     @Override
-    protected IbftContext createConsensusContext(
+    protected AgentContext createConsensusContext(
             final Blockchain blockchain, final WorldStateArchive worldStateArchive) {
         final GenesisConfigOptions configOptions =
                 genesisConfig.getConfigOptions(genesisConfigOverrides);
         final AgentConfigOptions agentConfig = configOptions.getAgentConfigOptions();
         final EpochManager epochManager = new EpochManager(agentConfig.getEpochLength());
-        final Map<Long, List<Address>> ibftValidatorForkMap =
-                convertIbftForks(configOptions.getTransitions().getIbftForks());
+        final Map<Long, List<Address>> agentValidatorForkMap =
+                convertAgentForks(configOptions.getTransitions().getAgentForks());
 
-        return new IbftContext(
-                new ForkingVoteTallyCache(
+        return new AgentContext(
+                new AgentForkingVoteTallyCache(
                         blockchain,
-                        new VoteTallyUpdater(epochManager, new IbftBlockInterface()),
+                        new VoteTallyUpdater(epochManager, new AgentBlockInterface()),
                         epochManager,
-                        new IbftBlockInterface(),
-                        new IbftValidatorOverrides(ibftValidatorForkMap)),
+                        new AgentBlockInterface(),
+                        new AgentValidatorOverrides(agentValidatorForkMap)),
                 new VoteProposer(),
                 epochManager,
                 blockInterface);
     }
 
     //3
-    private Map<Long, List<Address>> convertIbftForks(final List<IbftFork> ibftForks) {
+    private Map<Long, List<Address>> convertAgentForks(final List<AgentFork> agentForks) {
         final Map<Long, List<Address>> result = new HashMap<>();
 
-        for (final IbftFork fork : ibftForks) {
+        for (final AgentFork fork : agentForks) {
             fork.getValidators()
                     .map(
                             validators ->

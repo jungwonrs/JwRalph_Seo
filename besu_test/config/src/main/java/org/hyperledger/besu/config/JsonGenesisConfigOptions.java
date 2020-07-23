@@ -172,6 +172,7 @@ public class JsonGenesisConfigOptions implements GenesisConfigOptions {
     return transitions;
   }
 
+
   @Override
   public OptionalLong getHomesteadBlockNumber() {
     return getOptionalLong("homesteadblock");

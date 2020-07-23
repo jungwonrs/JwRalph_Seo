@@ -4,7 +4,11 @@ import org.hyperledger.besu.consensus.ibft.payload.AgentPreparedCertificate;
 import org.hyperledger.besu.consensus.ibft.payload.AgentRoundChangePayload;
 import org.hyperledger.besu.consensus.ibft.payload.AgentSignedData;
 import org.hyperledger.besu.crypto.SECP256K1;
-import org.hyperledger.besu.ethereum.core.*;
+import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.Util;
+import org.hyperledger.besu.ethereum.core.Block;
+import org.hyperledger.besu.ethereum.core.BlockHeader;
+import org.hyperledger.besu.ethereum.core.BlockHeaderBuilder;
 
 import java.util.Collection;
 import java.util.Optional;

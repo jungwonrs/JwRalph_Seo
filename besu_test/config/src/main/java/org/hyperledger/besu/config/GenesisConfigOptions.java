@@ -167,4 +167,5 @@ public interface GenesisConfigOptions {
   Map<String, Object> asMap();
 
   TransitionsConfigOptions getTransitions();
+
 }

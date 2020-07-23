@@ -10,6 +10,7 @@ import org.hyperledger.besu.consensus.ibft.ibftevent.AgentNewChainHead;
 import org.hyperledger.besu.consensus.ibft.ibftevent.AgentReceivedMessageEvent;
 
 import org.hyperledger.besu.consensus.ibft.ibftevent.AgentBlockTimerExpiry;
+import org.hyperledger.besu.consensus.ibft.ibftevent.AgentRoundExpiry;
 import org.hyperledger.besu.consensus.ibft.messagedata.AgentMessageData;
 import org.hyperledger.besu.consensus.ibft.messagedata.AgentPrepareMessageData;
 import org.hyperledger.besu.consensus.ibft.messagedata.AgentProposalMessageData;
@@ -172,6 +173,17 @@ public class AgentController {
                     "Block timer event discarded as it is not for current block height chainHeight={} eventHeight={}",
                     currentHeightManager.getChainHeight(),
                     roundIdentifier.getSequenceNumber());
+        }
+    }
+
+    public void handleRoundExpiry(final AgentRoundExpiry roundExpiry) {
+        if (isMsgForCurrentHeight(roundExpiry.getView())) {
+            currentHeightManager.roundExpired(roundExpiry);
+        } else {
+            LOG.trace(
+                    "Round expiry event discarded as it is not for current block height chainHeight={} eventHeight={}",
+                    currentHeightManager.getChainHeight(),
+                    roundExpiry.getView().getSequenceNumber());
         }
     }
 

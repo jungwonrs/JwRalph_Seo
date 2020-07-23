@@ -101,7 +101,6 @@ public class GenesisConfigFile {
     return JsonUtil.getValueAsString(configRoot, "agent", "");
   }
 
-
   public String getParentHash() {
     return JsonUtil.getString(configRoot, "parenthash", "");
   }

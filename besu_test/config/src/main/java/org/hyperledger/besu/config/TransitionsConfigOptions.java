@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 public class TransitionsConfigOptions {
 
   public static final String IBFT2_FORKS = "ibft2";
+  public static final String AGENT = "agent";
 
   public static final TransitionsConfigOptions DEFAULT =
       new TransitionsConfigOptions(JsonUtil.createEmptyObjectNode());
@@ -62,4 +63,29 @@ public class TransitionsConfigOptions {
 
     return Collections.unmodifiableList(ibftForks);
   }
+
+  public List<AgentFork> getAgentForks() {
+    final Optional<ArrayNode> agentForksNode =
+            JsonUtil.getArrayNode(customForkConfigRoot, AGENT);
+
+    if (agentForksNode.isEmpty()) {
+      return emptyList();
+    }
+
+    final List<AgentFork> agentForks = Lists.newArrayList();
+
+    agentForksNode
+            .get()
+            .elements()
+            .forEachRemaining(
+                    node -> {
+                      if (!node.isObject()) {
+                        throw new IllegalArgumentException("Agent fork is illegally formatted.");
+                      }
+                      agentForks.add(new AgentFork((ObjectNode) node));
+                    });
+
+    return Collections.unmodifiableList(agentForks);
+  }
+
 }

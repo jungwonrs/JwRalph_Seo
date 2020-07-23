@@ -11,7 +11,7 @@ public class AgentBlockHeaderFunctions implements BlockHeaderFunctions {
     private static final AgentBlockHeaderFunctions COMMITTED_SEAL =
             new AgentBlockHeaderFunctions(AgentBlockHashing::calculateDataHashForCommittedSeal);
     private static final AgentBlockHeaderFunctions ON_CHAIN =
-            new AgentBlockHeaderFunctions(AgentBlockHashing::calculateHashOfIbftBlockOnChain);
+            new AgentBlockHeaderFunctions(AgentBlockHashing::calculateHashOfAgentBlockOnChain);
 
     private final Function<BlockHeader, Hash> hashFunction;
 

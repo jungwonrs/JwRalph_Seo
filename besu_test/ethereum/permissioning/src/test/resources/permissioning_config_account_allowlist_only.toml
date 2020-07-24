@@ -1,3 +1,0 @@
-# Permissioning TOML file (account allowlist only)
-
-accounts-allowlist=["0x0000000000000000000000000000000000000009"]

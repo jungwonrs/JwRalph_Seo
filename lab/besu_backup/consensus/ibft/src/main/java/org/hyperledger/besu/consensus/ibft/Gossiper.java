@@ -19,4 +19,5 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.wire.Message;
 public interface Gossiper {
 
   void send(Message message);
+
 }

@@ -18,4 +18,6 @@ import org.hyperledger.besu.ethereum.core.Block;
 
 public interface MinedBlockObserver {
   void blockMined(Block block);
+
+  void agentBlockMined(Block block);
 }

@@ -361,7 +361,8 @@ public class TestContextBuilder {
             gossiper,
             duplicateMessageTracker,
             futureMessageBuffer,
-            synchronizerUpdater);
+            synchronizerUpdater,0,null,null,null,blockCreatorFactory, null
+                );
 
     final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
     //////////////////////////// END IBFT BesuController ////////////////////////////

@@ -298,6 +298,7 @@ public abstract class BesuControllerBuilder {
             clock,
             metricsSystem);
 
+
     final MiningCoordinator miningCoordinator =
         createMiningCoordinator(
             protocolSchedule,

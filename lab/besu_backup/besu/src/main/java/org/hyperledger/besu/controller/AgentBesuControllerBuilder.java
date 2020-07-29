@@ -39,6 +39,8 @@ import org.hyperledger.besu.consensus.ibft.statemachine.IbftController;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftFinalState;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftRoundFactory;
 import org.hyperledger.besu.consensus.ibft.validation.MessageValidatorFactory;
+import org.hyperledger.besu.crypto.AgentKeyGenerator;
+import org.hyperledger.besu.crypto.AgentSignature;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.api.jsonrpc.methods.JsonRpcMethods;
 import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
@@ -62,19 +64,22 @@ import org.hyperledger.besu.util.Subscribers;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-import java.util.Iterator;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 
 public class AgentBesuControllerBuilder extends BesuControllerBuilder {
@@ -84,6 +89,8 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
     private AgentConfigOptions agentConfig;
     private ValidatorPeers peers;
     private final BlockInterface blockInterface = new IbftBlockInterface();
+    public int agentStatus;
+
 
     //1
     @Override
@@ -121,64 +128,39 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
             final SyncState syncState,
             final EthProtocolManager ethProtocolManager) {
 
-
+        try {
         //key Node Election
         final VoteTallyCache voteTallyCache = protocolContext.getConsensusState(IbftContext.class).getVoteTallyCache();
         peers = new ValidatorPeers(voteTallyCache);
+
         List<String> addressList = peers.getListValidators();
+
         final MutableBlockchain blockchain = protocolContext.getBlockchain();
 
         String previousBlock = String.valueOf(blockchain.getChainHeadHash());
         Random rand = new Random();
-        int Seed = previousBlock.hashCode();
-        rand.setSeed(Seed);
-        //int randomResult = rand.nextInt(addressList.size());
-        //String keyNode = addressList.get(randomResult);
-
-        //should Delete this line
-        String keyNode = addressList.get(0);
+        int seed = previousBlock.hashCode();
+        rand.setSeed(seed);
+        int randomResult = rand.nextInt(addressList.size());
+        String keyNode = addressList.get(randomResult);
 
         String nodeAddress = String.valueOf(Util.publicKeyToAddress(nodeKey.getPublicKey()));
 
+        String AgentConfig = genesisConfig.AgentInfo();
+        List<String> AgentInfo = Splitter.on(":").splitToList(AgentConfig);
 
-        if (keyNode.equals(nodeAddress)){
-            try {
-                //get agent information form genesis configuration file
+        String ip = AgentInfo.get(0);
+        int port = Integer.valueOf(AgentInfo.get(1));
 
-                String AgentConfig = genesisConfig.AgentInfo();
-
-                List<String> AgentInfo = Splitter.on(":").splitToList(AgentConfig);
-
-                String ip = AgentInfo.get(0);
-                Integer port = Integer.valueOf(AgentInfo.get(1));
-                Socket sc = new Socket(ip,port);
-                DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-                DataInputStream in = new DataInputStream(sc.getInputStream());
-                out.writeUTF(String.valueOf(nodeKey.getPublicKey()));
-
-
-                System.out.println(in.readUTF());
-                //Todo: get Verify Message
-
-
-
-
-
-            } catch (UnknownHostException e) {
-                System.out.println(e);
-            } catch (IOException e) {
-                System.out.println(e);
-            }
-
-        }
-
-
+        Socket sc  = new Socket(ip,port);
+        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+        DataInputStream in = new DataInputStream(sc.getInputStream());
 
         final IbftExecutors ibftExecutors = IbftExecutors.create(metricsSystem);
         final IbftBlockCreatorFactory blockCreatorFactory =
                 new IbftBlockCreatorFactory(
                         gasLimitCalculator,
-                        transactionPool.getAgentPendingTransactions(),
+                        transactionPool.getPendingTransactions(),
                         protocolContext,
                         protocolSchedule,
                         miningParameters,
@@ -207,6 +189,8 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         blockCreatorFactory,
                         new MessageFactory(nodeKey),
                         clock);
+
+
         final MessageValidatorFactory messageValidatorFactory =
                 new MessageValidatorFactory(proposerSelector, protocolSchedule, protocolContext);
         final Subscribers<MinedBlockObserver> minedBlockObservers = Subscribers.create();
@@ -216,8 +200,14 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         agentConfig.getFutureMessagesMaxDistance(),
                         agentConfig.getFutureMessagesLimit(),
                         blockchain.getChainHeadBlockNumber());
+
+
         final MessageTracker duplicateMessageTracker =
                 new MessageTracker(agentConfig.getDuplicateMessageLimit());
+
+
+        keyNodeOn(out, in, keyNode, nodeAddress, addressList, randomResult, previousBlock);
+
         final IbftController ibftController =
                 new IbftController(
                         blockchain,
@@ -234,7 +224,15 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         gossiper,
                         duplicateMessageTracker,
                         futureMessageBuffer,
-                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
+                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()),
+                        agentStatus,
+                        transactionPool,
+                        out,
+                        in,
+                        blockCreatorFactory,
+                        minedBlockObservers
+                );
+
 
 
         final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
@@ -249,7 +247,11 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         ibftEventQueue);
         ibftMiningCoordinator.enable();
 
-        return ibftMiningCoordinator;
+            return ibftMiningCoordinator;
+        } catch (Exception e) {
+            LOG.error(e);
+        }
+        return null;
     }
 
     //7
@@ -319,5 +321,74 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
 
         return result;
     }
+
+    private void keyNodeOn
+            (final DataOutputStream out,
+             final DataInputStream in,
+             final String keyNode,
+             final String nodeAddress,
+             final List<String>addressList,
+             final Integer randomResult,
+             final String previousBlock ){
+
+        boolean sigVerify;
+
+            try {
+                AgentKeyGenerator key = new AgentKeyGenerator();
+                AgentSignature agentSignature = new AgentSignature();
+
+                if (keyNode.equals(nodeAddress)){
+
+                KeyPair getKey = key.genKey();
+                PrivateKey agentPrivateKey = getKey.getPrivate();
+                PublicKey agentPublicKey = getKey.getPublic();
+
+                String strAgentPublicKey = key.pubKeyToString(agentPublicKey);
+                String randomSize = String.valueOf(addressList.size());
+                String strRandomResult = String.valueOf(randomResult);
+
+                String message = previousBlock+":"+randomSize+":"+strRandomResult;
+
+                String agentOnSignature = agentSignature.genSig(agentPrivateKey, message);
+
+                String agentOnMessage = strAgentPublicKey+":"+message+":"+agentOnSignature+":"+"AgentOn";
+
+                out.writeUTF(agentOnMessage);
+
+                String agentMessage = in.readUTF();
+                System.out.println("++++++++++++++++++++++++++++++++"+agentMessage);
+                List<String> parAgentMessage = Splitter.on(":").splitToList(agentMessage);
+
+                String agentStrMessage = parAgentMessage.get(0);
+                String agentStrPubKey = parAgentMessage.get(1);
+                String agentStrSignature = parAgentMessage.get(2);
+
+                PublicKey agentPubKey = key.stringToPublicKey(agentStrPubKey);
+                sigVerify = agentSignature.verify(agentStrMessage, agentStrSignature, agentPubKey);
+
+               if(sigVerify){
+                    out.writeUTF("AgentStart");
+                    if(in.readUTF().contains("AgentStart")){
+                        System.out.println("++++++++++++++++++++++++++++++++KeyNode!");
+                        agentStatus = 1;
+                    }
+                }
+            }
+                else {
+                    if(in.readUTF().contains("AgentStart")){
+                        System.out.println("++++++++++++++++++++++++++++++++nomal!!!!!!");
+
+                        agentStatus = 2;
+                    }
+                }
+
+
+        }catch (Exception e) {
+                System.out.println(e);
+            }
+
+    }
+
+
 
 }

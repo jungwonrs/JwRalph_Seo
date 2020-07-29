@@ -185,7 +185,13 @@ public class IbftBesuControllerBuilder extends BesuControllerBuilder {
             gossiper,
             duplicateMessageTracker,
             futureMessageBuffer,
-            new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
+            new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()),
+                0,
+                transactionPool,
+                null,
+                null,
+                blockCreatorFactory,
+                minedBlockObservers);
 
     final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
     final IbftProcessor ibftProcessor = new IbftProcessor(ibftEventQueue, eventMultiplexer);

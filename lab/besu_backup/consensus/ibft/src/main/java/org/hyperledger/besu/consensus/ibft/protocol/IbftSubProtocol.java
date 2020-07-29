@@ -41,6 +41,7 @@ public class IbftSubProtocol implements SubProtocol {
 
   @Override
   public boolean isValidMessageCode(final int protocolVersion, final int code) {
+
     switch (code) {
       case IbftV2.PROPOSAL:
       case IbftV2.PREPARE:

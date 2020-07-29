@@ -45,7 +45,7 @@ public class BlockBroadcaster {
 
   public void propagate(final Block block, final Difficulty totalDifficulty) {
     blockPropagatedSubscribers.forEach(listener -> listener.accept(block, totalDifficulty));
-    final NewBlockMessage newBlockMessage = NewBlockMessage.create(block, totalDifficulty);
+     final NewBlockMessage newBlockMessage = NewBlockMessage.create(block, totalDifficulty);
     ethContext
         .getEthPeers()
         .streamAvailablePeers()
@@ -60,6 +60,8 @@ public class BlockBroadcaster {
               }
             });
   }
+
+
 
   @FunctionalInterface
   public interface BlockPropagatedSubscriber {

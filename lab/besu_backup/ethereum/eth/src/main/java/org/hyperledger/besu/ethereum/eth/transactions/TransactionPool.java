@@ -46,13 +46,17 @@ import org.hyperledger.besu.plugin.services.MetricsSystem;
 import org.hyperledger.besu.plugin.services.metrics.Counter;
 import org.hyperledger.besu.plugin.services.metrics.LabelledMetric;
 
+
+
+import org.apache.logging.log4j.Logger;
+
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import org.apache.logging.log4j.Logger;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Maintains the set of pending transactions received from JSON-RPC or other nodes. Transactions are
@@ -238,17 +242,16 @@ public class TransactionPool implements BlockAddedObserver {
     return pendingTransactions;
   }
 
-  public PendingTransactions getAgentPendingTransactions(){
+  public List<String> getAgentPendingTransactions(){
+    List<String> pendingTrasnsaction = new ArrayList<>();
 
-    Set<PendingTransactions.TransactionInfo> it = pendingTransactions.getTransactionInfo();
-
-    //여기다!!!!!!!!!!!!
-    for (PendingTransactions.TransactionInfo item: it){
-      System.out.println(item.getHash());
+    Set<PendingTransactions.TransactionInfo> temp = getPendingTransactions().getTransactionInfo();
+    Iterator<PendingTransactions.TransactionInfo> it = temp.iterator();
+    while(it.hasNext()){
+      pendingTrasnsaction.add(it.next().getHash().toString());
     }
 
-
-    return pendingTransactions;
+    return pendingTrasnsaction;
   }
 
 

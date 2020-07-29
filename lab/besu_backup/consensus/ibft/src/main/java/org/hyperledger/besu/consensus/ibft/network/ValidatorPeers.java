@@ -21,6 +21,7 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.connections.PeerConnection.PeerNot
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.MessageData;
 
 
+import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Set;
 import java.util.Collection;
@@ -119,12 +120,9 @@ public class ValidatorPeers implements ValidatorMulticaster, PeerConnectionTrack
 
     while(it.hasNext()){
       addressList.add(it.next().toString());
-
     }
-
     return addressList;
   }
-
 
 
 }

@@ -39,7 +39,6 @@ public class RoundState {
   private final ConsensusRoundIdentifier roundIdentifier;
   private final MessageValidator validator;
   private final long quorum;
-
   private Optional<Proposal> proposalMessage = Optional.empty();
 
   // Must track the actual Prepare message, not just the sender, as these may need to be reused

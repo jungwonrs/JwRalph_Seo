@@ -15,6 +15,7 @@
 package org.hyperledger.besu.ethereum.eth.manager;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import org.hyperledger.besu.ethereum.chain.Blockchain;
 import org.hyperledger.besu.ethereum.chain.MinedBlockObserver;
@@ -353,4 +354,14 @@ public class EthProtocolManager implements ProtocolManager, MinedBlockObserver {
                         "Unable to get total difficulty from blockchain for mined block."));
     blockBroadcaster.propagate(block, totalDifficulty);
   }
+
+  @Override
+  public void agentBlockMined(final Block block){
+    String message = "agentDifficulty";
+    String hexString = String.format("%040x", new BigInteger(1, message.getBytes(UTF_8)));
+
+
+    blockBroadcaster.propagate(block, Difficulty.fromHexString(hexString));
+  }
+
 }

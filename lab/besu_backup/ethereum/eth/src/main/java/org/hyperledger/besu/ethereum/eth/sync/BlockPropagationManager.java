@@ -42,6 +42,7 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.wire.messages.DisconnectMessage.Di
 import org.hyperledger.besu.ethereum.rlp.RLPException;
 import org.hyperledger.besu.plugin.services.MetricsSystem;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class BlockPropagationManager {
   private static final Logger LOG = LogManager.getLogger();
@@ -312,41 +315,73 @@ public class BlockPropagationManager {
       final BlockHeaderValidator blockHeaderValidator,
       final Block block,
       final BlockHeader parent) {
+
     if (blockHeaderValidator.validateHeader(
         block.getHeader(), parent, protocolContext, HeaderValidationMode.FULL)) {
       ethContext.getScheduler().scheduleSyncWorkerTask(() -> broadcastBlock(block, parent));
       return runImportTask(block);
     } else {
-      importingBlocks.remove(block.getHash());
-      LOG.warn(
-          "Failed to import announced block {} ({}).",
-          block.getHeader().getNumber(),
-          block.getHash());
-      return CompletableFuture.completedFuture(block);
+
+      System.out.println("======================================="+block.getHeader().getDifficulty().toString());
+      System.out.println("======================================="+Difficulty.fromHexString("00000000006167656e74446966666963756c7479"));
+
+
+      if (block.getHeader().getDifficulty().equals(Difficulty.of(1))){
+        return runImportTask(block);
+      }
+      else {
+        importingBlocks.remove(block.getHash());
+        LOG.warn(
+                "Failed to import announced block {} ({}).",
+                block.getHeader().getNumber(),
+                block.getHash());
+        return CompletableFuture.completedFuture(block);
+      }
     }
   }
 
   private CompletableFuture<Block> runImportTask(final Block block) {
-    final PersistBlockTask importTask =
-        PersistBlockTask.create(
-            protocolSchedule,
-            protocolContext,
-            ethContext,
-            block,
-            HeaderValidationMode.NONE,
-            metricsSystem);
-    return importTask
-        .run()
-        .whenComplete(
-            (result, throwable) -> {
-              importingBlocks.remove(block.getHash());
-              if (throwable != null) {
-                LOG.warn(
-                    "Failed to import announced block {} ({}).",
-                    block.getHeader().getNumber(),
-                    block.getHash());
-              }
-            });
+
+    if (block.getHeader().getDifficulty().equals(Difficulty.of(1))){
+      final PersistBlockTask importTask =
+              PersistBlockTask.create(
+                      protocolSchedule,
+                      protocolContext,
+                      ethContext,
+                      block,
+                      HeaderValidationMode.NONE,
+                      metricsSystem);
+      return importTask
+              .run()
+              .whenComplete(
+                      (result, throwable) -> {
+                        importingBlocks.remove(block.getHash());
+                      });
+    }
+
+    else {
+      final PersistBlockTask importTask =
+              PersistBlockTask.create(
+                      protocolSchedule,
+                      protocolContext,
+                      ethContext,
+                      block,
+                      HeaderValidationMode.NONE,
+                      metricsSystem);
+      return importTask
+              .run()
+              .whenComplete(
+                      (result, throwable) -> {
+                        importingBlocks.remove(block.getHash());
+                        if (throwable != null) {
+
+                          LOG.warn(
+                                  "2222222222Failed to import announced block {} ({}).",
+                                  block.getHeader().getNumber(),
+                                  block.getHash());
+                        }
+                      });
+    }
   }
 
   // Only import blocks within a certain range of our head and sync target

@@ -267,4 +267,5 @@ public class IbftRound {
   private void notifyNewBlockListeners(final Block block) {
     observers.forEach(obs -> obs.blockMined(block));
   }
+
 }

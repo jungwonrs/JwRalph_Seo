@@ -132,6 +132,7 @@ public class ValidatorPeer {
   }
 
   public void handleReceivedMessage(final MessageData message) {
+
     receivedMessages.add(message);
   }
 
@@ -159,4 +160,6 @@ public class ValidatorPeer {
   public void verifyEstimatedChainHeightEquals(final long expectedChainHeight) {
     assertThat(estimatedChainHeight).isEqualTo(expectedChainHeight);
   }
+
+
 }

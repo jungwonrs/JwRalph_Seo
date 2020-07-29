@@ -75,4 +75,5 @@ public class IbftGossip implements Gossiper {
 
     multicaster.send(messageData, excludeAddressesList);
   }
+
 }

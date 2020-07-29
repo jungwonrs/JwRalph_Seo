@@ -78,6 +78,19 @@ public class IbftBlockCreatorFactory {
         parentHeader);
   }
 
+  public IbftBlockCreator AgentCreate(final BlockHeader parentHeader, final int round, final PendingTransactions AgentPendingTransactions ){
+    return new IbftBlockCreator(
+            localAddress,
+            ph -> createExtraData(round, ph),
+            AgentPendingTransactions,
+            protocolContext,
+            protocolSchedule,
+            gasLimitCalculator,
+            minTransactionGasPrice,
+            minBlockOccupancyRatio,
+            parentHeader);
+  }
+
   public void setExtraData(final Bytes extraData) {
     this.vanityData = extraData.copy();
   }

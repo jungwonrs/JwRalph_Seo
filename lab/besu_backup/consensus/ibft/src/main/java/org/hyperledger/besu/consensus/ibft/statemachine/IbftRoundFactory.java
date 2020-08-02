@@ -25,6 +25,7 @@ import org.hyperledger.besu.ethereum.mainnet.ProtocolSchedule;
 import org.hyperledger.besu.util.Subscribers;
 
 public class IbftRoundFactory {
+
   private final IbftFinalState finalState;
   private final IbftBlockCreatorFactory blockCreatorFactory;
   private final ProtocolContext protocolContext;
@@ -37,16 +38,19 @@ public class IbftRoundFactory {
       final ProtocolContext protocolContext,
       final ProtocolSchedule protocolSchedule,
       final Subscribers<MinedBlockObserver> minedBlockObservers,
-      final MessageValidatorFactory messageValidatorFactory) {
+      final MessageValidatorFactory messageValidatorFactory
+      ) {
     this.finalState = finalState;
     this.blockCreatorFactory = finalState.getBlockCreatorFactory();
     this.protocolContext = protocolContext;
     this.protocolSchedule = protocolSchedule;
     this.minedBlockObservers = minedBlockObservers;
     this.messageValidatorFactory = messageValidatorFactory;
+
   }
 
   public IbftRound createNewRound(final BlockHeader parentHeader, final int round) {
+
     long nextBlockHeight = parentHeader.getNumber() + 1;
     final ConsensusRoundIdentifier roundIdentifier =
         new ConsensusRoundIdentifier(nextBlockHeight, round);
@@ -57,24 +61,28 @@ public class IbftRoundFactory {
             finalState.getQuorum(),
             messageValidatorFactory.createMessageValidator(roundIdentifier, parentHeader));
 
-    return createNewRoundWithState(parentHeader, roundState);
+      return createNewRoundWithState(parentHeader, roundState);
+
   }
 
   public IbftRound createNewRoundWithState(
       final BlockHeader parentHeader, final RoundState roundState) {
+
     final ConsensusRoundIdentifier roundIdentifier = roundState.getRoundIdentifier();
     final IbftBlockCreator blockCreator =
-        blockCreatorFactory.create(parentHeader, roundIdentifier.getRoundNumber());
+            blockCreatorFactory.create(parentHeader, roundIdentifier.getRoundNumber());
 
-    return new IbftRound(
-        roundState,
-        blockCreator,
-        protocolContext,
-        protocolSchedule.getByBlockNumber(roundIdentifier.getSequenceNumber()).getBlockImporter(),
-        minedBlockObservers,
-        finalState.getNodeKey(),
-        finalState.getMessageFactory(),
-        finalState.getTransmitter(),
-        finalState.getRoundTimer());
+      return new IbftRound(
+              roundState,
+              blockCreator,
+              protocolContext,
+              protocolSchedule.getByBlockNumber(roundIdentifier.getSequenceNumber()).getBlockImporter(),
+              minedBlockObservers,
+              finalState.getNodeKey(),
+              finalState.getMessageFactory(),
+              finalState.getTransmitter(),
+              finalState.getRoundTimer());
+    }
+
   }
-}
+

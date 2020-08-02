@@ -19,4 +19,5 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.connections.PeerConnection;
 public interface SynchronizerUpdater {
 
   void updatePeerChainState(long knownBlockNumber, PeerConnection peerConnection);
+
 }

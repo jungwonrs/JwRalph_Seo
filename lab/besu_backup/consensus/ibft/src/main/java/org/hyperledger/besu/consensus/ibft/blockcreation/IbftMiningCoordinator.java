@@ -20,6 +20,7 @@ import org.hyperledger.besu.consensus.ibft.IbftEventQueue;
 import org.hyperledger.besu.consensus.ibft.IbftExecutors;
 import org.hyperledger.besu.consensus.ibft.IbftProcessor;
 import org.hyperledger.besu.consensus.ibft.ibftevent.NewChainHead;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentConsensusController;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftController;
 import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
 import org.hyperledger.besu.ethereum.chain.BlockAddedEvent;
@@ -30,6 +31,7 @@ import org.hyperledger.besu.ethereum.core.Block;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.Wei;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -54,9 +56,10 @@ public class IbftMiningCoordinator implements MiningCoordinator, BlockAddedObser
   protected final Blockchain blockchain;
   private final IbftEventQueue eventQueue;
   private final IbftExecutors ibftExecutors;
-
   private long blockAddedObserverId;
   private final AtomicReference<State> state = new AtomicReference<>(State.IDLE);
+  private final boolean agentConsensus;
+  private final AgentConsensusController agentConsensusController;
 
   public IbftMiningCoordinator(
       final IbftExecutors ibftExecutors,
@@ -64,23 +67,42 @@ public class IbftMiningCoordinator implements MiningCoordinator, BlockAddedObser
       final IbftProcessor ibftProcessor,
       final IbftBlockCreatorFactory blockCreatorFactory,
       final Blockchain blockchain,
-      final IbftEventQueue eventQueue) {
+      final IbftEventQueue eventQueue,
+      final boolean agentConsensus,
+      final AgentConsensusController agentConsensusController) {
     this.ibftExecutors = ibftExecutors;
     this.controller = controller;
     this.ibftProcessor = ibftProcessor;
     this.blockCreatorFactory = blockCreatorFactory;
     this.eventQueue = eventQueue;
-
     this.blockchain = blockchain;
+    this.agentConsensus = agentConsensus;
+    this.agentConsensusController = agentConsensusController;
+
   }
 
   @Override
   public void start() {
     if (state.compareAndSet(State.IDLE, State.RUNNING)) {
-      ibftExecutors.start();
-      blockAddedObserverId = blockchain.observeBlockAdded(this);
-      controller.start();
-      ibftExecutors.executeIbftProcessor(ibftProcessor);
+
+      if (agentConsensus){
+        ibftExecutors.start();
+        blockAddedObserverId = blockchain.observeBlockAdded(this);
+        agentConsensusController.start();
+        ibftExecutors.executeIbftProcessor(ibftProcessor);
+
+      }
+
+      else{
+        ibftExecutors.start();
+        blockAddedObserverId = blockchain.observeBlockAdded(this);
+        controller.start();
+        ibftExecutors.executeIbftProcessor(ibftProcessor);
+      }
+
+
+
+
     }
   }
 

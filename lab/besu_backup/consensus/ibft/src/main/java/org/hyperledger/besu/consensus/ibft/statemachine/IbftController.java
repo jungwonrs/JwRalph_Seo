@@ -67,12 +67,6 @@ public class IbftController {
   private final MessageTracker duplicateMessageTracker;
   private final SynchronizerUpdater sychronizerUpdater;
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final int agentStatus;
-  private final TransactionPool transactionPool;
-  private final DataOutputStream out;
-  private final DataInputStream in;
-  private final IbftBlockCreatorFactory ibftBlockCreatorFactory;
-  private final Subscribers<MinedBlockObserver> observers;
 
   public IbftController(
           final Blockchain blockchain,
@@ -81,13 +75,7 @@ public class IbftController {
           final Gossiper gossiper,
           final MessageTracker duplicateMessageTracker,
           final FutureMessageBuffer futureMessageBuffer,
-          final SynchronizerUpdater sychronizerUpdater,
-          final int agentStatus,
-          final TransactionPool transactionPool,
-          final DataOutputStream out,
-          final DataInputStream in,
-          final IbftBlockCreatorFactory ibftBlockCreatorFactory,
-          final Subscribers<MinedBlockObserver> observers
+          final SynchronizerUpdater sychronizerUpdater
           ) {
     this.blockchain = blockchain;
     this.ibftFinalState = ibftFinalState;
@@ -96,12 +84,6 @@ public class IbftController {
     this.gossiper = gossiper;
     this.duplicateMessageTracker = duplicateMessageTracker;
     this.sychronizerUpdater = sychronizerUpdater;
-    this.agentStatus = agentStatus;
-    this.transactionPool = transactionPool;
-    this.out = out;
-    this.in = in;
-    this.ibftBlockCreatorFactory = ibftBlockCreatorFactory;
-    this.observers = observers;
      }
 
   public void start() {
@@ -109,6 +91,7 @@ public class IbftController {
       startNewHeightManager(blockchain.getChainHeadHeader());
     }
   }
+/*
 
   private void agent() {
         System.out.println("===================================================fucking hello");
@@ -133,7 +116,8 @@ public class IbftController {
             System.out.println("============================================" + in.readUTF());
 
 
-       /*         while (true){
+       */
+/*         while (true){
                   String data = in.readUTF();
                   if (data.contains("FirstResult")) {
                     //Clock clock = ibftFinalState.getClock();
@@ -161,7 +145,8 @@ public class IbftController {
 
 
                   }
-                }*/
+                }*//*
+
 
 
 
@@ -179,6 +164,7 @@ public class IbftController {
           //ibftFinalState.getBlockCreatorFactory().create(currentMiningParent, parentBlockNumber).createBlock(timestamp[])
           //IbftBlockCreator blockCreator = new IbftBlockCreator();
 
+*/
 
 
 
@@ -196,9 +182,6 @@ public class IbftController {
 
   private void handleMessage(final Message message) {
     final MessageData messageData = message.getData();
-    if (agentStatus == 1 || agentStatus == 2) {
-      agent();
-    } else {
       switch (messageData.getCode()) {
         case IbftV2.PROPOSAL:
           consumeMessage(
@@ -235,7 +218,6 @@ public class IbftController {
                           message.getData().getCode()));
       }
     }
-  }
 
 
 

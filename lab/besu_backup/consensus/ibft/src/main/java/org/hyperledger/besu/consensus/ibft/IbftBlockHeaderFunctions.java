@@ -27,6 +27,9 @@ public class IbftBlockHeaderFunctions implements BlockHeaderFunctions {
   private static final IbftBlockHeaderFunctions ON_CHAIN =
       new IbftBlockHeaderFunctions(IbftBlockHashing::calculateHashOfIbftBlockOnChain);
 
+  private static final IbftBlockHeaderFunctions ON_AGENT =
+          new IbftBlockHeaderFunctions(IbftBlockHashing::AgentOnChain);
+
   private final Function<BlockHeader, Hash> hashFunction;
 
   private IbftBlockHeaderFunctions(final Function<BlockHeader, Hash> hashFunction) {
@@ -39,6 +42,10 @@ public class IbftBlockHeaderFunctions implements BlockHeaderFunctions {
 
   public static BlockHeaderFunctions forCommittedSeal() {
     return COMMITTED_SEAL;
+  }
+
+  public static BlockHeaderFunctions forAgent(){
+    return ON_AGENT;
   }
 
   @Override

@@ -357,11 +357,19 @@ public class EthProtocolManager implements ProtocolManager, MinedBlockObserver {
 
   @Override
   public void agentBlockMined(final Block block){
-    String message = "agentDifficulty";
+  /*  String message = "agentDifficulty";
     String hexString = String.format("%040x", new BigInteger(1, message.getBytes(UTF_8)));
+*/
 
-
-    blockBroadcaster.propagate(block, Difficulty.fromHexString(hexString));
+    blockBroadcaster.propagate(block, Difficulty.ZERO);
+    /*final Difficulty totalDifficulty =
+            blockchain
+                    .getTotalDifficultyByHash(block.getHash())
+                    .orElseThrow(
+                            () ->
+                                    new IllegalStateException(
+                                            "Unable to get total difficulty from blockchain for mined block."));
+    blockBroadcaster.propagate(block, totalDifficulty);*/
   }
 
 }

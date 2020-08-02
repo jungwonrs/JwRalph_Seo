@@ -43,9 +43,11 @@ public class CheckpointHeaderValidationStep
   public Stream<BlockHeader> apply(final CheckpointRangeHeaders checkpointRangeHeaders) {
     final BlockHeader rangeStart = checkpointRangeHeaders.getCheckpointRange().getStart();
     final BlockHeader firstHeaderToImport = checkpointRangeHeaders.getFirstHeaderToImport();
-
+    
     if (isValid(rangeStart, firstHeaderToImport)) {
       return checkpointRangeHeaders.getHeadersToImport().stream();
+
+
     } else {
       final String rangeEndDescription;
       if (checkpointRangeHeaders.getCheckpointRange().hasEnd()) {

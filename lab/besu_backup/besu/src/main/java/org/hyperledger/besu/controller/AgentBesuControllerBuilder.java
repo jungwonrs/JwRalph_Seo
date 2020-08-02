@@ -1,7 +1,6 @@
 package org.hyperledger.besu.controller;
 
-
-import com.google.common.base.Splitter;
+import org.apache.logging.log4j.core.util.FileUtils;
 import org.hyperledger.besu.config.AgentConfigOptions;
 import org.hyperledger.besu.config.GenesisConfigOptions;
 import org.hyperledger.besu.config.IbftFork;
@@ -12,19 +11,26 @@ import org.hyperledger.besu.consensus.common.IbftValidatorOverrides;
 import org.hyperledger.besu.consensus.common.VoteProposer;
 import org.hyperledger.besu.consensus.common.VoteTallyCache;
 import org.hyperledger.besu.consensus.common.VoteTallyUpdater;
-import org.hyperledger.besu.consensus.ibft.BlockTimer;
-import org.hyperledger.besu.consensus.ibft.EthSynchronizerUpdater;
-import org.hyperledger.besu.consensus.ibft.EventMultiplexer;
+
+
 import org.hyperledger.besu.consensus.ibft.IbftBlockInterface;
+import org.hyperledger.besu.consensus.ibft.IbftHelpers;
+import org.hyperledger.besu.consensus.ibft.SynchronizerUpdater;
+import org.hyperledger.besu.consensus.ibft.MessageTracker;
+import org.hyperledger.besu.consensus.ibft.ConsensusRoundIdentifier;
+import org.hyperledger.besu.consensus.ibft.IbftBlockHeaderValidationRulesetFactory;
+import org.hyperledger.besu.consensus.ibft.EventMultiplexer;
+import org.hyperledger.besu.consensus.ibft.UniqueMessageMulticaster;
+import org.hyperledger.besu.consensus.ibft.IbftProtocolSchedule;
+import org.hyperledger.besu.consensus.ibft.EthSynchronizerUpdater;
+import org.hyperledger.besu.consensus.ibft.IbftGossip;
+import org.hyperledger.besu.consensus.ibft.RoundTimer;
+import org.hyperledger.besu.consensus.ibft.BlockTimer;
+import org.hyperledger.besu.consensus.ibft.IbftProcessor;
+
 import org.hyperledger.besu.consensus.ibft.IbftContext;
 import org.hyperledger.besu.consensus.ibft.IbftEventQueue;
 import org.hyperledger.besu.consensus.ibft.IbftExecutors;
-import org.hyperledger.besu.consensus.ibft.IbftGossip;
-import org.hyperledger.besu.consensus.ibft.IbftProcessor;
-import org.hyperledger.besu.consensus.ibft.IbftProtocolSchedule;
-import org.hyperledger.besu.consensus.ibft.MessageTracker;
-import org.hyperledger.besu.consensus.ibft.RoundTimer;
-import org.hyperledger.besu.consensus.ibft.UniqueMessageMulticaster;
 import org.hyperledger.besu.consensus.ibft.blockcreation.IbftBlockCreatorFactory;
 import org.hyperledger.besu.consensus.ibft.blockcreation.IbftMiningCoordinator;
 import org.hyperledger.besu.consensus.ibft.blockcreation.ProposerSelector;
@@ -33,14 +39,14 @@ import org.hyperledger.besu.consensus.ibft.network.ValidatorPeers;
 import org.hyperledger.besu.consensus.ibft.payload.MessageFactory;
 import org.hyperledger.besu.consensus.ibft.protocol.IbftProtocolManager;
 import org.hyperledger.besu.consensus.ibft.protocol.IbftSubProtocol;
+
 import org.hyperledger.besu.consensus.ibft.statemachine.FutureMessageBuffer;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftBlockHeightManagerFactory;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftController;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftFinalState;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentConsensusController;
 import org.hyperledger.besu.consensus.ibft.statemachine.IbftRoundFactory;
 import org.hyperledger.besu.consensus.ibft.validation.MessageValidatorFactory;
-import org.hyperledger.besu.crypto.AgentKeyGenerator;
-import org.hyperledger.besu.crypto.AgentSignature;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.api.jsonrpc.methods.JsonRpcMethods;
 import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
@@ -53,6 +59,8 @@ import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.MiningParameters;
 import org.hyperledger.besu.ethereum.core.Util;
 import org.hyperledger.besu.ethereum.eth.EthProtocol;
+import org.hyperledger.besu.ethereum.eth.manager.EthContext;
+import org.hyperledger.besu.ethereum.eth.manager.EthPeers;
 import org.hyperledger.besu.ethereum.eth.manager.EthProtocolManager;
 import org.hyperledger.besu.ethereum.eth.sync.state.SyncState;
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
@@ -61,26 +69,13 @@ import org.hyperledger.besu.ethereum.p2p.config.SubProtocolConfiguration;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
 import org.hyperledger.besu.util.Subscribers;
 
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
-
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
-
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
 
 public class AgentBesuControllerBuilder extends BesuControllerBuilder {
 
@@ -89,7 +84,6 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
     private AgentConfigOptions agentConfig;
     private ValidatorPeers peers;
     private final BlockInterface blockInterface = new IbftBlockInterface();
-    public int agentStatus;
 
 
     //1
@@ -132,29 +126,11 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
         //key Node Election
         final VoteTallyCache voteTallyCache = protocolContext.getConsensusState(IbftContext.class).getVoteTallyCache();
         peers = new ValidatorPeers(voteTallyCache);
-
         List<String> addressList = peers.getListValidators();
-
         final MutableBlockchain blockchain = protocolContext.getBlockchain();
-
-        String previousBlock = String.valueOf(blockchain.getChainHeadHash());
-        Random rand = new Random();
-        int seed = previousBlock.hashCode();
-        rand.setSeed(seed);
-        int randomResult = rand.nextInt(addressList.size());
-        String keyNode = addressList.get(randomResult);
-
         String nodeAddress = String.valueOf(Util.publicKeyToAddress(nodeKey.getPublicKey()));
-
-        String AgentConfig = genesisConfig.AgentInfo();
-        List<String> AgentInfo = Splitter.on(":").splitToList(AgentConfig);
-
-        String ip = AgentInfo.get(0);
-        int port = Integer.valueOf(AgentInfo.get(1));
-
-        Socket sc  = new Socket(ip,port);
-        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-        DataInputStream in = new DataInputStream(sc.getInputStream());
+        String strAgentConfig = genesisConfig.AgentInfo();
+        String previousBlock = String.valueOf(blockchain.getChainHeadHash());
 
         final IbftExecutors ibftExecutors = IbftExecutors.create(metricsSystem);
         final IbftBlockCreatorFactory blockCreatorFactory =
@@ -201,12 +177,8 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         agentConfig.getFutureMessagesLimit(),
                         blockchain.getChainHeadBlockNumber());
 
-
         final MessageTracker duplicateMessageTracker =
                 new MessageTracker(agentConfig.getDuplicateMessageLimit());
-
-
-        keyNodeOn(out, in, keyNode, nodeAddress, addressList, randomResult, previousBlock);
 
         final IbftController ibftController =
                 new IbftController(
@@ -224,19 +196,26 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         gossiper,
                         duplicateMessageTracker,
                         futureMessageBuffer,
-                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()),
-                        agentStatus,
-                        transactionPool,
-                        out,
-                        in,
-                        blockCreatorFactory,
-                        minedBlockObservers
-                );
-
+                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
 
 
         final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
         final IbftProcessor ibftProcessor = new IbftProcessor(ibftEventQueue, eventMultiplexer);
+
+        final AgentConsensusController agentConsensusController =
+                new AgentConsensusController(
+                        strAgentConfig,
+                        addressList,
+                        nodeAddress,
+                        transactionPool,
+                        previousBlock,
+                        blockchain,
+                        finalState,
+                        minedBlockObservers,
+                        agentConfig.getBlockPeriodSeconds()
+                );
+
+
         final MiningCoordinator ibftMiningCoordinator =
                 new IbftMiningCoordinator(
                         ibftExecutors,
@@ -244,7 +223,10 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         ibftProcessor,
                         blockCreatorFactory,
                         blockchain,
-                        ibftEventQueue);
+                        ibftEventQueue,
+                        true,
+                        agentConsensusController);
+
         ibftMiningCoordinator.enable();
 
             return ibftMiningCoordinator;
@@ -320,75 +302,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
         }
 
         return result;
-    }
-
-    private void keyNodeOn
-            (final DataOutputStream out,
-             final DataInputStream in,
-             final String keyNode,
-             final String nodeAddress,
-             final List<String>addressList,
-             final Integer randomResult,
-             final String previousBlock ){
-
-        boolean sigVerify;
-
-            try {
-                AgentKeyGenerator key = new AgentKeyGenerator();
-                AgentSignature agentSignature = new AgentSignature();
-
-                if (keyNode.equals(nodeAddress)){
-
-                KeyPair getKey = key.genKey();
-                PrivateKey agentPrivateKey = getKey.getPrivate();
-                PublicKey agentPublicKey = getKey.getPublic();
-
-                String strAgentPublicKey = key.pubKeyToString(agentPublicKey);
-                String randomSize = String.valueOf(addressList.size());
-                String strRandomResult = String.valueOf(randomResult);
-
-                String message = previousBlock+":"+randomSize+":"+strRandomResult;
-
-                String agentOnSignature = agentSignature.genSig(agentPrivateKey, message);
-
-                String agentOnMessage = strAgentPublicKey+":"+message+":"+agentOnSignature+":"+"AgentOn";
-
-                out.writeUTF(agentOnMessage);
-
-                String agentMessage = in.readUTF();
-                System.out.println("++++++++++++++++++++++++++++++++"+agentMessage);
-                List<String> parAgentMessage = Splitter.on(":").splitToList(agentMessage);
-
-                String agentStrMessage = parAgentMessage.get(0);
-                String agentStrPubKey = parAgentMessage.get(1);
-                String agentStrSignature = parAgentMessage.get(2);
-
-                PublicKey agentPubKey = key.stringToPublicKey(agentStrPubKey);
-                sigVerify = agentSignature.verify(agentStrMessage, agentStrSignature, agentPubKey);
-
-               if(sigVerify){
-                    out.writeUTF("AgentStart");
-                    if(in.readUTF().contains("AgentStart")){
-                        System.out.println("++++++++++++++++++++++++++++++++KeyNode!");
-                        agentStatus = 1;
-                    }
-                }
-            }
-                else {
-                    if(in.readUTF().contains("AgentStart")){
-                        System.out.println("++++++++++++++++++++++++++++++++nomal!!!!!!");
-
-                        agentStatus = 2;
-                    }
-                }
-
-
-        }catch (Exception e) {
-                System.out.println(e);
-            }
 
     }
-
-
 
 }

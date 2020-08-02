@@ -41,4 +41,5 @@ public class EthSynchronizerUpdater implements SynchronizerUpdater {
     }
     ethPeer.chainState().updateHeightEstimate(knownBlockNumber);
   }
+
 }

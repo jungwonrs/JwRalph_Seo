@@ -78,10 +78,26 @@ public class IbftBlockCreatorFactory {
         parentHeader);
   }
 
-  public IbftBlockCreator AgentCreate(final BlockHeader parentHeader, final int round, final PendingTransactions AgentPendingTransactions ){
-    return new IbftBlockCreator(
+  public AgentBlockCreator AgentCreate(final BlockHeader parentHeader, final PendingTransactions AgentPendingTransactions ){
+    final VoteTally voteTally =
+            protocolContext
+                    .getConsensusState(IbftContext.class)
+                    .getVoteTallyCache()
+                    .getVoteTallyAfterBlock(parentHeader);
+
+
+    final List<Address> validators = new ArrayList<>(voteTally.getValidators());
+
+    return new AgentBlockCreator(
             localAddress,
-            ph -> createExtraData(round, ph),
+            parent ->
+                    new IbftExtraData(
+                            Bytes.wrap(new byte[32]),
+                            Collections.emptyList(),
+                            Optional.empty(),
+                            0,
+                            validators)
+                            .encode(),
             AgentPendingTransactions,
             protocolContext,
             protocolSchedule,

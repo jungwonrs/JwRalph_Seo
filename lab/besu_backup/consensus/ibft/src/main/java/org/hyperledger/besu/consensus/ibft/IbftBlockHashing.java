@@ -62,6 +62,11 @@ public class IbftBlockHashing {
         serializeHeader(header, ibftExtraData::encodeWithoutCommitSealsAndRoundNumber));
   }
 
+  public static Hash AgentOnChain(final BlockHeader header){
+    final IbftExtraData ibftExtraData = IbftExtraData.decode(header);
+    return Hash.hash(serializeHeader(header, ibftExtraData::encodeAgent));
+  }
+
   /**
    * Recovers the {@link Address} for each validator that contributed a committed seal to the block.
    *

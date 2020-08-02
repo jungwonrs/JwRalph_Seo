@@ -322,9 +322,6 @@ public class BlockPropagationManager {
       return runImportTask(block);
     } else {
 
-      System.out.println("======================================="+block.getHeader().getDifficulty().toString());
-      System.out.println("======================================="+Difficulty.fromHexString("00000000006167656e74446966666963756c7479"));
-
 
       if (block.getHeader().getDifficulty().equals(Difficulty.of(1))){
         return runImportTask(block);
@@ -341,8 +338,9 @@ public class BlockPropagationManager {
   }
 
   private CompletableFuture<Block> runImportTask(final Block block) {
-
     if (block.getHeader().getDifficulty().equals(Difficulty.of(1))){
+      System.out.println("=================================================ffffffffffffffffffffffffffffffffffffff");
+      //todo
       final PersistBlockTask importTask =
               PersistBlockTask.create(
                       protocolSchedule,
@@ -376,7 +374,7 @@ public class BlockPropagationManager {
                         if (throwable != null) {
 
                           LOG.warn(
-                                  "2222222222Failed to import announced block {} ({}).",
+                                  "Failed to import announced block {} ({}).",
                                   block.getHeader().getNumber(),
                                   block.getHash());
                         }

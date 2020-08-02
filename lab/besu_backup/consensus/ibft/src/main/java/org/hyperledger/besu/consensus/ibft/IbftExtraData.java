@@ -119,10 +119,15 @@ public class IbftExtraData implements ParsedExtraData {
     return encode(EncodingType.EXCLUDE_COMMIT_SEALS_AND_ROUND_NUMBER);
   }
 
+  public Bytes encodeAgent(){
+    return encode(EncodingType.AGENT);
+  }
+
   private enum EncodingType {
     ALL,
     EXCLUDE_COMMIT_SEALS,
-    EXCLUDE_COMMIT_SEALS_AND_ROUND_NUMBER
+    EXCLUDE_COMMIT_SEALS_AND_ROUND_NUMBER,
+    AGENT
   }
 
   private Bytes encode(final EncodingType encodingType) {

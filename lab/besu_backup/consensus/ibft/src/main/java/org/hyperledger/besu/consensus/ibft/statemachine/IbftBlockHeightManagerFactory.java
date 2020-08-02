@@ -57,4 +57,5 @@ public class IbftBlockHeightManagerFactory {
         finalState.getClock(),
         messageValidatorFactory);
   }
+
 }

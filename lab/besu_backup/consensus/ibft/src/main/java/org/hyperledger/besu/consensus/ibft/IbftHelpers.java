@@ -14,6 +14,7 @@
  */
 package org.hyperledger.besu.consensus.ibft;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.hyperledger.besu.consensus.ibft.payload.PreparedCertificate;
 import org.hyperledger.besu.consensus.ibft.payload.RoundChangePayload;
 import org.hyperledger.besu.consensus.ibft.payload.SignedData;
@@ -25,6 +26,7 @@ import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.core.Util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 public class IbftHelpers {
@@ -59,6 +61,26 @@ public class IbftHelpers {
             .blockHeaderFunctions(IbftBlockHeaderFunctions.forOnChainBlock())
             .buildBlockHeader();
 
+    return new Block(sealedHeader, block.getBody());
+  }
+
+  public static Block createAgentBlock(final Block block){
+    final BlockHeader initialHeader = block.getHeader();
+    final IbftExtraData initialExtraData = IbftExtraData.decode(initialHeader);
+
+    final IbftExtraData sealedExtraData =
+            new IbftExtraData(
+                    Bytes.wrap(new byte[32]),
+                    Collections.emptyList(),
+                    Optional.empty(),
+                    0,
+                    initialExtraData.getValidators());
+
+    final BlockHeader sealedHeader =
+            BlockHeaderBuilder.fromHeader(initialHeader)
+                    .extraData(sealedExtraData.encode())
+                    .blockHeaderFunctions(IbftBlockHeaderFunctions.forAgent())
+                    .buildBlockHeader();
     return new Block(sealedHeader, block.getBody());
   }
 

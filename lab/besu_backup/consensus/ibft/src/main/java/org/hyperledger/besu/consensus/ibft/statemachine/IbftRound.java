@@ -36,10 +36,15 @@ import org.hyperledger.besu.ethereum.core.Block;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.BlockImporter;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.eth.transactions.PendingTransactions;
+import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
 import org.hyperledger.besu.ethereum.mainnet.HeaderValidationMode;
 import org.hyperledger.besu.plugin.services.securitymodule.SecurityModuleException;
 import org.hyperledger.besu.util.Subscribers;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -59,15 +64,16 @@ public class IbftRound {
   private final IbftMessageTransmitter transmitter;
 
   public IbftRound(
-      final RoundState roundState,
-      final IbftBlockCreator blockCreator,
-      final ProtocolContext protocolContext,
-      final BlockImporter blockImporter,
-      final Subscribers<MinedBlockObserver> observers,
-      final NodeKey nodeKey,
-      final MessageFactory messageFactory,
-      final IbftMessageTransmitter transmitter,
-      final RoundTimer roundTimer) {
+          final RoundState roundState,
+          final IbftBlockCreator blockCreator,
+          final ProtocolContext protocolContext,
+          final BlockImporter blockImporter,
+          final Subscribers<MinedBlockObserver> observers,
+          final NodeKey nodeKey,
+          final MessageFactory messageFactory,
+          final IbftMessageTransmitter transmitter,
+          final RoundTimer roundTimer
+          ) {
     this.roundState = roundState;
     this.blockCreator = blockCreator;
     this.protocolContext = protocolContext;
@@ -87,14 +93,17 @@ public class IbftRound {
   public void createAndSendProposalMessage(final long headerTimeStampSeconds) {
     final Block block = blockCreator.createBlock(headerTimeStampSeconds);
     final IbftExtraData extraData = IbftExtraData.decode(block.getHeader());
-    LOG.debug("Creating proposed block. round={}", roundState.getRoundIdentifier());
-    LOG.trace(
-        "Creating proposed block with extraData={} blockHeader={}", extraData, block.getHeader());
-    updateStateWithProposalAndTransmit(block, Optional.empty());
+
+      LOG.debug("Creating proposed block. round={}", roundState.getRoundIdentifier());
+      LOG.trace(
+              "Creating proposed block with extraData={} blockHeader={}", extraData, block.getHeader());
+      updateStateWithProposalAndTransmit(block, Optional.empty());
   }
+
 
   public void startRoundWith(
       final RoundChangeArtifacts roundChangeArtifacts, final long headerTimestamp) {
+
     final Optional<Block> bestBlockFromRoundChange = roundChangeArtifacts.getBlock();
 
     final RoundChangeCertificate roundChangeCertificate =
@@ -267,5 +276,8 @@ public class IbftRound {
   private void notifyNewBlockListeners(final Block block) {
     observers.forEach(obs -> obs.blockMined(block));
   }
+
+
+
 
 }

@@ -17,6 +17,7 @@ package org.hyperledger.besu.ethereum.eth.sync.fullsync;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.core.Block;
 import org.hyperledger.besu.ethereum.core.BlockImporter;
+import org.hyperledger.besu.ethereum.core.Difficulty;
 import org.hyperledger.besu.ethereum.eth.manager.EthContext;
 import org.hyperledger.besu.ethereum.eth.sync.tasks.exceptions.InvalidBlockException;
 import org.hyperledger.besu.ethereum.mainnet.HeaderValidationMode;
@@ -53,9 +54,14 @@ public class FullImportBlockStep implements Consumer<Block> {
             blockHash.substring(blockHash.length() - 4, blockHash.length()));
     final BlockImporter importer =
         protocolSchedule.getByBlockNumber(blockNumber).getBlockImporter();
-    if (!importer.importBlock(protocolContext, block, HeaderValidationMode.SKIP_DETACHED)) {
+
+      importer.importBlock(protocolContext,block, HeaderValidationMode.NONE);
+
+    if (!importer.importBlock(protocolContext, block, HeaderValidationMode.SKIP_DETACHED) ) {
+
       throw new InvalidBlockException("Failed to import block", blockNumber, block.getHash());
     }
+
     int peerCount = -1; // ethContext is not available in tests
     if (ethContext != null && ethContext.getEthPeers().peerCount() >= 0) {
       peerCount = ethContext.getEthPeers().peerCount();

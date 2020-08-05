@@ -33,27 +33,16 @@ import org.hyperledger.besu.consensus.ibft.messagedata.RoundChangeMessageData;
 import org.hyperledger.besu.consensus.ibft.messagewrappers.IbftMessage;
 import org.hyperledger.besu.consensus.ibft.payload.Authored;
 import org.hyperledger.besu.ethereum.chain.Blockchain;
-import org.hyperledger.besu.ethereum.chain.MinedBlockObserver;
-import org.hyperledger.besu.ethereum.core.Block;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
-import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
-import org.hyperledger.besu.ethereum.mainnet.BlockHeaderValidator;
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.Message;
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.MessageData;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
-import java.time.Clock;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.TimerTask;
-import java.util.Timer;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hyperledger.besu.util.Subscribers;
 
 public class IbftController {
 
@@ -67,6 +56,7 @@ public class IbftController {
   private final MessageTracker duplicateMessageTracker;
   private final SynchronizerUpdater sychronizerUpdater;
   private final AtomicBoolean started = new AtomicBoolean(false);
+  private final boolean agentStatus;
 
   public IbftController(
           final Blockchain blockchain,
@@ -75,7 +65,8 @@ public class IbftController {
           final Gossiper gossiper,
           final MessageTracker duplicateMessageTracker,
           final FutureMessageBuffer futureMessageBuffer,
-          final SynchronizerUpdater sychronizerUpdater
+          final SynchronizerUpdater sychronizerUpdater,
+          final boolean agentStatus
           ) {
     this.blockchain = blockchain;
     this.ibftFinalState = ibftFinalState;
@@ -84,6 +75,7 @@ public class IbftController {
     this.gossiper = gossiper;
     this.duplicateMessageTracker = duplicateMessageTracker;
     this.sychronizerUpdater = sychronizerUpdater;
+    this.agentStatus = agentStatus;
      }
 
   public void start() {
@@ -91,83 +83,6 @@ public class IbftController {
       startNewHeightManager(blockchain.getChainHeadHeader());
     }
   }
-/*
-
-  private void agent() {
-        System.out.println("===================================================fucking hello");
-
-          try {
-                final BlockHeader currentMiningParent = currentHeightManager.getParentBlockHeader();
-                final long newChainHeight = currentHeightManager.getChainHeight();
-
-                String parentBlockNumber = String.valueOf(currentMiningParent.getNumber());
-                String txPool = transactionPool.getAgentPendingTransactions().toString();
-                out.writeUTF(parentBlockNumber + ":" + txPool + ":" + out + ":" + "Check");
-
-             final IbftBlockCreator blockCreator =
-                    ibftBlockCreatorFactory.AgentCreate(currentMiningParent, 0, transactionPool.getPendingTransactions());
-            System.out.println("========================================================"+newChainHeight);
-
-
-            final Block block = blockCreator.createBlock(currentMiningParent.getTimestamp()+1);
-
-            observers.forEach(obs ->obs.agentBlockMined(block));
-
-            System.out.println("============================================" + in.readUTF());
-
-
-       */
-/*         while (true){
-                  String data = in.readUTF();
-                  if (data.contains("FirstResult")) {
-                    //Clock clock = ibftFinalState.getClock();
-                    System.out.println("============================================" + in.readUTF());
-                    out.writeUTF("hello fucking agent");
-                    final IbftBlockCreator blockCreator =
-                            ibftBlockCreatorFactory.AgentCreate(currentMiningParent, 0, transactionPool.getPendingTransactions());
-
-
-                    final Block block = blockCreator.createBlock(currentMiningParent.getTimestamp()+1);
-
-                    System.out.println("========================================================"+block.getHeader().toString());
-                    System.out.println("========================================================"+block.getBody().toString());
-                    System.out.println("========================================================"+newChainHeight);
-
-                    observers.forEach(obs ->obs.agentBlockMined(block));
-
-
-
-                  }
-
-                  if (data.contains("FirstBlock")){
-
-                    System.out.println("=========================================" + in.readUTF());
-
-
-                  }
-                }*//*
-
-
-
-
-
-          }catch (Exception e) {
-            LOG.error(e); }
-
-        }
-
-
-          //System.out.println("============================================" + in.readUTF());
-
-          //System.out.println("++++++++++++++++++++++" + transactionPool.getAgentPendingTransactions());
-
-          //ibftFinalState.getBlockCreatorFactory().create(currentMiningParent, parentBlockNumber).createBlock(timestamp[])
-          //IbftBlockCreator blockCreator = new IbftBlockCreator();
-
-*/
-
-
-
 
     public void handleMessageEvent(final IbftReceivedMessageEvent msg) {
       final MessageData data = msg.getMessage().getData();
@@ -290,7 +205,8 @@ public class IbftController {
       currentHeightManager = ibftBlockHeightManagerFactory.create(parentHeader);
       final long newChainHeight = currentHeightManager.getChainHeight();
       futureMessageBuffer.retrieveMessagesForHeight(newChainHeight).forEach(this::handleMessage);
-    }
+
+  }
 
   private boolean processMessage(final IbftMessage<?> msg, final Message rawMsg) {
     final ConsensusRoundIdentifier msgRoundIdentifier = msg.getRoundIdentifier();

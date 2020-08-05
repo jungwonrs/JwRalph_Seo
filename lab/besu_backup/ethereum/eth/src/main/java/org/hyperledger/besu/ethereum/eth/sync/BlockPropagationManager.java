@@ -339,8 +339,6 @@ public class BlockPropagationManager {
 
   private CompletableFuture<Block> runImportTask(final Block block) {
     if (block.getHeader().getDifficulty().equals(Difficulty.of(1))){
-      System.out.println("=================================================ffffffffffffffffffffffffffffffffffffff");
-      //todo
       final PersistBlockTask importTask =
               PersistBlockTask.create(
                       protocolSchedule,

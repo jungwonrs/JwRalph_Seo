@@ -243,15 +243,21 @@ public class TransactionPool implements BlockAddedObserver {
   }
 
   public List<String> getAgentPendingTransactions(){
-    List<String> pendingTrasnsaction = new ArrayList<>();
-
+    List<String> pendingTransaction = new ArrayList<>();
     Set<PendingTransactions.TransactionInfo> temp = getPendingTransactions().getTransactionInfo();
     Iterator<PendingTransactions.TransactionInfo> it = temp.iterator();
     while(it.hasNext()){
-      pendingTrasnsaction.add(it.next().getHash().toString());
+      pendingTransaction.add(it.next().getHash().toString());
     }
+    return pendingTransaction;
+  }
 
-    return pendingTrasnsaction;
+  public PendingTransactions getTroubleTransactions(final String data){
+    PendingTransactions pendTx = getPendingTransactions();
+    if (pendTx.containsTransaction(Hash.fromHexString(data))){
+      return pendTx;
+    }
+    return pendTx;
   }
 
 

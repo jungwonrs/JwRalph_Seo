@@ -90,7 +90,6 @@ public class RoundState {
       commitMessages.add(msg);
       LOG.trace("Round state added commit message commit={}", msg);
     }
-
     updateState();
   }
 

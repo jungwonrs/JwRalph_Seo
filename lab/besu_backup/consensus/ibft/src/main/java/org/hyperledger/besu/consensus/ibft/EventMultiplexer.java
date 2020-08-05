@@ -29,9 +29,11 @@ public class EventMultiplexer {
   private static final Logger LOG = LogManager.getLogger();
 
   private final IbftController ibftController;
+  private final boolean agentStatus;
 
-  public EventMultiplexer(final IbftController ibftController) {
+  public EventMultiplexer(final IbftController ibftController, final boolean agentStatus) {
     this.ibftController = ibftController;
+    this.agentStatus = agentStatus;
   }
 
   public void handleIbftEvent(final IbftEvent ibftEvent) {
@@ -57,7 +59,12 @@ public class EventMultiplexer {
           throw new RuntimeException("Illegal event in queue.");
       }
     } catch (final Exception e) {
-      LOG.error("State machine threw exception while processing event {" + ibftEvent + "}", e);
+      if(agentStatus){
+        LOG.trace("Agent Consensus is working");
+      }
+      else{
+        LOG.error("State machine threw exception while processing event {" + ibftEvent + "}", e);
+      }
     }
   }
 }

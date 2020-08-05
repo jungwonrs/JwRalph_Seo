@@ -62,6 +62,8 @@ public class IbftRound {
   private final NodeKey nodeKey;
   private final MessageFactory messageFactory; // used only to create stored local msgs
   private final IbftMessageTransmitter transmitter;
+  private boolean agentStatus = false;
+  private boolean secondStepResult = false;
 
   public IbftRound(
           final RoundState roundState,
@@ -72,7 +74,8 @@ public class IbftRound {
           final NodeKey nodeKey,
           final MessageFactory messageFactory,
           final IbftMessageTransmitter transmitter,
-          final RoundTimer roundTimer
+          final RoundTimer roundTimer,
+          final boolean agentStatus
           ) {
     this.roundState = roundState;
     this.blockCreator = blockCreator;
@@ -82,6 +85,7 @@ public class IbftRound {
     this.nodeKey = nodeKey;
     this.messageFactory = messageFactory;
     this.transmitter = transmitter;
+    this.agentStatus = agentStatus;
 
     roundTimer.startTimer(getRoundIdentifier());
   }
@@ -91,6 +95,7 @@ public class IbftRound {
   }
 
   public void createAndSendProposalMessage(final long headerTimeStampSeconds) {
+
     final Block block = blockCreator.createBlock(headerTimeStampSeconds);
     final IbftExtraData extraData = IbftExtraData.decode(block.getHeader());
 
@@ -193,6 +198,11 @@ public class IbftRound {
         LOG.debug("Sending commit message. round={}", roundState.getRoundIdentifier());
         transmitter.multicastCommit(getRoundIdentifier(), block.getHash(), commitSeal);
       }
+      if (wasPrepared == roundState.isPrepared()){
+        if(agentStatus){
+          transmitter.multicastCommit(getRoundIdentifier(), block.getHash(), commitSeal);
+        }
+      }
 
       // can automatically add _our_ commit message to the roundState
       // cannot create a prepare message here, as it may be _our_ proposal, and thus we cannot also
@@ -211,9 +221,21 @@ public class IbftRound {
       if (wasCommitted != roundState.isCommitted()) {
         importBlockToChain();
       }
+      else{
+        if(agentStatus){
+          setSecondStepResult(true);
+        }
+      }
     }
-
     return blockAccepted;
+  }
+
+  private void setSecondStepResult(final boolean secondStepResult){
+    this.secondStepResult = secondStepResult;
+  }
+
+  public boolean secondStepResult(){
+    return secondStepResult;
   }
 
   private void peerIsPrepared(final Prepare msg) {

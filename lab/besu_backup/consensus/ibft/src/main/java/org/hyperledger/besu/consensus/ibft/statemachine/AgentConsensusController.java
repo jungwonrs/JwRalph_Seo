@@ -6,41 +6,45 @@ import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 import com.google.common.base.Splitter;
 import org.apache.logging.log4j.Logger;
 
-import org.hyperledger.besu.consensus.ibft.IbftBlockHeaderValidationRulesetFactory;
-import org.hyperledger.besu.consensus.ibft.IbftExtraData;
+
+
+import org.hyperledger.besu.consensus.ibft.ConsensusRoundIdentifier;
 import org.hyperledger.besu.consensus.ibft.IbftHelpers;
-import org.hyperledger.besu.consensus.ibft.SynchronizerUpdater;
+import org.hyperledger.besu.consensus.ibft.blockcreation.IbftBlockCreator;
 import org.hyperledger.besu.consensus.ibft.blockcreation.AgentBlockCreator;
+import org.hyperledger.besu.consensus.ibft.payload.MessageFactory;
+import org.hyperledger.besu.consensus.ibft.validation.MessageValidatorFactory;
 import org.hyperledger.besu.crypto.AgentKeyGenerator;
 import org.hyperledger.besu.crypto.AgentSignature;
+import org.hyperledger.besu.crypto.NodeKey;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.chain.Blockchain;
 import org.hyperledger.besu.ethereum.chain.MinedBlockObserver;
-import org.hyperledger.besu.ethereum.core.Block;
+
 import org.hyperledger.besu.ethereum.core.BlockHeader;
-import org.hyperledger.besu.ethereum.core.Difficulty;
-import org.hyperledger.besu.ethereum.eth.manager.EthContext;
-import org.hyperledger.besu.ethereum.eth.sync.BlockBroadcaster;
+import org.hyperledger.besu.ethereum.core.Block;
+import org.hyperledger.besu.ethereum.eth.transactions.PendingTransactions;
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
-import org.hyperledger.besu.ethereum.mainnet.BlockHeaderValidator;
-import org.hyperledger.besu.ethereum.mainnet.HeaderValidationMode;
+import org.hyperledger.besu.ethereum.mainnet.ProtocolSchedule;
 import org.hyperledger.besu.util.Subscribers;
+
+
 
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class AgentConsensusController {
-
     private final String agentConfig;
     private final List<String> addressList;
     private final String nodeAddress;
@@ -54,6 +58,10 @@ public class AgentConsensusController {
 
     private static final Logger LOG = getLogger();
 
+    private final NodeKey nodeKey;
+    private final MessageValidatorFactory messageValidatorFactory;
+    private final ProtocolContext protocolContext;
+    private final ProtocolSchedule protocolSchedule;
 
     public AgentConsensusController(
             final String agentConfig,
@@ -65,8 +73,14 @@ public class AgentConsensusController {
             final Blockchain blockchain,
             final IbftFinalState ibftFinalState,
             final Subscribers<MinedBlockObserver> minedBlockObserverSubscribers,
-            final int time
-    )
+            final int time,
+
+            final ProtocolContext protocolContext,
+            final ProtocolSchedule protocolSchedule,
+            final NodeKey nodeKey,
+            final MessageValidatorFactory messageValidatorFactory
+
+            )
     {
         this.agentConfig = agentConfig;
         this.addressList = addressList;
@@ -78,15 +92,16 @@ public class AgentConsensusController {
         this.ibftFinalState = ibftFinalState;
         this.minedBlockObserverSubscribers = minedBlockObserverSubscribers;
         this.time = time*1000;
-    }
 
+        this.nodeKey = nodeKey;
+        this.messageValidatorFactory = messageValidatorFactory;
+        this.protocolContext = protocolContext;
+        this.protocolSchedule = protocolSchedule;
+    }
 
     public void start(){
 
         if (started.compareAndSet(false, true)){
-   /*         AgentConnection receiver = new AgentConnection();
-            receiver.start();
-            System.out.println("===================================="+time);*/
 
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
@@ -108,13 +123,11 @@ public class AgentConsensusController {
 
         @Override
         public void run(){
-
             connectToAgent();
-
-
         }
 
         private void connectToAgent(){
+
 
             Random rand = new Random();
             int seed = previousBlock.hashCode();
@@ -181,18 +194,40 @@ public class AgentConsensusController {
                         }
                     }
                     if(messageFromAgent.contains("AgentStart")){
-                        System.out.println("agentStart!!!!!!!!!!!!!!!!!!!!!!!111111111111111!!!!!!!!!!!!!!");
+                        sendTransactionPool(out);
+                    }
+                    if(messageFromAgent.contains("FirstResult")){
+                        boolean check = checkSignature(messageFromAgent);
 
-                        firstCheck(out);
+                        if(check){
+                            out.writeUTF("FirstResultTrue");
+                        }
+                    }
+                    if(messageFromAgent.contains("FirstResultTrue")){
+                        createBlockbyPreprocessing();
+                    }
+
+                    if(messageFromAgent.contains("TroubleTransaction")){
+                        troubleTransactionConsensus(out, messageFromAgent);
+                    }
+
+                    if(messageFromAgent.contains("SecondResult")){
+                        boolean check = checkSignature(messageFromAgent);
+
+                        if(check){
+                            out.writeUTF("SecondResultTrue");
+                        }
+                    }
+
+                    if (messageFromAgent.contains("SecondResultTrue")) {
+                        createBlockbyPreprocessing();
                     }
 
                 }
 
-
             } catch (Exception e) {
-                LOG.error(e+"hello fuck you 222222222222222222");
+                LOG.error(e);
             }
-
         }
 
         private void nodeHandler(final DataInputStream in, final DataOutputStream out){
@@ -201,59 +236,148 @@ public class AgentConsensusController {
                     String messageFromAgent = in.readUTF();
 
                     if(messageFromAgent.contains("AgentStart")){
-                        System.out.println("agentStart!!!!!!!!!!!!!!!!!!!!!!!!222222222222222!!!!!!!!!!!!!!");
-                        firstCheck(out);
+                        sendTransactionPool(out);
+                    }
 
+                    if(messageFromAgent.contains("FirstResultTrue")){
+                        createBlockbyPreprocessing();
+                    }
+                    if (messageFromAgent.contains("SecondResultTrue")) {
+                        createBlockbyPreprocessing();
                     }
 
                 }catch (Exception e){
-                    LOG.error(e+"hello fuck you11111111111111");
+                    LOG.error(e);
                 }
             }
         }
 
+        private void troubleTransactionConsensus(final DataOutputStream out, final String data){
+            List<String> strPar = Splitter.on(":").splitToList(data);
 
-        private void firstCheck(final DataOutputStream out){
+            PendingTransactions troubleTransaction = transactionPool.getTroubleTransactions(strPar.get(0));
 
-
-
-
-
-
-
-
-
-            System.out.println(out);
             final BlockHeader parentHeader = blockchain.getChainHeadHeader();
-            System.out.println("============================================================="+parentHeader.getNumber());
+
+            final IbftBlockCreator blockCreator =
+                    ibftFinalState.getBlockCreatorFactory().forStepTwo(parentHeader, troubleTransaction);
+
+
+
+            final ConsensusRoundIdentifier roundIdentifier = new ConsensusRoundIdentifier(1, 0);
+            final MessageFactory messageFactory = new MessageFactory(nodeKey);
+
+
+            final RoundState roundState = new RoundState(roundIdentifier, 3,   messageValidatorFactory.AgentCreateMessageValidator(roundIdentifier, parentHeader, true));
+
+            final IbftRound round =
+                    new IbftRound(
+                            roundState,
+                            blockCreator,
+                            protocolContext,
+                            protocolSchedule.getByBlockNumber(roundIdentifier.getSequenceNumber()).getBlockImporter(),
+                            minedBlockObserverSubscribers,
+                            nodeKey,
+                            messageFactory,
+                            ibftFinalState.getTransmitter(),
+                            ibftFinalState.getRoundTimer(),
+                            true
+                            );
+
+           round.createAndSendProposalMessage(parentHeader.getTimestamp()+time);
+
+           try{
+           if(round.secondStepResult()){
+               out.writeUTF("troubleTransactionTrue"); }
+           else {
+               out.writeUTF("troubleTransactionFalse"); }
+            }
+            catch (Exception e){
+                LOG.error(e);
+            }
+
+
+
+        }
+
+
+        private void sendTransactionPool(final DataOutputStream out){
+            AgentKeyGenerator key = new AgentKeyGenerator();
+            AgentSignature agentSignature = new AgentSignature();
+
+            String parentBlockNumber = String.valueOf(blockchain.getChainHeadHeader().getNumber());
+            String txPool = transactionPool.getAgentPendingTransactions().toString();
+
+
+            try{
+                String rawMessage = parentBlockNumber+"@"+txPool+"@"+out;
+
+                KeyPair getKey = key.genKey();
+                PrivateKey pKey = getKey.getPrivate();
+                PublicKey pubKey = getKey.getPublic();
+
+                String strPubKey = key.pubKeyToString(pubKey);
+                String txPoolSig = agentSignature.genSig(pKey, rawMessage);
+
+                String message = strPubKey+":"+rawMessage+":"+txPoolSig+":"+"Check";
+
+                out.writeUTF(message);
+
+            } catch(Exception e){
+                LOG.error(e);
+            }
+
+        }
+
+        private boolean checkSignature(final String data){
+
+            List<String> strPar = Splitter.on(":").splitToList(data);
+
+            String strPubKey = strPar.get(0);
+            String message = strPar.get(1);
+            String sig = strPar.get(2);
+
+            AgentKeyGenerator key = new AgentKeyGenerator();
+            AgentSignature agentSignature = new AgentSignature();
+
+            try{
+                PublicKey pubKey = key.stringToPublicKey(strPubKey);
+                boolean sigVerify = agentSignature.verify(message, sig, pubKey);
+
+                if(sigVerify){
+                    return true;
+                }
+
+            }catch (Exception e){
+                LOG.error(e);
+                return false;
+            }
+            return false;
+        }
+
+        private void createBlockbyPreprocessing(){
+
+            LOG.trace("Create AgentBlock by firstCheck");
+
+            final BlockHeader parentHeader = blockchain.getChainHeadHeader();
             final AgentBlockCreator blockCreator =
                     ibftFinalState.getBlockCreatorFactory().AgentCreate(parentHeader, transactionPool.getPendingTransactions());
 
-            final Block block = blockCreator.createBlock(parentHeader.getTimestamp()+1);
+            final Block block = blockCreator.createBlock(parentHeader.getTimestamp()+time);
             final Block blockToImport = IbftHelpers.createAgentBlock(block);
 
 
-
             minedBlockObserverSubscribers.forEach(obs -> obs.agentBlockMined(blockToImport));
-
-
-
-            /* parentBlockNumber = blockchain.getChainHeadHeader();
-            String txPool = transactionPool.getAgentPendingTransactions().toString();
-
-            String txPoolCheckMessage = parentBlockNumber+":"+txPool+":"+out+":"+"Check";
-
-            out.writeUTF(txPoolCheckMessage);*/
-
-
-            //ibftFinalState.getBlockCreatorFactory().AgentCreate().
-
         }
+
+
+
+
+
+
 
 
 
 
     }
-
-
 }

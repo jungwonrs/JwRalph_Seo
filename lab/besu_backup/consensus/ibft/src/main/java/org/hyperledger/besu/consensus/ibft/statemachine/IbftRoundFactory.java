@@ -81,8 +81,11 @@ public class IbftRoundFactory {
               finalState.getNodeKey(),
               finalState.getMessageFactory(),
               finalState.getTransmitter(),
-              finalState.getRoundTimer());
+              finalState.getRoundTimer(),
+              false);
     }
+
+
 
   }
 

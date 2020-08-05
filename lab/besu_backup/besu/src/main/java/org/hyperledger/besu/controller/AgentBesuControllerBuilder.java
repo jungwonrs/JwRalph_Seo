@@ -1,6 +1,5 @@
 package org.hyperledger.besu.controller;
 
-import org.apache.logging.log4j.core.util.FileUtils;
 import org.hyperledger.besu.config.AgentConfigOptions;
 import org.hyperledger.besu.config.GenesisConfigOptions;
 import org.hyperledger.besu.config.IbftFork;
@@ -14,11 +13,7 @@ import org.hyperledger.besu.consensus.common.VoteTallyUpdater;
 
 
 import org.hyperledger.besu.consensus.ibft.IbftBlockInterface;
-import org.hyperledger.besu.consensus.ibft.IbftHelpers;
-import org.hyperledger.besu.consensus.ibft.SynchronizerUpdater;
 import org.hyperledger.besu.consensus.ibft.MessageTracker;
-import org.hyperledger.besu.consensus.ibft.ConsensusRoundIdentifier;
-import org.hyperledger.besu.consensus.ibft.IbftBlockHeaderValidationRulesetFactory;
 import org.hyperledger.besu.consensus.ibft.EventMultiplexer;
 import org.hyperledger.besu.consensus.ibft.UniqueMessageMulticaster;
 import org.hyperledger.besu.consensus.ibft.IbftProtocolSchedule;
@@ -59,8 +54,6 @@ import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.MiningParameters;
 import org.hyperledger.besu.ethereum.core.Util;
 import org.hyperledger.besu.ethereum.eth.EthProtocol;
-import org.hyperledger.besu.ethereum.eth.manager.EthContext;
-import org.hyperledger.besu.ethereum.eth.manager.EthPeers;
 import org.hyperledger.besu.ethereum.eth.manager.EthProtocolManager;
 import org.hyperledger.besu.ethereum.eth.sync.state.SyncState;
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
@@ -84,7 +77,6 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
     private AgentConfigOptions agentConfig;
     private ValidatorPeers peers;
     private final BlockInterface blockInterface = new IbftBlockInterface();
-
 
     //1
     @Override
@@ -196,11 +188,13 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         gossiper,
                         duplicateMessageTracker,
                         futureMessageBuffer,
-                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
+                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()),
+                        false);
 
 
-        final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController);
+        final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController, true);
         final IbftProcessor ibftProcessor = new IbftProcessor(ibftEventQueue, eventMultiplexer);
+
 
         final AgentConsensusController agentConsensusController =
                 new AgentConsensusController(
@@ -212,7 +206,11 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         blockchain,
                         finalState,
                         minedBlockObservers,
-                        agentConfig.getBlockPeriodSeconds()
+                        agentConfig.getBlockPeriodSeconds(),
+                        protocolContext,
+                        protocolSchedule,
+                        nodeKey,
+                        messageValidatorFactory
                 );
 
 

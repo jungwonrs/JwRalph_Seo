@@ -2,13 +2,12 @@ package AgentConnection;
 
 import Crypto.Key;
 import Crypto.Sig;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.security.*;
 
 import java.util.*;
@@ -18,6 +17,13 @@ public class Listener {
 
     private final Map<Socket, DataOutputStream> socketMap = new HashMap<>();
     private final Map<String, String> firstCheckPool = new HashMap<>();
+    private final List<String> txPoolList = new ArrayList<>();
+    private final Set<String> commonTransaction = new HashSet<>();
+    private final Set<String> troubleTransaction = new HashSet<>();
+
+    private PrivateKey privateKey;
+    private PublicKey publicKey;
+    private String strPublicKey;
 
    public void setting(){
        try{
@@ -49,88 +55,159 @@ public class Listener {
 
        public void run(){
            try{
+               Key key = new Key();
+
+               KeyPair getKey = key.genKey();
+               privateKey = getKey.getPrivate();
+               publicKey = getKey.getPublic();
+               strPublicKey = key.pubKeyToString(publicKey);
+
+
                out = new DataOutputStream(s.getOutputStream());
                in = new DataInputStream(s.getInputStream());
                addNode(s,out);
 
-                    while (true) {
-                        String data = in.readUTF();
 
+                      while (true) {
+                          String data = in.readUTF();
 
-                        if (data.contains("AgentOn")) {
-                            keyNodeOn(data, out);
-                        }
+                          if (data.contains("AgentOn")) {
+                              keyNodeOn(data, out);
+                          }
 
-                        if (data.contains("AgentStart")) {
-                            broadcasting("AgentStart");
-                            clearMap();
-                        }
+                          if (data.contains("AgentStart")) {
+                              broadcasting("AgentStart");
+                          }
 
-                        if (data.contains("Check")) {
+                          if (data.contains("Check")) {
+                              String firstResult = CheckStorage(data).toString();
 
-                            String firstResult = filterCheckStorage(data).toString();
+                              String firstResultSig = createSignature(privateKey,firstResult);
 
-                            System.out.println("FirstResult" + firstResult);
-                            nl.getKeyNode().writeUTF("FirstResult" + firstResult);
+                              String firstResultMessage = strPublicKey+":"+firstResult+":"+firstResultSig+":"+"FirstResult";
 
-                        }
-                        ;
+                              nl.getKeyNode().writeUTF(firstResultMessage);
+                          }
 
-                        if (data.contains("hello fucking agent")) {
-                            broadcasting("FirstBlock");
-                        }
+                          if (data.contains("FirstResultTrue")) {
+                              broadcasting("FirstResultTrue");
+                              clearMap();
+                          }
 
-                        System.out.println(data);
+                          if (data.contains("troubleTransactionTrue")){
 
-                        //nl.getKeyNode().writeUTF("fuckyou---------------------------------------------------------------");*/
-                    }
+                              String secondResult =  sortTxPool(commonTransaction, troubleTransaction).toString();
 
+                              String secondResultSig = createSignature(privateKey, secondResult);
 
+                              String secondResultMessage = strPublicKey+":"+secondResult+":"+secondResultSig+":"+"SecondResult";
 
-           }catch (Exception e) { e.printStackTrace(); }
+                              nl.getKeyNode().writeUTF(secondResultMessage);
+                          }
+
+                          if (data.contains("troubleTransactionFalse")){
+                              String secondResult =  commonTransaction.toString();
+
+                              String secondResultSig = createSignature(privateKey, secondResult);
+
+                              String secondResultMessage = strPublicKey+":"+secondResult+":"+secondResultSig+":"+"SecondResult";
+
+                              nl.getKeyNode().writeUTF(secondResultMessage);                          }
+
+                          if (data.contains("SecondResultTrue")) {
+                              broadcasting("SecondResultTrue");
+                              clearMap();
+                          }
+                          System.out.println(data);
+                      }
 
            }
-
+           catch (Exception e) { e.printStackTrace(); }
+           }
 
    }
 
-   private HashMap<String, String> filterCheckStorage(String data) {
-       String[] strPar = data.split(":");
-       String parentBlockNumber = strPar[0];
-       String txPool = strPar[1];
-       String from = String.valueOf(strPar[2]);
 
-       List<String> compareValue = new ArrayList<>();
-       HashMap<String, String>firstCheckResult = new HashMap<>();
+   private HashMap<String, String> CheckStorage(String data) {
+       boolean sigCheck = signatureCheck(data);
+       String[] strParMessage = data.split(":");
+       String rawMessage = strParMessage[1];
 
-       synchronized (firstCheckPool) {
-           firstCheckPool.put(from, txPool);
-       }
+        if(sigCheck){
+            String[] strParRawMessage = rawMessage.split("@");
+            String parentBlockNumber = strParRawMessage[0];
+            String txPool = strParRawMessage[1];
+            System.out.println("txPool"+txPool);
+            String from = String.valueOf(strParRawMessage[2]);
 
-       for (Map.Entry<String, String> entry : firstCheckPool.entrySet()) {
-           compareValue.add(String.valueOf(entry.getValue().hashCode()));
-       }
+            List<String> compareValue = new ArrayList<>();
+            HashMap<String, String>firstCheckResult = new HashMap<>();
 
-       if(firstStepCheck(compareValue)){
-           firstCheckResult.put(parentBlockNumber, txPool);
-           return firstCheckResult;
-       }
+            synchronized (firstCheckPool) {
+                firstCheckPool.put(from, txPool);
+            }
 
-       if(!firstStepCheck(compareValue)){
-           secondStepCheck();
-       }
+            for (Map.Entry<String, String> entry : firstCheckPool.entrySet()) {
+                compareValue.add(String.valueOf(entry.getValue().hashCode()));
+            }
+
+            if(firstStepCheck(compareValue)){
+                firstCheckResult.put(parentBlockNumber, txPool);
+                return firstCheckResult;
+            }
+
+            if(!firstStepCheck(compareValue)){
+                secondStepCheck(rawMessage);
+            }
+        }
+
        return null;
    }
 
 
-   private void secondStepCheck(){
-       System.out.println("this is second step ");
+   private void secondStepCheck(String data){
+       String[] strParRawMessage = data.split("@");
+       String txPool = strParRawMessage[1];
+       txPool = txPool.substring(1, txPool.length()-1);
+       String[] value = txPool.split(", ");
+
+
+       Set<String> set = new HashSet<>();
+       synchronized (txPoolList) {
+           for(String str: value){
+               txPoolList.add(str);
+           }
+
+           for(String str: txPoolList){
+               if(!set.add(str)){
+                   commonTransaction.add(str);
+               }
+           }
+
+           for(String str: txPoolList){
+               if(!txPoolList.contains(str)){
+                   troubleTransaction.add(str);
+               }
+           }
+       }
+
+       String troubleTx = troubleTransaction.toString();
+       String message = troubleTx.substring(1, troubleTx.length()-1);
+
+
+       broadcasting(message+":"+"TroubleTransaction");
+
    }
 
+   private <T> Set <T> sortTxPool(Set<T> commonTransaction, Set<T> troubleTransaction){
+        return new HashSet<>(){{
+            addAll(commonTransaction);
+            addAll(troubleTransaction);
+        }};
+   }
 
-
-
-      private boolean firstStepCheck(List<String> compareValue){
+   private boolean firstStepCheck(List<String> compareValue){
+       System.out.println(compareValue);
        for (String s : compareValue){
            if(s.equals(compareValue.get(0))){
                return true;
@@ -144,7 +221,6 @@ public class Listener {
            socketMap.clear();
        }
    }
-
 
     private void addNode(Socket s, DataOutputStream out){
         synchronized (socketMap){
@@ -171,7 +247,6 @@ public class Listener {
             e.printStackTrace();
         }
     }
-
 
 
     private void keyNodeOn(String data, DataOutputStream out) throws Exception {
@@ -201,7 +276,6 @@ public class Listener {
                     nl.getKeyNode().writeUTF(agentOnMessage);
                     //System.out.println(nl.getKeyNode());
                 }
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -248,7 +322,43 @@ public class Listener {
         }
     }
 
+    private boolean signatureCheck(String data){
+       String[] strPar = data.split(":");
 
+       String strPubKey = strPar[0];
+       String message = strPar[1];
+       String sig = strPar[2];
+
+       try{
+           Key key = new Key();
+           PublicKey pubKey = key.stringToPublicKey(strPubKey);
+
+           Sig sv = new Sig();
+           boolean sigVerify = sv.verify(message, sig, pubKey);
+
+           if (sigVerify){
+               return true;
+           }
+
+       } catch (Exception e){
+           e.printStackTrace();
+           return false;
+       }
+
+       return false;
+    }
+
+    private String createSignature(PrivateKey pubKey, String message){
+       try{
+           Sig signature = new Sig();
+           String sig = signature.genSig(pubKey, message);
+           return sig;
+       } catch (Exception e){
+           e.printStackTrace();
+       }
+
+       return "Cannot Create Signature";
+    }
 
 
 }

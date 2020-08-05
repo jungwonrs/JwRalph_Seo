@@ -72,8 +72,28 @@ public class MessageValidatorFactory {
         new RoundChangeCertificateValidator(
             validators,
             (ri) -> createSignedDataValidator(ri, parentHeader),
-            roundIdentifier.getSequenceNumber()));
+            roundIdentifier.getSequenceNumber()),
+            false);
   }
+
+  public MessageValidator AgentCreateMessageValidator(
+          final ConsensusRoundIdentifier roundIdentifier, final BlockHeader parentHeader, final boolean agent) {
+    final BlockValidator blockValidator =
+            protocolSchedule.getByBlockNumber(roundIdentifier.getSequenceNumber()).getBlockValidator();
+    final Collection<Address> validators = getValidatorsAfterBlock(parentHeader);
+
+    return new MessageValidator(
+            createSignedDataValidator(roundIdentifier, parentHeader),
+            new ProposalBlockConsistencyValidator(),
+            blockValidator,
+            protocolContext,
+            new RoundChangeCertificateValidator(
+                    validators,
+                    (ri) -> createSignedDataValidator(ri, parentHeader),
+                    roundIdentifier.getSequenceNumber()),
+            true);
+  }
+
 
   public RoundChangeMessageValidator createRoundChangeMessageValidator(
       final long chainHeight, final BlockHeader parentHeader) {

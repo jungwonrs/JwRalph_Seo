@@ -19,6 +19,7 @@ import org.hyperledger.besu.consensus.ibft.messagewrappers.Commit;
 import org.hyperledger.besu.consensus.ibft.messagewrappers.Prepare;
 import org.hyperledger.besu.consensus.ibft.messagewrappers.Proposal;
 import org.hyperledger.besu.consensus.ibft.payload.RoundChangeCertificate;
+import org.hyperledger.besu.consensus.ibft.statemachine.AgentConsensusController;
 import org.hyperledger.besu.ethereum.BlockValidator;
 import org.hyperledger.besu.ethereum.BlockValidator.BlockProcessingOutputs;
 import org.hyperledger.besu.ethereum.ProtocolContext;
@@ -39,18 +40,21 @@ public class MessageValidator {
   private final BlockValidator blockValidator;
   private final ProtocolContext protocolContext;
   private final RoundChangeCertificateValidator roundChangeCertificateValidator;
+  private final boolean agentOn;
 
   public MessageValidator(
       final SignedDataValidator signedDataValidator,
       final ProposalBlockConsistencyValidator proposalConsistencyValidator,
       final BlockValidator blockValidator,
       final ProtocolContext protocolContext,
-      final RoundChangeCertificateValidator roundChangeCertificateValidator) {
+      final RoundChangeCertificateValidator roundChangeCertificateValidator,
+      final boolean agentOn) {
     this.signedDataValidator = signedDataValidator;
     this.proposalConsistencyValidator = proposalConsistencyValidator;
     this.blockValidator = blockValidator;
     this.protocolContext = protocolContext;
     this.roundChangeCertificateValidator = roundChangeCertificateValidator;
+    this.agentOn = agentOn;
   }
 
   public boolean validateProposal(final Proposal msg) {
@@ -79,6 +83,9 @@ public class MessageValidator {
             protocolContext, block, HeaderValidationMode.LIGHT, HeaderValidationMode.FULL);
 
     if (!validationResult.isPresent()) {
+      if(agentOn){
+        return true;
+      }
       LOG.info("Invalid Proposal message, block did not pass validation.");
       return false;
     }

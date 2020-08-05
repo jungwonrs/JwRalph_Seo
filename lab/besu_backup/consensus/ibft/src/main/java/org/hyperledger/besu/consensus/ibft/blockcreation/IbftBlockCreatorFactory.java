@@ -78,7 +78,7 @@ public class IbftBlockCreatorFactory {
         parentHeader);
   }
 
-  public AgentBlockCreator AgentCreate(final BlockHeader parentHeader, final PendingTransactions AgentPendingTransactions ){
+  public AgentBlockCreator AgentCreate(final BlockHeader parentHeader, final PendingTransactions agentPendingTransactions){
     final VoteTally voteTally =
             protocolContext
                     .getConsensusState(IbftContext.class)
@@ -98,7 +98,7 @@ public class IbftBlockCreatorFactory {
                             0,
                             validators)
                             .encode(),
-            AgentPendingTransactions,
+            agentPendingTransactions,
             protocolContext,
             protocolSchedule,
             gasLimitCalculator,
@@ -106,6 +106,36 @@ public class IbftBlockCreatorFactory {
             minBlockOccupancyRatio,
             parentHeader);
   }
+
+  public IbftBlockCreator forStepTwo(final BlockHeader parentHeader, final PendingTransactions agentPendingTransactions){
+    final VoteTally voteTally =
+            protocolContext
+                    .getConsensusState(IbftContext.class)
+                    .getVoteTallyCache()
+                    .getVoteTallyAfterBlock(parentHeader);
+
+
+    final List<Address> validators = new ArrayList<>(voteTally.getValidators());
+
+    return new IbftBlockCreator(
+            localAddress,
+            parent ->
+                    new IbftExtraData(
+                            Bytes.wrap(new byte[32]),
+                            Collections.emptyList(),
+                            Optional.empty(),
+                            0,
+                            validators)
+                            .encode(),
+            agentPendingTransactions,
+            protocolContext,
+            protocolSchedule,
+            gasLimitCalculator,
+            minTransactionGasPrice,
+            minBlockOccupancyRatio,
+            parentHeader);
+  }
+
 
   public void setExtraData(final Bytes extraData) {
     this.vanityData = extraData.copy();

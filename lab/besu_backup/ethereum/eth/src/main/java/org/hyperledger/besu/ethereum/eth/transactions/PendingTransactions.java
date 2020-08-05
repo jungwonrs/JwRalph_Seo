@@ -126,6 +126,7 @@ public class PendingTransactions {
             "operation");
   }
 
+
   public void evictOldTransactions() {
     final Instant removeTransactionsBefore =
         clock.instant().minus(maxTransactionRetentionHours, ChronoUnit.HOURS);

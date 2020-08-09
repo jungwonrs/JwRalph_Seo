@@ -188,8 +188,7 @@ public class AgentBesuControllerBuilder extends BesuControllerBuilder {
                         gossiper,
                         duplicateMessageTracker,
                         futureMessageBuffer,
-                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()),
-                        false);
+                        new EthSynchronizerUpdater(ethProtocolManager.ethContext().getEthPeers()));
 
 
         final EventMultiplexer eventMultiplexer = new EventMultiplexer(ibftController, true);

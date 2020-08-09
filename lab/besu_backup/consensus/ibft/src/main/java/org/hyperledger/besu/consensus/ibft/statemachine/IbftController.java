@@ -56,7 +56,6 @@ public class IbftController {
   private final MessageTracker duplicateMessageTracker;
   private final SynchronizerUpdater sychronizerUpdater;
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final boolean agentStatus;
 
   public IbftController(
           final Blockchain blockchain,
@@ -65,8 +64,7 @@ public class IbftController {
           final Gossiper gossiper,
           final MessageTracker duplicateMessageTracker,
           final FutureMessageBuffer futureMessageBuffer,
-          final SynchronizerUpdater sychronizerUpdater,
-          final boolean agentStatus
+          final SynchronizerUpdater sychronizerUpdater
           ) {
     this.blockchain = blockchain;
     this.ibftFinalState = ibftFinalState;
@@ -75,7 +73,6 @@ public class IbftController {
     this.gossiper = gossiper;
     this.duplicateMessageTracker = duplicateMessageTracker;
     this.sychronizerUpdater = sychronizerUpdater;
-    this.agentStatus = agentStatus;
      }
 
   public void start() {

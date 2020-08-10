@@ -1,0 +1,23 @@
+{
+  "name": "besu_agent_contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.7.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "^0.10.4",
+    "ethereumjs-tx": "^1.3.7",
+    "web3": "^1.0.0-beta.55",
+    "body-parser": "^1.18.3",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "swagger-ui-express": "4.1.4",
+    "yamljs": "0.3.0"
+  }
+}

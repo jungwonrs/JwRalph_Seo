@@ -1,0 +1,97 @@
+swagger: "2.0"
+info:
+  description: "Hyperledger Besu Smart Contract API"
+  version: "0.1"
+  title: "Hyperledger Besu Smart Contract API"
+  contact:
+    name: "Nonce Lab. Dev Team"
+    email: "info@noncelab.com"
+host: "3.35.53.4:8888"
+basePath: "/blockchain"
+tags:
+- name: "API"
+paths:
+  /data:
+    get:
+      tags:
+      - "API"
+      summary: "get smartContract data"
+      operationId: "rootGET"
+      produces:
+      - "application/json"
+      - "*/*"
+      parameters:
+      - name: "Headers"
+        in: "header"
+        description: "key: api-key \n value: NonceLab"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Body"
+        required: true
+        schema:
+          $ref: "#/definitions/GetBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+      x-swagger-router-controller: "API"
+    post:
+      tags:
+      - "API"
+      summary: "post data to smartContact"
+      operationId: "rootPOST"
+      produces:
+      - "application/json"
+      - "*/*"
+      parameters:
+      - name: "Headers"
+        in: "header"
+        description: "key: api-key \n value: NonceLab"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Body"
+        required: true
+        schema:
+          $ref: "#/definitions/PostBody"
+      responses:
+        "200":
+          description: "success"
+        "400":
+          description: "Wrong Data (Problem can be occured by ID is empty or data length is bigger than 13000 characters)"
+        "401":
+          description: "Wrong API Key"
+        "402":
+          description: "Wrong API Value"
+        "404":
+          description: "Wrong URL"
+        "500":
+          description: "Server Error"
+      x-swagger-router-controller: "API"
+definitions:
+  PostBody:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
+      data:
+        type: "string"
+  GetBody:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
